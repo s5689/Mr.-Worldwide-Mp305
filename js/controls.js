@@ -8,7 +8,6 @@ let controller;
 
 setTimeout(() => {
   const callback = (e) => {
-    console.log(e);
     e.iframeElement.id = 'spotify';
     e.iframeElement.className = 'players';
     controller = e;
@@ -25,17 +24,20 @@ function but(e) {
     );
     $('#soundcloud').css('display', 'block');
   }
+
   if (e === 1) {
     $('#soundcloud').attr(
       'src',
-      `https://w.soundcloud.com/player/?url=${hudson}&auto_play=true&show_comments=false&show_user=true&hide_related=true`
+      `https://w.soundcloud.com/player/?url=${hudson}&auto_play=true&show_comments=false&show_user=true&hide_related=true&show_playcount=false&sharing=false`
     );
     $('#soundcloud').css('display', 'block');
   }
+
   if (e === 2) {
     $('#spotify').attr('src', `https://open.spotify.com/embed/track/${swish}?&theme=0`);
     $('#spotify').css('display', 'block');
   }
+
   if (e === 3) {
     /*
     $('#spotify').attr('src', `https://open.spotify.com/embed/track/${midi}?&theme=0`);
@@ -44,6 +46,16 @@ function but(e) {
 
     controller.loadUri(`spotify:track:${swish}`);
     controller.play();
+
+    controller.addListener('playback_update', (e) => {
+      const { duration, position } = e.data;
+      console.log(duration, position);
+      console.log(e);
+      if (duration === position) {
+        console.log('done');
+        controller.removeListener('playback_update');
+      }
+    });
     console.log(controller);
   }
 }

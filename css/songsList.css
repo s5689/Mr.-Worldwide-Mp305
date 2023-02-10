@@ -1,11 +1,29 @@
 #songsList {
   position: absolute;
-  top: 350px;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
 
   width: 90%;
-  border: solid;
+  /* border: solid; */
+}
+
+#addSong-button {
+  position: relative;
+  left: calc(100% - 35px);
+  width: 35px;
+  height: 35px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  background: url('../public/outline-add-circle-outline.svg') no-repeat center center / contain;
+  transition: background-image 250ms;
+}
+
+#addSong-button:hover {
+  background: url('../public/outline-add-circle.svg') no-repeat center center / contain;
 }
 
 #songsList table {

@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script>
 
     <link rel="stylesheet" href="./css/main.css" />
     <script type="module" src="./js/main.js"></script>
@@ -16,8 +17,36 @@
     <p class="title">Mr. Worldwide <b>Mp3</b>05</p>
 
     <div id="songsList">
+      <button id="addSong-button" onclick="toggleAddSong()"></button>
       <div id="songsTable"></div>
     </div>
+
+    <modal id="addSong-modal">
+      <p class="addSong-title">Agregar a la Lista</p>
+
+      <div class="addSong-block">
+        <label>Nombre</label>
+        <input id="addSong-name" type="text" autocomplete="off" />
+      </div>
+
+      <div class="addSong-block">
+        <label>Artista</label>
+        <input id="addSong-artist" type="text" autocomplete="off" />
+      </div>
+
+      <div class="addSong-block">
+        <label>Album</label>
+        <input id="addSong-album" type="text" autocomplete="off" />
+      </div>
+
+      <div class="addSong-block">
+        <label>Link</label>
+        <input id="addSong-link" type="text" autocomplete="off" />
+      </div>
+
+      <button id="addSong-save" onclick="saveAddSong()">Guardar</button>
+      <button id="addSong-return" onclick="closeAddSong()">Cancelar</button>
+    </modal>
 
     <div id="player-container">
       <div id="controls">

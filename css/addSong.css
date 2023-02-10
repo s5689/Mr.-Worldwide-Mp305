@@ -1,0 +1,86 @@
+#addSong-modal {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  z-index: 1;
+
+  width: 400px;
+  height: fit-content;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.95);
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  transition: transform 250ms;
+}
+
+.addSong-title {
+  text-align: center;
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  margin-top: 0;
+}
+
+/* Inputs */
+.addSong-block {
+  display: inline-grid;
+  width: 47%;
+  margin: 0 5px 0 5px;
+}
+
+#addSong-modal input,
+label {
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: larger;
+  margin-bottom: 1rem;
+}
+
+#addSong-modal input {
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  text-align: center;
+
+  margin-bottom: 30px !important;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+}
+
+/* Buttons */
+#addSong-modal button {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 50px;
+  padding: 8px 15px 8px 15px;
+
+  cursor: pointer;
+  margin: 0 10px 0 10px;
+
+  outline: 0px solid rgba(0, 0, 0, 0);
+  transition: outline 250ms;
+}
+
+#addSong-save {
+  color: green;
+  border: 1px solid green;
+}
+
+#addSong-save:hover {
+  outline: 5px solid rgba(0, 255, 0, 0.4);
+}
+
+#addSong-return {
+  color: red;
+  border: 1px solid red;
+}
+
+#addSong-return:hover {
+  outline: 5px solid rgba(255, 0, 0, 0.4);
+}
