@@ -1,0 +1,47 @@
+#controls {
+  position: relative;
+  left: 0;
+  width: 15%;
+  height: 100%;
+
+  text-align: center;
+}
+
+#controls button {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  transition: background-image 250ms;
+}
+
+#control-prev {
+  background: url('../public/player-skip-back.svg') no-repeat center center / contain;
+}
+
+#control-prev:hover {
+  background: url('../public/player-skip-back-filled.svg') no-repeat center center / contain;
+}
+
+#control-stop {
+  margin: 0 10% 0 10%;
+  background: url('../public/player-stop.svg') no-repeat center center / contain;
+}
+
+#control-stop:hover {
+  background: url('../public/player-stop-filled.svg') no-repeat center center / contain;
+}
+
+#control-next {
+  background: url('../public/player-skip-forward.svg') no-repeat center center / contain;
+}
+
+#control-next:hover {
+  background: url('../public/player-skip-forward-filled.svg') no-repeat center center / contain;
+}

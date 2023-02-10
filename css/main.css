@@ -1,0 +1,22 @@
+@import 'tabulator-tables/dist/css/tabulator.min.css';
+@import 'player.css';
+@import 'controls.css';
+@import 'songsList.css';
+
+body {
+  background-color: black;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: lighter;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.title b {
+  font-size: 2.5rem;
+  font-style: italic;
+}

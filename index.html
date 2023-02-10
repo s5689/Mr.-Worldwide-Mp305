@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+
+    <link rel="stylesheet" href="./css/main.css" />
+    <script type="module" src="./js/main.js"></script>
+
+    <title>Mr. Worldwide Mp305</title>
+  </head>
+  <body>
+    <p class="title">Mr. Worldwide <b>Mp3</b>05</p>
+
+    <div id="songsList">
+      <div id="songsTable"></div>
+    </div>
+
+    <div id="player-container">
+      <div id="controls">
+        <button id="control-prev" onclick="but(1)"></button>
+        <button id="control-stop" onclick="stop()"></button>
+        <button id="control-next" onclick="but(3)"></button>
+      </div>
+
+      <iframe id="soundcloud" class="players" frameborder="no" allow="autoplay" src=""></iframe>
+      <div id="spotify-container"></div>
+      <div id="mww" class="players"></div>
+    </div>
+  </body>
+</html>
