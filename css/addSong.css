@@ -67,15 +67,6 @@ label {
   transition: outline 250ms;
 }
 
-#addSong-save {
-  color: green;
-  border: 1px solid green;
-}
-
-#addSong-save:hover {
-  outline: 5px solid rgba(0, 255, 0, 0.4);
-}
-
 #addSong-return {
   color: red;
   border: 1px solid red;
@@ -83,4 +74,13 @@ label {
 
 #addSong-return:hover {
   outline: 5px solid rgba(255, 0, 0, 0.4);
+}
+
+#addSong-save {
+  color: green;
+  border: 1px solid green;
+}
+
+#addSong-save:hover {
+  outline: 5px solid rgba(0, 255, 0, 0.4);
 }
