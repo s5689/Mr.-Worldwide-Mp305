@@ -41,16 +41,24 @@
 
       <div class="addSong-block">
         <label>Link</label>
-        <input
-          id="addSong-link"
-          type="text"
-          autocomplete="off"
-          value="https://soundcloud.com/mrbillstunes/thwekz"
-        />
+        <input id="addSong-link" type="text" autocomplete="off" />
       </div>
 
+      <div class="addSong-block">
+        <label>Duracion</label>
+        <input id="addSong-time" type="text" autocomplete="off" readonly />
+      </div>
+
+      <div class="addSong-block">
+        <label>Fuente</label>
+        <input id="addSong-source" type="text" autocomplete="off" readonly />
+      </div>
+
+      <div id="addSong-error"></div>
+
       <button id="addSong-return" onclick="closeAddSong()">Cancelar</button>
-      <button id="addSong-save" onclick="saveAddSong()">Guardar</button>
+      <button id="addSong-check" onclick="checkAddSong()">Comprobar</button>
+      <button id="addSong-save" onclick="saveAddSong()" hidden>Guardar</button>
     </modal>
 
     <div id="player-container">
@@ -66,5 +74,10 @@
     </div>
   </body>
 
-  <iframe id="sc-tester" class="tester" src=""></iframe>
+  <div id="tester-cover"></div>
+  <iframe
+    id="sc-tester"
+    class="tester"
+    src="https://w.soundcloud.com/player/?url=https://soundcloud.com/mrbillstunes/thwekz"
+  ></iframe>
 </html>

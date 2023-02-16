@@ -1,6 +1,6 @@
 #addSong-modal {
   position: fixed;
-  top: 100px;
+  top: 75px;
   left: 50%;
   transform: translateX(-50%) scale(0);
   z-index: 1;
@@ -54,6 +54,25 @@ label {
   border-bottom: 1px solid white;
 }
 
+#addSong-modal .readonly {
+  border-bottom: none !important;
+}
+
+#addSong-time,
+#addSong-source {
+  border: none !important;
+}
+
+#addSong-error {
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+
+  width: 100%;
+  height: fit-content;
+  color: red;
+}
+
 /* Buttons */
 #addSong-modal button {
   background-color: rgba(0, 0, 0, 0);
@@ -76,6 +95,15 @@ label {
   outline: 5px solid rgba(255, 0, 0, 0.4);
 }
 
+#addSong-check {
+  color: orange;
+  border: 1px solid orange;
+}
+
+#addSong-check:hover {
+  outline: 5px solid rgba(255, 166, 0, 0.4);
+}
+
 #addSong-save {
   color: green;
   border: 1px solid green;
@@ -83,4 +111,14 @@ label {
 
 #addSong-save:hover {
   outline: 5px solid rgba(0, 255, 0, 0.4);
+}
+
+#addSong-modal button:disabled {
+  color: grey;
+  border: 1px solid grey;
+}
+
+#addSong-modal button:disabled:hover {
+  outline: none;
+  cursor: default;
 }

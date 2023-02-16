@@ -83,5 +83,11 @@ async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function test(e) {
+  console.log(e);
+}
+
 window.but = but;
 window.stop = stop;
+window.controller = controller;
+window.test = test;
