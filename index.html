@@ -64,20 +64,23 @@
     <div id="player-container">
       <div id="controls">
         <button id="control-prev" onclick="but(1)"></button>
-        <button id="control-stop" onclick="stop()"></button>
+        <button id="control-stop" onclick="controlStop()"></button>
         <button id="control-next" onclick="but(3)"></button>
       </div>
 
-      <iframe id="soundcloud" class="players" frameborder="no" allow="autoplay" src=""></iframe>
+      <iframe
+        id="soundcloud"
+        class="players"
+        frameborder="no"
+        allow="autoplay"
+        src="https://w.soundcloud.com/player/?url="
+      ></iframe>
+
       <div id="spotify-container"></div>
       <div id="mww" class="players"></div>
     </div>
   </body>
 
   <div id="tester-cover"></div>
-  <iframe
-    id="sc-tester"
-    class="tester"
-    src="https://w.soundcloud.com/player/?url=https://soundcloud.com/mrbillstunes/thwekz"
-  ></iframe>
+  <iframe id="sc-tester" class="tester" src="https://w.soundcloud.com/player/?url="></iframe>
 </html>

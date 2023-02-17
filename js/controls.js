@@ -1,3 +1,49 @@
+import { loadSC, playSC, stopSC } from './soundcloud';
+import { loadSP, playSP, stopSP } from './spotify';
+
+const SOUNDCLOUD = 'SOUNDCLOUD';
+const SPOTIFY = 'SPOTIFY';
+let currentSource;
+
+// Funciones Principales
+export function preloadPlayers() {
+  loadSP();
+  loadSC();
+}
+
+export function handlePlay(e) {
+  currentSource = e.source;
+
+  switch (currentSource) {
+    case SOUNDCLOUD:
+      stopSP();
+      playSC(e.link);
+      break;
+
+    case SPOTIFY:
+      stopSC();
+      playSP(e.link);
+      break;
+  }
+}
+
+export function handleStop() {
+  stopSP();
+  stopSC();
+}
+
+// Funciones Internas
+
+/*
+
+
+
+
+
+
+
+*/
+
 const mrbill = 'https://soundcloud.com/mrbillstunes/thwekz';
 const hudson = 'https://soundcloud.com/hudsonlee/sets/flockcall';
 
@@ -5,16 +51,6 @@ const swish = '5thOUCqiHgpstZ0beZvmou';
 const midi = '0mZa5qa3VjZGsbm183O1zF';
 
 let controller;
-
-setTimeout(() => {
-  const callback = (e) => {
-    e.iframeElement.id = 'spotify';
-    e.iframeElement.className = 'players';
-    controller = e;
-  };
-
-  SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
-}, 2000);
 
 function but(e) {
   if (e === 0) {
@@ -39,9 +75,6 @@ function but(e) {
   }
 
   if (e === 3) {
-    /*
-    $('#spotify').attr('src', `https://open.spotify.com/embed/track/${midi}?&theme=0`);
-    */
     $('#spotify').css('display', 'block');
 
     controller.loadUri(`spotify:track:${swish}`);
@@ -78,16 +111,3 @@ function stop(e = 2) {
     $('#spotify').css('display', 'none');
   }
 }
-
-async function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function test(e) {
-  console.log(e);
-}
-
-window.but = but;
-window.stop = stop;
-window.controller = controller;
-window.test = test;

@@ -109,6 +109,7 @@ function testSP() {
       spTester.addListener('ready', () => spTester.play());
 
       spTester.addListener('playback_update', (e) => {
+        console.log(e);
         handleSuccess(e.data.duration);
         spTester.destroy();
       });
@@ -124,8 +125,9 @@ function testSP() {
 // Guardar Datos en variable de Preparacion
 function handleSuccess(e) {
   toDB = {
-    link: inputs[3].value,
+    link,
     time: getTime(e),
+    source,
     fullTime: e,
   };
 

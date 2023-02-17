@@ -1,4 +1,4 @@
-@import 'tabulator-tables/dist/css/tabulator.min.css';
+@import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
 @import 'player.css';
 @import 'controls.css';
 @import 'songsList.css';
@@ -9,6 +9,14 @@ body {
   color: white;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-weight: lighter;
+
+  /* ScrollBar */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .title {

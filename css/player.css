@@ -21,10 +21,12 @@
 }
 
 #soundcloud {
+  display: none;
   top: 0;
 }
 
 #spotify {
+  display: none;
   top: 50%;
   transform: translateY(-50%);
   margin-top: 5px;
