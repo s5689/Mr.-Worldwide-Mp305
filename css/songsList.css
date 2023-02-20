@@ -32,6 +32,10 @@
   margin-bottom: 20%;
 }
 
+.tabulator-placeholder-contents {
+  background-color: black;
+}
+
 /* Header */
 .tabulator-header {
   border-top: none !important;
@@ -65,6 +69,10 @@
   cursor: default !important;
 }
 
+.tabulator-row[playing='true'] {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
 .tabulator-row:last-child {
   border-bottom: none !important;
 }
@@ -73,8 +81,17 @@
 .tabulator-cell:first-child:hover {
   cursor: pointer !important;
 
-  color: rgba(0, 0, 0, 0) !important;
+  font-size: 0px !important;
   filter: invert(1);
 
   background: url('../public/play-arrow-rounded.svg') no-repeat center center / contain;
+}
+
+.tabulator-row[playing='true'] .tabulator-cell:first-child {
+  cursor: default !important;
+
+  font-size: 0px !important;
+  filter: invert(1);
+
+  background: url('../public/arrow-forward-ios-rounded.svg') no-repeat center center / contain;
 }

@@ -1,3 +1,5 @@
+import { loadingPlayer } from './stateStore';
+import { handleNext } from './controls';
 let controller;
 
 export function loadSC() {
@@ -5,10 +7,8 @@ export function loadSC() {
 }
 
 export function playSC(e) {
-  console.log(controller);
-
   controller.load(e, {
-    auto_play: true,
+    auto_play: false,
     buying: false,
     sharing: false,
     download: false,
@@ -16,8 +16,12 @@ export function playSC(e) {
     show_comments: false,
     callback: () => {
       $('#soundcloud').css('display', 'block');
+      controller.play();
+      loadingPlayer.set(false);
     },
   });
+
+  controller.bind(SC.Widget.Events.FINISH, () => handleNext());
 }
 
 export function stopSC() {

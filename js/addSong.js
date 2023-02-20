@@ -1,5 +1,5 @@
 import { saveSong } from './db';
-import { reloadSongsList } from './songsList';
+import { loadSongsTable } from './songsList';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -71,7 +71,7 @@ export async function saveAddSong() {
 
   await saveSong(toDB);
   closeAddSong();
-  reloadSongsList();
+  loadSongsTable();
 }
 
 // Comprobar formato del link
@@ -109,7 +109,6 @@ function testSP() {
       spTester.addListener('ready', () => spTester.play());
 
       spTester.addListener('playback_update', (e) => {
-        console.log(e);
         handleSuccess(e.data.duration);
         spTester.destroy();
       });

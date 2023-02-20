@@ -1,28 +1,32 @@
+import { loadingPlayer } from './stateStore';
+import { handleNext } from './controls';
 let controller;
 
 export function loadSP() {
-  setTimeout(() => {
-    const callback = (e) => {
-      e.iframeElement.id = 'spotify';
-      e.iframeElement.className = 'players';
+  const callback = (e) => {
+    e.iframeElement.id = 'spotify';
+    e.iframeElement.className = 'players';
 
-      e.addListener('ready', () => {
-        e.play();
-      });
+    e.addListener('ready', () => {
+      e.play();
+      $('#spotify').css('opacity', '1');
+      loadingPlayer.set(false);
+    });
 
-      e.addListener('playback_update', (e) => console.log(e));
+    e.addListener('playback_update', (e) => {
+      const { duration, position } = e.data;
+      if (duration === position) handleNext();
+    });
 
-      controller = e;
-    };
+    controller = e;
+  };
 
-    SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
-  }, 2000);
+  SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
 }
 
 export function playSP(e) {
-  console.log(controller);
-
   $('#spotify').css('display', 'block');
+  $('#spotify').css('opacity', '0');
   controller.loadUri(`spotify:track:${e}`);
 }
 
@@ -30,21 +34,3 @@ export function stopSP() {
   $('#spotify').css('display', 'none');
   $('#spotify').attr('src', '');
 }
-
-/*
-$('#spotify').css('display', 'block');
-
-controller.loadUri(`spotify:track:${swish}`);
-controller.play();
-
-controller.addListener('playback_update', (e) => {
-  const { duration, position } = e.data;
-  console.log(duration, position);
-  console.log(e);
-  if (duration === position) {
-    console.log('done');
-    controller.removeListener('playback_update');
-  }
-});
-console.log(controller);
-*/
