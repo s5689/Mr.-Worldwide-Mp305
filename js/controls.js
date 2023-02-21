@@ -1,6 +1,7 @@
+import { playSelected, songsTable } from './songsList';
 import { loadSC, playSC, stopSC } from './soundcloud';
 import { loadSP, playSP, stopSP } from './spotify';
-import { currentPlaylist, loadingPlayer } from './stateStore';
+import { currentPlaylist, loadingPlayer, rowOnMenu, selectMode } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -56,6 +57,36 @@ export function handleNext() {
 
     if (prev !== current && !loadingPlayer.get()) handlePlay(currentPlaylist.getTrackData());
   }
+}
+
+export function handlePlayFromMenu(isClick = true) {
+  const { row } = rowOnMenu;
+  const playCell = row.getCells()[0].getElement();
+
+  if (isClick) $(playCell).trigger('click');
+  else playSelected();
+}
+
+export function handleSelectMode() {
+  selectMode.set(true);
+}
+
+export function handleSelectAll() {
+  songsTable.getRows().forEach((value) => {
+    const data = value.getData();
+    const foundSelect = selectMode.selected.find((valua) => valua.id === data.id);
+
+    if (typeof foundSelect === 'undefined') $(value.getElement()).trigger('click');
+  });
+}
+
+export function handleDeselectAll() {
+  songsTable.getRows().forEach((value) => {
+    const data = value.getData();
+    const foundSelect = selectMode.selected.find((valua) => valua.id === data.id);
+
+    if (foundSelect) $(value.getElement()).trigger('click');
+  });
 }
 
 // Funciones Internas

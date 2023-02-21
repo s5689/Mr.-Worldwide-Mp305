@@ -61,6 +61,21 @@
       <button id="addSong-save" onclick="saveAddSong()" hidden>Guardar</button>
     </modal>
 
+    <modal id="songsList-modal">
+      <if>
+        <button onclick="playFromMenu()">Reproducir</button>
+        <button onclick="selectMode()">Seleccionar</button>
+        <button onclick=""><del>Eliminar</del></button>
+      </if>
+
+      <else hidden>
+        <button onclick="playFromMenu(false)">Reproducir Seleccion</button>
+        <button onclick="selectAll()">Seleccionar Todo</button>
+        <button onclick="deselectAll()">Deseleccionar Todo</button>
+        <button onclick=""><del>Eliminar Seleccionados</del></button>
+      </else>
+    </modal>
+
     <div id="player-container">
       <div id="controls">
         <button id="control-prev" onclick="controlPrev()"></button>

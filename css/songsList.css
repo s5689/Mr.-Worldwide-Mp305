@@ -7,6 +7,7 @@
   width: 90%;
 }
 
+/* Botones Sobre la tabla */
 #addSong-button {
   position: relative;
   left: calc(100% - 35px);
@@ -23,6 +24,58 @@
 
 #addSong-button:hover {
   background: url('../public/outline-add-circle.svg') no-repeat center center / contain;
+}
+
+/* Menu Contextual */
+#songsList-modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+
+  width: 200px;
+  height: fit-content;
+  background-color: black;
+
+  border: 1px solid;
+}
+
+#songsList-modal[to-right] {
+  border-radius: 0 10px 10px 10px;
+}
+
+#songsList-modal[to-left] {
+  border-radius: 10px 0 10px 10px;
+}
+
+#songsList-modal button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: medium;
+
+  width: 100%;
+  height: 40px;
+  color: white;
+  background-color: black;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#songsList-modal button:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  cursor: pointer;
+}
+
+#songsList-modal[to-right] button:first-child {
+  border-radius: 0 10px 0 0;
+}
+
+#songsList-modal[to-left] button:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+#songsList-modal button:last-child {
+  border-radius: 0 0 10px 10px;
 }
 
 /* Tabla */
@@ -69,8 +122,21 @@
   cursor: default !important;
 }
 
+.tabulator-row:hover {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.tabulator-row[selecting] {
+  cursor: pointer !important;
+}
+
 .tabulator-row[playing='true'] {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(20, 50, 160, 0.9) !important;
+}
+
+.tabulator-row[selected] {
+  background-color: rgba(15, 0, 70, 0.98) !important;
 }
 
 .tabulator-row:last-child {

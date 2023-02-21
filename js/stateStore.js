@@ -119,6 +119,27 @@ export const loadingPlayer = {
   },
 };
 
+export const selectMode = {
+  value: false,
+  selected: [],
+  callback: function (e) {},
+  set(e) {
+    this.value = e;
+    this.callback(e);
+  },
+  get() {
+    return this.value;
+  },
+  selectSize() {
+    return this.selected.length;
+  },
+  onChange: function (e) {
+    this.callback = e;
+  },
+};
+
+export const rowOnMenu = { row: null };
+
 // Funciones Externas porque ajajajavascript.
 function forceSetTrack(e) {
   currentPlaylist.track = e;
