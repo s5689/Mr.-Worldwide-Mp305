@@ -1,5 +1,6 @@
 import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong } from './addSong';
 import {
+  handleAddPlaylist,
   handleDeselectAll,
   handleNext,
   handlePlayFromMenu,
@@ -24,5 +25,11 @@ window.controlNext = handleNext;
 
 window.playFromMenu = handlePlayFromMenu;
 window.selectMode = handleSelectMode;
+window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;
+
+// Conexion con la extencion
+window.addEventListener('message', (e) => {
+  if (e.data === 'larry is that you?') window.postMessage("it's me, DIO");
+});

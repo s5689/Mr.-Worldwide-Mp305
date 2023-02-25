@@ -103,7 +103,8 @@
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort='ascending'],
 [aria-sort='descending'] .tabulator-col-content .tabulator-col-title {
-  color: #888 !important;
+  color: #666 !important;
+  font-weight: 400;
 }
 
 .tabulator-col-sorter {
@@ -132,11 +133,11 @@
 }
 
 .tabulator-row[playing='true'] {
-  background-color: rgba(20, 50, 160, 0.9) !important;
+  background-color: rgba(0, 98, 105, 1) !important;
 }
 
 .tabulator-row[selected] {
-  background-color: rgba(15, 0, 70, 0.98) !important;
+  background-color: rgba(0, 35, 42, 1) !important;
 }
 
 .tabulator-row:last-child {

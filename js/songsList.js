@@ -65,9 +65,6 @@ songsTable.on('cellClick', (e, cell) => {
 });
 
 export function playSelected() {
-  console.log(selectMode.selected);
-  console.log(currentPlaylist);
-
   currentPlaylist.wipe();
   currentPlaylist.list = selectMode.selected;
   currentPlaylist.track = 0;
