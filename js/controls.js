@@ -13,22 +13,24 @@ export function preloadPlayers() {
   loadSC();
 }
 
-export function handlePlay(e) {
+export async function handlePlay(e) {
   handleStop(false);
   currentSource = e.source;
 
   loadingPlayer.set(true);
-  switch (currentSource) {
-    case SOUNDCLOUD:
-      stopSP();
-      playSC(e.link);
-      break;
+  setTimeout(() => {
+    switch (currentSource) {
+      case SOUNDCLOUD:
+        stopSP();
+        playSC(e.link);
+        break;
 
-    case SPOTIFY:
-      stopSC();
-      playSP(e.link);
-      break;
-  }
+      case SPOTIFY:
+        stopSC();
+        playSP(e.link);
+        break;
+    }
+  }, 30);
 }
 
 export function handlePrev() {

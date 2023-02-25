@@ -1,0 +1,30 @@
+{
+	"manifest_version": 3,
+	"name": "MWW MP305 VME",
+	"version": "305",
+	"description": "Oficial Mr. Worldwide Mp305 Volume Manager Extension.",
+
+	"permissions": [
+		"activeTab",
+		"tabCapture"
+	],
+	
+	"action": {
+		"default_popup": "popup.html"
+	},
+
+	"background": {
+		"service_worker": "background.js"
+	},
+
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"]
+		}
+	],
+	
+	"icons": {
+		"128": "mww.png"
+	}
+}
