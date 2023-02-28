@@ -1,6 +1,7 @@
 import { loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
 let controller;
+let pause = false;
 
 export function loadSP() {
   const callback = (e) => {
@@ -10,7 +11,11 @@ export function loadSP() {
     e.addListener('ready', () => {
       e.play();
       $('#spotify').css('opacity', '1');
+
+      pause = false;
       loadingPlayer.set(false);
+
+      fakePlay();
     });
 
     e.addListener('playback_update', (e) => {
@@ -31,6 +36,21 @@ export function playSP(e) {
 }
 
 export function stopSP() {
+  $('#sp-pause-button').remove();
   $('#spotify').css('display', 'none');
-  $('#spotify').attr('src', '');
+
+  if (!pause) {
+    controller.togglePlay();
+    pause = true;
+  }
+}
+
+function fakePlay() {
+  const tempHtml = '<div id="sp-pause-button"></div>';
+  $('#player-container').append(tempHtml);
+
+  document.getElementById('sp-pause-button').addEventListener('click', () => {
+    controller.togglePlay();
+    pause = !pause;
+  });
 }

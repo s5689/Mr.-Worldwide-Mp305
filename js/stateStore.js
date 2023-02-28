@@ -81,6 +81,7 @@ export const currentPlaylist = {
 
   wipe() {
     this.callbackWipe(this.getTrackData());
+    this.callbackList([]);
 
     this._list = [];
     this._track = 0;
@@ -139,6 +140,18 @@ export const selectMode = {
 };
 
 export const rowOnMenu = { row: null };
+
+export const preventClosePlaylist = {
+  state: false,
+
+  trigger() {
+    this.state = true;
+
+    setTimeout(() => {
+      this.state = false;
+    }, 1);
+  },
+};
 
 // Funciones Externas porque ajajajavascript.
 function forceSetTrack(e) {

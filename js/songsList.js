@@ -1,6 +1,13 @@
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-import { currentPlaylist, songsList, rowOnMenu, selectMode } from './stateStore';
+import {
+  currentPlaylist,
+  songsList,
+  rowOnMenu,
+  selectMode,
+  preventClosePlaylist,
+} from './stateStore';
 import { handleDeselectAll, handlePlay } from './controls';
+import { openPlaylist, playlistTable } from './playlist';
 import { getSongs } from './db';
 
 loadSongsTable();
@@ -47,6 +54,9 @@ songsTable.on('cellClick', (e, cell) => {
 
   // Aplicar solo si el click ocurrio en Play & la cancion seleccionada no esta en reproduccion
   if (typeof cell.getField() === 'undefined' && !$(rowHtml).attr('playing')) {
+    preventClosePlaylist.trigger();
+    openPlaylist();
+
     if (!selectMode.get()) {
       currentPlaylist.wipe();
 
@@ -58,13 +68,14 @@ songsTable.on('cellClick', (e, cell) => {
       currentPlaylist.track = rowIndex - 1;
 
       handlePlay(row.getData());
-    } else {
-      playSelected();
-    }
+    } else playSelected();
   }
 });
 
 export function playSelected() {
+  preventClosePlaylist.trigger();
+  openPlaylist();
+
   currentPlaylist.wipe();
   currentPlaylist.list = selectMode.selected;
   currentPlaylist.track = 0;
@@ -205,6 +216,9 @@ songsTable.on('rowClick', (e, rawRow) => {
 currentPlaylist.onTrackChange(({ track, prevTrack }) => {
   $(getRowHtml(prevTrack.id)).removeAttr('playing');
   $(getRowHtml(track.id)).attr('playing', 'true');
+
+  $(getPlaylistRowHtml(prevTrack.id)).removeAttr('playing');
+  $(getPlaylistRowHtml(track.id)).attr('playing', 'true');
 });
 
 currentPlaylist.onWipe((e) => {
@@ -228,8 +242,23 @@ async function getData() {
 }
 
 function getRowHtml(id) {
-  const foundRow = songsTable.searchRows('id', '=', id)[0];
-  const foundHtml = foundRow.getElement();
+  if (typeof id !== 'undefined') {
+    const foundRow = songsTable.searchRows('id', '=', id)[0];
+    const foundHtml = foundRow.getElement();
 
-  return foundHtml;
+    return foundHtml;
+  }
+
+  return '';
+}
+
+function getPlaylistRowHtml(id) {
+  if (typeof id !== 'undefined') {
+    const foundRow = playlistTable.searchRows('id', '=', id)[0];
+    const foundHtml = foundRow.getElement();
+
+    return foundHtml;
+  }
+
+  return '';
 }

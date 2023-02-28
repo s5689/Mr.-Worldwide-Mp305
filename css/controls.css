@@ -7,10 +7,16 @@
   text-align: center;
 }
 
+#controls .up {
+  height: 80px;
+}
+
+#controls .down {
+  height: 80px;
+}
+
 #controls button {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
   width: 35px;
   height: 35px;
 
@@ -19,6 +25,17 @@
   cursor: pointer;
 
   transition: background-image 250ms;
+}
+
+#controls .up button {
+  top: 60%;
+  transform: translateY(-40%);
+}
+
+#controls .down button {
+  top: 40%;
+  transform: translateY(-60%);
+  margin: 0 5% 0 5%;
 }
 
 #control-prev {
@@ -44,4 +61,26 @@
 
 #control-next:hover {
   background: url('../public/player-skip-forward-filled.svg') no-repeat center center / contain;
+}
+
+#control-playlist {
+  background: url('../public/list-alt-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#control-playlist:hover {
+  background: url('../public/list-alt-rounded.svg') no-repeat center center / contain;
+}
+
+#control-shuffle {
+  background: url('../public/shuffle-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#control-shuffle:hover {
+  background: url('../public/shuffle-on-rounded.svg') no-repeat center center / contain;
+}
+
+#control-shuffle:active {
+  background: url('../public/shuffle-fill.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+  cursor: grabbing;
 }

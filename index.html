@@ -63,25 +63,33 @@
 
     <modal id="songsList-modal">
       <if>
-        <button onclick="playFromMenu()">Reproducir</button>
+        <button onclick="playFromMenu()" playbutton>Reproducir</button>
         <button onclick="selectMode()">Seleccionar</button>
         <button onclick=""><del>Eliminar</del></button>
       </if>
 
       <else hidden>
-        <button onclick="playFromMenu(false)">Reproducir Seleccion</button>
-        <button onclick="addPlaylist()">Agregar a la Lista</button>
+        <button onclick="playFromMenu(false)" playbutton>Reproducir Seleccion</button>
+        <button onclick="addPlaylist()" playbutton>Agregar a la Lista</button>
         <button onclick="selectAll()">Seleccionar Todo</button>
         <button onclick="deselectAll()">Deseleccionar Todo</button>
         <button onclick=""><del>Eliminar Seleccionados</del></button>
       </else>
     </modal>
 
+    <modal id="playlist-modal"> <div id="playlist-table"></div> </modal>
+
     <div id="player-container">
       <div id="controls">
-        <button id="control-prev" onclick="controlPrev()"></button>
-        <button id="control-stop" onclick="controlStop()"></button>
-        <button id="control-next" onclick="controlNext()"></button>
+        <div class="up">
+          <button id="control-prev" onclick="controlPrev()"></button>
+          <button id="control-stop" onclick="controlStop()"></button>
+          <button id="control-next" onclick="controlNext()"></button>
+        </div>
+        <div class="down">
+          <button id="control-playlist" onclick="togglePlaylist()"></button>
+          <button id="control-shuffle" onclick="controlShuffle()"></button>
+        </div>
       </div>
 
       <iframe
@@ -94,6 +102,7 @@
 
       <div id="spotify-container"></div>
       <div id="mww" class="players"></div>
+      <div id="sp-pause-button"></div>
     </div>
   </body>
 

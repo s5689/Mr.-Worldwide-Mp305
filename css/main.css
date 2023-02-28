@@ -3,6 +3,7 @@
 @import 'controls.css';
 @import 'songsList.css';
 @import 'addSong.css';
+@import 'playlist.css';
 
 body {
   background-color: black;
