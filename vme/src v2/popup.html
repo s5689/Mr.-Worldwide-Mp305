@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body id="body">
+    <button id="mkr" state="disabled">MKR</button>
+
     <input type="range" min="0" max="100" step="2" id="volume-control" />
     <div id="volume-value">¿?</div>
+
     <p id="error" hidden>
       La extencion no ha logrado establecer una conexion con
       <i>Mr. Worldwide Mp305</i>.
@@ -16,6 +19,7 @@
       Puedes intentar recargar la pestaña y volver a abrir el control de
       volumen.
     </p>
+
     <script src="popup.js"></script>
   </body>
 </html>

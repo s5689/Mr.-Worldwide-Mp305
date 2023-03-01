@@ -14,6 +14,8 @@ import {
 } from './controls';
 import './songsList';
 import './playlist';
+import './dummyAudio';
+import './VME-MKR';
 
 preloadPlayers();
 
@@ -33,8 +35,3 @@ window.selectMode = handleSelectMode;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;
-
-// Conexion con la extension
-window.addEventListener('message', (e) => {
-  if (e.data === 'larry is that you?') window.postMessage("it's me, DIO");
-});

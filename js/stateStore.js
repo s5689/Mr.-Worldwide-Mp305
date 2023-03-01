@@ -139,8 +139,6 @@ export const selectMode = {
   },
 };
 
-export const rowOnMenu = { row: null };
-
 export const preventClosePlaylist = {
   state: false,
 
@@ -152,6 +150,10 @@ export const preventClosePlaylist = {
     }, 1);
   },
 };
+
+export const rowOnMenu = { row: null };
+
+export const stopped = { state: true };
 
 // Funciones Externas porque ajajajavascript.
 function forceSetTrack(e) {

@@ -1,13 +1,14 @@
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: black;
   color: white;
   width: 40px;
+  text-align: center;
 }
 
 #volume-value {
   text-align: center;
   margin-top: 65px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: x-large;
   font-weight: 500;
   cursor: pointer;
@@ -62,4 +63,38 @@ input[type='range']::-webkit-slider-runnable-track {
 
 input[type='range']:hover::-webkit-slider-runnable-track {
   background-color: rgb(0, 148, 155);
+}
+
+#error {
+  text-align: left;
+}
+
+#mkr {
+  background: none;
+  margin-bottom: 5px;
+
+  outline: 0px solid rgba(0, 0, 0, 0);
+  border-radius: 5px;
+  padding: 8px 3px 8px 3px;
+
+  cursor: pointer;
+  transition: outline 250ms;
+}
+
+#mkr[state='disabled'] {
+  color: red;
+  border: 1px solid red;
+}
+
+#mkr[state='disabled']:hover {
+  outline: 5px solid rgba(255, 0, 0, 0.4);
+}
+
+#mkr[state='enabled'] {
+  color: green;
+  border: 1px solid green;
+}
+
+#mkr[state='enabled']:hover {
+  outline: 5px solid rgba(0, 255, 0, 0.4);
 }

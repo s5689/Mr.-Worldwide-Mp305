@@ -1,4 +1,4 @@
-import { loadingPlayer } from './stateStore';
+import { loadingPlayer, stopped } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 let pause = false;
@@ -9,12 +9,13 @@ export function loadSP() {
     e.iframeElement.className = 'players';
 
     e.addListener('ready', () => {
-      e.play();
+      if (!stopped.state) {
+        e.play();
+        pause = false;
+      }
+
       $('#spotify').css('opacity', '1');
-
-      pause = false;
       loadingPlayer.set(false);
-
       fakePlay();
     });
 

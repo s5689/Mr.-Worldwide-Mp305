@@ -1,5 +1,6 @@
 const input = document.getElementById('volume-control');
 const number = document.getElementById('volume-value');
+const mkr = document.getElementById('mkr');
 let mute = false;
 
 /*
@@ -35,6 +36,21 @@ number.addEventListener('click', () => {
   chrome.runtime.sendMessage({ type: 'setMute', value: mute });
 });
 
+// Click sobre MKR
+mkr.addEventListener('click', () => {
+  const state = mkr.getAttribute('state');
+
+  if (state === 'disabled') {
+    mkr.setAttribute('state', 'enabled');
+    chrome.runtime.sendMessage({ type: 'setMkrState', value: true });
+
+    window.open('./MKR/index.html');
+  } else {
+    mkr.setAttribute('state', 'disabled');
+    chrome.runtime.sendMessage({ type: 'setMkrState', value: false });
+  }
+});
+
 // Funciones internas
 function setVolume(e) {
   chrome.runtime.sendMessage({ type: 'setVolume', value: e });
@@ -64,6 +80,7 @@ chrome.runtime.sendMessage({ type: 'getState' }, (resp) => {
     document.getElementById('error').removeAttribute('hidden');
     input.setAttribute('hidden', '');
     number.setAttribute('hidden', '');
+    mkr.setAttribute('hidden', '');
   }
 });
 
@@ -76,4 +93,9 @@ chrome.runtime.sendMessage({ type: 'getVolume' }, (resp) => {
 // Obtener estado del mute
 chrome.runtime.sendMessage({ type: 'getMute' }, (resp) => {
   setMute(resp);
+});
+
+// Obtener estado de MKR
+chrome.runtime.sendMessage({ type: 'getMkrState' }, (resp) => {
+  if (resp) mkr.setAttribute('state', 'enabled');
 });

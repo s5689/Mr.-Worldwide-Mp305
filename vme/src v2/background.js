@@ -3,7 +3,10 @@ let volume = 50;
 let mute = false;
 let id = null;
 
-// Asignar id de la pestaña del reproductor.
+let mkrState = false;
+let mkrId = null;
+
+// Get & Sets de variables
 chrome.runtime.onMessage.addListener((e, idk, resp) => {
   if (e.type === 'OHNOOOOOOOO' && id === null) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
@@ -57,6 +60,19 @@ chrome.runtime.onMessage.addListener((e, idk, resp) => {
     }
   }
 
+  if (e.type === 'getMkrState') resp(mkrState);
+  if (e.type === 'setMkrState') {
+    mkrState = e.value;
+
+    if (!mkrState) {
+      chrome.tabs.remove(mkrId);
+      mkrId = null;
+    }
+  }
+
+  if (e.type === 'setMkrID') mkrId = e.value;
+  if (e.type === 'getVmeID') resp(id);
+
   console.log(id, controller);
 });
 
@@ -65,5 +81,10 @@ chrome.tabs.onRemoved.addListener((e) => {
   if (e === id) {
     id = null;
     controller = null;
+  }
+
+  if (e === mkrId) {
+    mkrId = null;
+    mkrState = false;
   }
 });

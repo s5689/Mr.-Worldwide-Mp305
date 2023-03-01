@@ -8,6 +8,7 @@ import {
   preventClosePlaylist,
   rowOnMenu,
   selectMode,
+  stopped,
 } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
@@ -24,6 +25,7 @@ export async function handlePlay(e) {
   handleStop(false);
   currentSource = e.source;
 
+  stopped.state = false;
   loadingPlayer.set(true);
   setTimeout(() => {
     switch (currentSource) {
@@ -53,6 +55,7 @@ export function handlePrev() {
 export function handleStop(hard = true) {
   if (hard) {
     closePlaylist();
+    stopped.state = true;
     currentPlaylist.wipe();
   }
 
