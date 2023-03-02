@@ -1,7 +1,15 @@
+let playing = false;
+
 const audio = document.getElementById('dummy-audio');
-audio.src = dummySong(600);
+audio.src = dummySong(60);
 audio.loop = true;
-audio.play();
+
+export function dummyStart() {
+  if (!playing) {
+    playing = true;
+    audio.play();
+  }
+}
 
 function dummySong(time, freq = 44100) {
   const length = time * freq;

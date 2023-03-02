@@ -2,6 +2,7 @@ import { playSelected, songsTable } from './songsList';
 import { loadSC, playSC, stopSC } from './soundcloud';
 import { loadSP, playSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
+import { dummyStart } from './dummyAudio';
 import {
   currentPlaylist,
   loadingPlayer,
@@ -21,7 +22,7 @@ export function preloadPlayers() {
   loadSC();
 }
 
-export async function handlePlay(e) {
+export function handlePlay(e) {
   handleStop(false);
   currentSource = e.source;
 
@@ -40,6 +41,8 @@ export async function handlePlay(e) {
         break;
     }
   }, 30);
+
+  dummyStart();
 }
 
 export function handlePrev() {

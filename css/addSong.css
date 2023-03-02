@@ -3,7 +3,7 @@
   top: 80px;
   left: 50%;
   transform: translateX(-50%) scale(0);
-  z-index: 1;
+  z-index: 5;
 
   width: 400px;
   height: fit-content;
