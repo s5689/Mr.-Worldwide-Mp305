@@ -5,6 +5,10 @@
 @import 'addSong.css';
 @import 'playlist.css';
 
+a {
+  display: none;
+}
+
 body {
   background-color: black;
   color: white;
