@@ -1,8 +1,9 @@
 import { playSelected, songsTable } from './songsList';
-import { loadSC, playSC, stopSC } from './soundcloud';
-import { loadSP, playSP, stopSP } from './spotify';
+import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
+import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
 import { dummyStart } from './dummyAudio';
+import { toMKR } from './VME-MKR';
 import {
   currentPlaylist,
   loadingPlayer,
@@ -28,6 +29,7 @@ export function handlePlay(e) {
 
   stopped.state = false;
   loadingPlayer.set(true);
+
   setTimeout(() => {
     switch (currentSource) {
       case SOUNDCLOUD:
@@ -43,15 +45,52 @@ export function handlePlay(e) {
   }, 30);
 
   dummyStart();
+  toMKR(currentPlaylist.getTrackData());
 }
 
-export function handlePrev() {
-  if (!loadingPlayer.get()) {
-    const prev = currentPlaylist.track;
-    currentPlaylist.prevTrack();
-    const current = currentPlaylist.track;
+export function handleTogglePause() {
+  switch (currentSource) {
+    case SOUNDCLOUD:
+      togglePauseSC();
+      break;
 
-    if (prev !== current) handlePlay(currentPlaylist.getTrackData());
+    case SPOTIFY:
+      togglePauseSP();
+      break;
+  }
+}
+
+export async function handlePrev() {
+  if (!loadingPlayer.get()) {
+    let currentPosition;
+
+    switch (currentSource) {
+      case SOUNDCLOUD:
+        currentPosition = await getPositionSC();
+        break;
+
+      case SPOTIFY:
+        currentPosition = getPositionSP();
+        break;
+    }
+
+    if (currentPosition > 5) {
+      switch (currentSource) {
+        case SOUNDCLOUD:
+          restartSongSC();
+          break;
+
+        case SPOTIFY:
+          restartSongSP();
+          break;
+      }
+    } else {
+      const prev = currentPlaylist.track;
+      currentPlaylist.prevTrack();
+      const current = currentPlaylist.track;
+
+      if (prev !== current) handlePlay(currentPlaylist.getTrackData());
+    }
   }
 }
 
@@ -60,6 +99,7 @@ export function handleStop(hard = true) {
     closePlaylist();
     stopped.state = true;
     currentPlaylist.wipe();
+    toMKR({ name: '', artist: '', album: '' });
   }
 
   stopSP();

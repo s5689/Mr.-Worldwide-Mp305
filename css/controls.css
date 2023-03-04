@@ -39,48 +39,48 @@
 }
 
 #control-prev {
-  background: url('../public/player-skip-back.svg') no-repeat center center / contain;
+  background: url('../player-skip-back.svg') no-repeat center center / contain;
 }
 
 #control-prev:hover {
-  background: url('../public/player-skip-back-filled.svg') no-repeat center center / contain;
+  background: url('../player-skip-back-filled.svg') no-repeat center center / contain;
 }
 
 #control-stop {
   margin: 0 10% 0 10%;
-  background: url('../public/player-stop.svg') no-repeat center center / contain;
+  background: url('../player-stop.svg') no-repeat center center / contain;
 }
 
 #control-stop:hover {
-  background: url('../public/player-stop-filled.svg') no-repeat center center / contain;
+  background: url('../player-stop-filled.svg') no-repeat center center / contain;
 }
 
 #control-next {
-  background: url('../public/player-skip-forward.svg') no-repeat center center / contain;
+  background: url('../player-skip-forward.svg') no-repeat center center / contain;
 }
 
 #control-next:hover {
-  background: url('../public/player-skip-forward-filled.svg') no-repeat center center / contain;
+  background: url('../player-skip-forward-filled.svg') no-repeat center center / contain;
 }
 
 #control-playlist {
-  background: url('../public/list-alt-outline-rounded.svg') no-repeat center center / contain;
+  background: url('../list-alt-outline-rounded.svg') no-repeat center center / contain;
 }
 
 #control-playlist:hover {
-  background: url('../public/list-alt-rounded.svg') no-repeat center center / contain;
+  background: url('../list-alt-rounded.svg') no-repeat center center / contain;
 }
 
 #control-shuffle {
-  background: url('../public/shuffle-outline-rounded.svg') no-repeat center center / contain;
+  background: url('../shuffle-outline-rounded.svg') no-repeat center center / contain;
 }
 
 #control-shuffle:hover {
-  background: url('../public/shuffle-on-rounded.svg') no-repeat center center / contain;
+  background: url('../shuffle-on-rounded.svg') no-repeat center center / contain;
 }
 
 #control-shuffle:active {
-  background: url('../public/shuffle-fill.svg') no-repeat center center / contain;
+  background: url('../shuffle-fill.svg') no-repeat center center / contain;
   transition: background-image 0ms;
   cursor: grabbing;
 }

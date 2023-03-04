@@ -1,4 +1,5 @@
 import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong } from './addSong';
+import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
   handleDeselectAll,
@@ -20,6 +21,7 @@ import './VME-MKR';
 preloadPlayers();
 
 window.toggleAddSong = toggleAddSong;
+window.toggleFindSong = toggleFindSong;
 window.closeAddSong = closeAddSong;
 window.checkAddSong = checkAddSong;
 window.saveAddSong = saveAddSong;

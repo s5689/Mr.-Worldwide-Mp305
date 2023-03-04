@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="https://w.soundcloud.com/player/api.js"></script>
@@ -19,6 +20,10 @@
 
     <div id="songsList">
       <button id="addSong-button" onclick="toggleAddSong()"></button>
+      <div id="find-container">
+        <button id="addSong-findButton" onclick="toggleFindSong()"></button>
+        <input id="addSong-findInput" autocomplete="off"></input>
+      </div>
       <div id="songsTable"></div>
     </div>
 
@@ -32,12 +37,16 @@
 
       <div class="addSong-block">
         <label>Artista</label>
-        <input id="addSong-artist" type="text" autocomplete="off" />
+        <div class="autocomplete">
+          <input id="addSong-artist" type="text" autocomplete="off" />
+        </div>
       </div>
 
       <div class="addSong-block">
         <label>Album</label>
-        <input id="addSong-album" type="text" autocomplete="off" />
+        <div class="autocomplete">
+          <input id="addSong-album" type="text" autocomplete="off" />
+        </div>
       </div>
 
       <div class="addSong-block">

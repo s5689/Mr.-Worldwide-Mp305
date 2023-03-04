@@ -2,6 +2,7 @@ import { loadingPlayer, stopped } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 let pause = false;
+let currentPosition;
 
 export function loadSP() {
   const callback = (e) => {
@@ -21,10 +22,16 @@ export function loadSP() {
 
     e.addListener('playback_update', (e) => {
       const { duration, position } = e.data;
-      if (duration === position) handleNext();
+      currentPosition = parseInt(position / 1000, 10);
+
+      if (duration === position) {
+        togglePauseSP();
+        handleNext();
+      }
     });
 
     controller = e;
+    console.log(controller);
   };
 
   SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
@@ -36,6 +43,11 @@ export function playSP(e) {
   controller.loadUri(`spotify:track:${e}`);
 }
 
+export function togglePauseSP() {
+  controller.togglePlay();
+  pause = !pause;
+}
+
 export function stopSP() {
   $('#sp-pause-button').remove();
   $('#spotify').css('display', 'none');
@@ -44,6 +56,14 @@ export function stopSP() {
     controller.togglePlay();
     pause = true;
   }
+}
+
+export function getPositionSP() {
+  return currentPosition;
+}
+
+export function restartSongSP() {
+  controller.seek(-1);
 }
 
 function fakePlay() {

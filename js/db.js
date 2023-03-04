@@ -18,3 +18,4 @@ const SONGS_TABLE = 'songs';
 
 export const saveSong = (data) => addDoc(collection(db, SONGS_TABLE), data);
 export const getSongs = () => getDocs(collection(db, SONGS_TABLE));
+export const deleteSong = (e) => deleteDoc(doc(db, SONGS_TABLE, e));

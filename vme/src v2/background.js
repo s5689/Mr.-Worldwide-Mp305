@@ -81,6 +81,8 @@ chrome.tabs.onRemoved.addListener((e) => {
   if (e === id) {
     id = null;
     controller = null;
+
+    if (mkrState) chrome.tabs.remove(mkrId);
   }
 
   if (e === mkrId) {

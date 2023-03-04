@@ -22,9 +22,30 @@ export function playSC(e) {
   });
 
   controller.bind(SC.Widget.Events.FINISH, () => handleNext());
+  console.log(controller);
+}
+
+export function togglePauseSC() {
+  controller.toggle();
 }
 
 export function stopSC() {
   controller.pause();
   $('#soundcloud').css('display', 'none');
+}
+
+export async function getPositionSC() {
+  let resp;
+  controller.getPosition((e) => (resp = parseInt(e / 1000, 10)));
+
+  await sleep(10);
+  return resp;
+
+  async function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+}
+
+export function restartSongSC() {
+  controller.seekTo(0);
 }

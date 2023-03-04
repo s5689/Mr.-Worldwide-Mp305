@@ -74,6 +74,41 @@ label {
   color: red;
 }
 
+/* AutoComplete */
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  top: 25px;
+  left: -2px;
+  right: -2px;
+
+  font-family: Arial;
+
+  border-top: none;
+  z-index: 99;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: black;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.autocomplete-items div:hover {
+  background-color: rgb(40, 40, 40) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.autocomplete-active {
+  background-color: rgba(0, 35, 42, 1) !important;
+}
+
 /* Buttons */
 #addSong-modal button {
   background-color: rgba(0, 0, 0, 0);

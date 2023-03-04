@@ -151,6 +151,15 @@ export const preventClosePlaylist = {
   },
 };
 
+export const autoComplete = {
+  artist: [],
+  album: [],
+  wipe() {
+    this.artist = [];
+    this.album = [];
+  },
+};
+
 export const rowOnMenu = { row: null };
 
 export const stopped = { state: true };

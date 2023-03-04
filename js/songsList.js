@@ -5,9 +5,11 @@ import {
   rowOnMenu,
   selectMode,
   preventClosePlaylist,
+  autoComplete,
 } from './stateStore';
 import { handleDeselectAll, handlePlay } from './controls';
 import { openPlaylist, playlistTable } from './playlist';
+import { createAutoComplete } from './addSong';
 import { getSongs } from './db';
 
 loadSongsTable();
@@ -226,19 +228,76 @@ currentPlaylist.onWipe((e) => {
   if (id) $(getRowHtml(id)).removeAttr('playing');
 });
 
+// Mostrar busqueda de canciones.
+export function toggleFindSong() {
+  const btnHtml = document.getElementById('addSong-findButton');
+  const inputHtml = document.getElementById('addSong-findInput');
+
+  if (btnHtml.getAttribute('show') === null) {
+    setShow(true);
+    inputHtml.value = '';
+    $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
+
+    setTimeout(() => {
+      inputHtml.focus();
+    }, 250);
+  } else {
+    setShow(false);
+    filterSongs('');
+    $('#addSong-findInput').unbind('input');
+  }
+
+  function setShow(e) {
+    if (e) {
+      btnHtml.setAttribute('show', '');
+      inputHtml.setAttribute('show', '');
+    } else {
+      btnHtml.removeAttribute('show', '');
+      inputHtml.removeAttribute('show', '');
+    }
+  }
+}
+
+// Filtrar canciones desde la busqueda.
+function filterSongs(e) {
+  songsTable.setFilter((value) => {
+    const { name, artist, album } = value;
+
+    if (name.toLowerCase().includes(e)) return true;
+    if (artist.toLowerCase().includes(e)) return true;
+    if (album.toLowerCase().includes(e)) return true;
+
+    return false;
+  });
+}
+
 /* Funciones internas */
 async function getData() {
   const resp = await getSongs();
   const temp = [];
 
+  autoComplete.wipe();
+
   resp.forEach((value) => {
     const currentValue = value.data();
     currentValue.id = value.id;
 
+    addAutoComplete(currentValue.artist, currentValue.album);
     temp.push(currentValue);
   });
 
+  createAutoComplete(document.getElementById('addSong-artist'), autoComplete.artist);
+  createAutoComplete(document.getElementById('addSong-album'), autoComplete.album);
+
   return temp;
+}
+
+function addAutoComplete(art, alb) {
+  const foundArtist = autoComplete.artist.find((value) => value === art);
+  const foundAlbum = autoComplete.album.find((value) => value === alb);
+
+  if (typeof foundArtist === 'undefined') autoComplete.artist.push(art);
+  if (typeof foundAlbum === 'undefined' && alb !== '') autoComplete.album.push(alb);
 }
 
 function getRowHtml(id) {

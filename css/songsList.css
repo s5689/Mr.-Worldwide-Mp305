@@ -18,12 +18,70 @@
   border: 0;
   cursor: pointer;
 
-  background: url('../public/outline-add-circle-outline.svg') no-repeat center center / contain;
+  background: url('../outline-add-circle-outline.svg') no-repeat center center / contain;
   transition: background-image 250ms;
 }
 
 #addSong-button:hover {
-  background: url('../public/outline-add-circle.svg') no-repeat center center / contain;
+  background: url('../outline-add-circle.svg') no-repeat center center / contain;
+}
+
+#find-container {
+  position: absolute;
+  top: 0px;
+  left: calc(100% - 237px - 1%);
+  text-align: right;
+
+  width: 200px;
+  height: 35px;
+
+  overflow: hidden;
+}
+
+#addSong-findButton {
+  position: relative;
+  left: 158px;
+  width: 35px;
+  height: 35px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  background: url('../search-alt-2.svg') no-repeat center center / contain;
+  transition: background-image 250ms, left 250ms;
+}
+
+#addSong-findButton:hover {
+  background: url('../search-alt-3.svg') no-repeat center center / contain;
+}
+
+#addSong-findButton[show] {
+  left: 0;
+}
+
+#addSong-findInput {
+  font-family: Arial;
+  position: relative;
+  top: -10px;
+  left: 158px;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  width: 150px;
+  text-align: center;
+  font-size: large;
+
+  margin-bottom: 30px !important;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+
+  transition: left 250ms;
+}
+
+#addSong-findInput[show] {
+  left: 0;
 }
 
 /* Menu Contextual */
@@ -83,6 +141,10 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
   margin-bottom: 20%;
+}
+
+.tabulator-tableholder {
+  background-color: black;
 }
 
 .tabulator-placeholder-contents {
@@ -151,7 +213,7 @@
   font-size: 0px !important;
   filter: invert(1);
 
-  background: url('../public/play-arrow-rounded.svg') no-repeat center center / contain;
+  background: url('../play-arrow-rounded.svg') no-repeat center center / contain;
 }
 
 .tabulator-row[playing='true'] .tabulator-cell:first-child {
@@ -160,5 +222,5 @@
   font-size: 0px !important;
   filter: invert(1);
 
-  background: url('../public/arrow-forward-ios-rounded.svg') no-repeat center center / contain;
+  background: url('../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
 }
