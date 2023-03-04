@@ -22,7 +22,6 @@ export function playSC(e) {
   });
 
   controller.bind(SC.Widget.Events.FINISH, () => handleNext());
-  console.log(controller);
 }
 
 export function togglePauseSC() {

@@ -31,7 +31,6 @@ export function loadSP() {
     });
 
     controller = e;
-    console.log(controller);
   };
 
   SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);

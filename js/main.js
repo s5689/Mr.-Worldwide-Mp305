@@ -2,6 +2,7 @@ import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong } from './addSon
 import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
+  handleDeleteSong,
   handleDeselectAll,
   handleNext,
   handlePlayFromMenu,
@@ -34,6 +35,7 @@ window.controlShuffle = handleShuffle;
 
 window.playFromMenu = handlePlayFromMenu;
 window.selectMode = handleSelectMode;
+window.deleteSong = handleDeleteSong;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;

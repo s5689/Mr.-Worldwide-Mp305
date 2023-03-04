@@ -1,8 +1,9 @@
-import { playSelected, songsTable } from './songsList';
+import { loadSongsTable, playSelected, songsTable } from './songsList';
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
 import { dummyStart } from './dummyAudio';
+import { deleteSong } from './db';
 import { toMKR } from './VME-MKR';
 import {
   currentPlaylist,
@@ -178,6 +179,16 @@ export function handlePlayFromMenu(isClick = true) {
 
 export function handleSelectMode() {
   selectMode.set(true);
+}
+
+export async function handleDeleteSong() {
+  const { row } = rowOnMenu;
+  const data = row.getData();
+
+  if (confirm('¿Realmente desea eliminar este elemento?')) {
+    deleteSong(data.id);
+    loadSongsTable();
+  }
 }
 
 export function handleAddPlaylist() {
