@@ -119,9 +119,8 @@ export function handleNext() {
 }
 
 export function handleTogglePlaylist() {
-  if (typeof $('#playlist-modal').attr('show') === 'undefined')
-    $('#playlist-modal').attr('show', '');
-  else $('#playlist-modal').removeAttr('show');
+  if (typeof $('#playlist-modal').attr('show') === 'undefined') openPlaylist();
+  else closePlaylist();
 }
 
 export function handleShuffle() {

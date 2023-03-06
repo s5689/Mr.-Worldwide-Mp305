@@ -25,7 +25,7 @@ export const songsTable = new Tabulator('#songsTable', {
       title: '#',
       hozAlign: 'center',
       formatter: 'rownum',
-      widthGrow: 0.1,
+      widthGrow: 0.15,
       resizable: false,
       headerSort: false,
     },
@@ -56,9 +56,6 @@ songsTable.on('cellClick', (e, cell) => {
 
   // Aplicar solo si el click ocurrio en Play & la cancion seleccionada no esta en reproduccion
   if (typeof cell.getField() === 'undefined' && !$(rowHtml).attr('playing')) {
-    preventClosePlaylist.trigger();
-    openPlaylist();
-
     if (!selectMode.get()) {
       currentPlaylist.wipe();
 
@@ -70,20 +67,23 @@ songsTable.on('cellClick', (e, cell) => {
       currentPlaylist.track = rowIndex - 1;
 
       handlePlay(row.getData());
+
+      preventClosePlaylist.trigger();
+      openPlaylist();
     } else playSelected();
   }
 });
 
 export function playSelected() {
-  preventClosePlaylist.trigger();
-  openPlaylist();
-
   currentPlaylist.wipe();
   currentPlaylist.list = selectMode.selected;
   currentPlaylist.track = 0;
 
   handleDeselectAll();
   handlePlay(currentPlaylist.list[0]);
+
+  preventClosePlaylist.trigger();
+  openPlaylist();
 }
 
 /*

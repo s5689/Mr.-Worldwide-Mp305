@@ -15,18 +15,25 @@ export const playlistTable = new Tabulator('#playlist-table', {
       title: '#',
       hozAlign: 'center',
       formatter: 'rownum',
-      widthGrow: 0.1,
+      widthGrow: 0.25,
       resizable: false,
       headerSort: false,
     },
     { title: 'Nombre', field: 'name', hozAlign: 'center', resizable: false, rowHandle: true },
     { title: 'Artista', field: 'artist', hozAlign: 'center', resizable: false, rowHandle: true },
-    { title: 'Duracion', field: 'time', hozAlign: 'center', widthGrow: 0.4, resizable: false },
+    { title: 'Duracion', field: 'time', hozAlign: 'center', widthGrow: 0.35, resizable: false },
   ],
 });
 
 export function openPlaylist() {
   $('#playlist-modal').attr('show', '');
+
+  if (currentPlaylist.list.length !== 0) {
+    const pos = currentPlaylist.track;
+    const currentHtml = $(`#playlist-table .tabulator-table .tabulator-row:nth-child(${pos})`)[0];
+
+    currentHtml.scrollIntoView();
+  }
 }
 
 export function closePlaylist() {
