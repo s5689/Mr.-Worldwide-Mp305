@@ -26,8 +26,9 @@ export function loadSP() {
 
       if (_debug) console.log(currentPosition, position, duration);
 
-      if (position >= duration - 200) {
-        togglePauseSP();
+      if (position === duration) {
+        stopped.state = true;
+        pause = true;
         handleNext();
       }
     });

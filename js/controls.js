@@ -28,7 +28,6 @@ export function handlePlay(e) {
   handleStop(false);
   currentSource = e.source;
 
-  stopped.state = false;
   loadingPlayer.set(true);
 
   setTimeout(() => {
@@ -40,6 +39,8 @@ export function handlePlay(e) {
 
       case SPOTIFY:
         stopSC();
+
+        stopped.state = false;
         playSP(e.link);
         break;
     }
@@ -50,14 +51,16 @@ export function handlePlay(e) {
 }
 
 export function handleTogglePause() {
-  switch (currentSource) {
-    case SOUNDCLOUD:
-      togglePauseSC();
-      break;
+  if (currentPlaylist.list.length !== 0) {
+    switch (currentSource) {
+      case SOUNDCLOUD:
+        togglePauseSC();
+        break;
 
-    case SPOTIFY:
-      togglePauseSP();
-      break;
+      case SPOTIFY:
+        togglePauseSP();
+        break;
+    }
   }
 }
 

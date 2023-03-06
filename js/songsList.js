@@ -39,6 +39,8 @@ export const songsTable = new Tabulator('#songsTable', {
 export async function loadSongsTable() {
   songsList.set(await getData());
   songsTable.replaceData(songsList.get());
+
+  if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
 
 /* 
