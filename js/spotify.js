@@ -24,7 +24,9 @@ export function loadSP() {
       const { duration, position } = e.data;
       currentPosition = parseInt(position / 1000, 10);
 
-      if (duration === position) {
+      if (_debug) console.log(currentPosition, position, duration);
+
+      if (position >= duration - 200) {
         togglePauseSP();
         handleNext();
       }
