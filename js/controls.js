@@ -145,6 +145,8 @@ export function handleShuffle() {
 
     currentPlaylist.list = filterList;
     currentPlaylist.track = 0;
+
+    openPlaylist();
   }
   // De lo contrario, generar una playlist con las canciones visibles
   else {

@@ -29,7 +29,7 @@ export function openPlaylist() {
   $('#playlist-modal').attr('show', '');
 
   if (currentPlaylist.list.length !== 0) {
-    const pos = currentPlaylist.track;
+    const pos = currentPlaylist.track + 1;
     const currentHtml = $(`#playlist-table .tabulator-table .tabulator-row:nth-child(${pos})`)[0];
 
     currentHtml.scrollIntoView();
