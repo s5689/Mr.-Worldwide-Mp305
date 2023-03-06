@@ -33,13 +33,10 @@ export function handlePlay(e) {
   setTimeout(() => {
     switch (currentSource) {
       case SOUNDCLOUD:
-        stopSP();
         playSC(e.link);
         break;
 
       case SPOTIFY:
-        stopSC();
-
         stopped.state = false;
         playSP(e.link);
         break;

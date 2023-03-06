@@ -58,6 +58,8 @@ export function stopSP() {
     controller.togglePlay();
     pause = true;
   }
+
+  stopped.state = true;
 }
 
 export function getPositionSP() {
