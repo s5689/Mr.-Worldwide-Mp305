@@ -19,7 +19,9 @@ import './playlist';
 import './dummyAudio';
 import './VME-MKR';
 
-preloadPlayers();
+setTimeout(() => {
+  preloadPlayers();
+}, 100);
 
 window.toggleAddSong = toggleAddSong;
 window.toggleFindSong = toggleFindSong;
