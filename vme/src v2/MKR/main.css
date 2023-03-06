@@ -72,6 +72,11 @@ body::-webkit-scrollbar {
   transform: translate(-50%, -50%) scale(1);
 }
 
+#info-modal-ok,
+#now-playing {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 #info-modal-ok {
   background-color: rgba(0, 0, 0, 0);
   border-radius: 50px;
