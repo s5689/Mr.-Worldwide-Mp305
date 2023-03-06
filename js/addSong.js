@@ -216,6 +216,9 @@ function testSP() {
   generateSpTester();
   link = link.replace('https://open.spotify.com/track/', '');
 
+  const foundUrl = link.indexOf('?');
+  if (foundUrl !== -1) link = link.substr(0, foundUrl);
+
   setTimeout(() => {
     try {
       spTester.addListener('ready', () => spTester.play());
