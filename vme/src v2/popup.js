@@ -28,6 +28,20 @@ input.addEventListener('mouseup', (e) => {
   console.log(`applied: ${e.target.value}`);
 });
 
+// Aplicar volumen al usar el scroll con la rueda del raton.
+input.addEventListener('wheel', (e) => {
+  let currentVol = number.innerText;
+  let newVol;
+
+  if (e.deltaY < 0) newVol = Number(currentVol) + 2;
+  else newVol = Number(currentVol) - 2;
+
+  number.innerHTML = newVol;
+  input.value = newVol;
+  setVolume(newVol);
+  setMute(false);
+});
+
 // Click sobre mute
 number.addEventListener('click', () => {
   if (mute) setMute(false);

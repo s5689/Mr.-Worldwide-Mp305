@@ -48,7 +48,7 @@ export async function loadSongsTable() {
     Eventos
   ///////////
 */
-// Click en Play
+// Click en Play & Aplicar filtro rapido
 songsTable.on('cellClick', (e, cell) => {
   const row = cell.getRow();
   const rowHtml = row.getElement();
@@ -73,6 +73,14 @@ songsTable.on('cellClick', (e, cell) => {
       preventClosePlaylist.trigger();
       openPlaylist();
     } else playSelected();
+  }
+
+  // Filtro Rapido
+  if (!selectMode.get()) {
+    const { artist, album } = row.getData();
+
+    if (cell.getField() === 'artist') toggleFindSong(false, artist);
+    if (cell.getField() === 'album') toggleFindSong(false, album);
   }
 });
 
@@ -231,22 +239,33 @@ currentPlaylist.onWipe((e) => {
 });
 
 // Mostrar busqueda de canciones.
-export function toggleFindSong() {
+export function toggleFindSong(isClick = true, arg) {
   const btnHtml = document.getElementById('addSong-findButton');
   const inputHtml = document.getElementById('addSong-findInput');
 
-  if (btnHtml.getAttribute('show') === null) {
-    setShow(true);
-    inputHtml.value = '';
-    $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
+  // Preparar filtros de forma normal si es desde la opcion de busqueda
+  if (isClick) {
+    if (btnHtml.getAttribute('show') === null) {
+      setShow(true);
+      inputHtml.value = '';
+      $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
 
-    setTimeout(() => {
-      inputHtml.focus();
-    }, 250);
-  } else {
-    setShow(false);
-    filterSongs('');
-    $('#addSong-findInput').unbind('input');
+      setTimeout(() => {
+        inputHtml.focus();
+      }, 250);
+    } else {
+      setShow(false);
+      filterSongs('');
+      $('#addSong-findInput').unbind('input');
+    }
+  }
+  // De lo contrario, filtrar por el campo seleccionado
+  else {
+    setShow(true);
+    inputHtml.value = arg;
+    filterSongs(arg, true);
+
+    $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
   }
 
   function setShow(e) {
@@ -261,16 +280,22 @@ export function toggleFindSong() {
 }
 
 // Filtrar canciones desde la busqueda.
-function filterSongs(e) {
+function filterSongs(e, singles = false) {
   songsTable.setFilter((value) => {
     const { name, artist, album } = value;
 
-    if (name.toLowerCase().includes(e)) return true;
-    if (artist.toLowerCase().includes(e)) return true;
-    if (album.toLowerCase().includes(e)) return true;
+    // Si el album esta vacio y fue seleccionado desde la tabla, mostrar albumes vacios.
+    if (singles && e === '') if (album !== '') return false;
+
+    // Filtros normales
+    if (name.toLowerCase().includes(e.toLowerCase())) return true;
+    if (artist.toLowerCase().includes(e.toLowerCase())) return true;
+    if (album.toLowerCase().includes(e.toLowerCase())) return true;
 
     return false;
   });
+
+  $('#songsTable .tabulator-placeholder-contents').text('No se han encontrado coincidencias.');
 }
 
 /* Funciones internas */

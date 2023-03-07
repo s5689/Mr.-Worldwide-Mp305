@@ -224,3 +224,13 @@
 
   background: url('../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
 }
+
+#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='artist']:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='album']:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
