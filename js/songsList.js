@@ -215,7 +215,9 @@ songsTable.on('rowClick', (e, rawRow) => {
     }, 5);
 
     // Salir del modo seleccion si se deseleccionaron todos los row.
-    if (selectMode.selectSize() === 0) selectMode.set(false);
+    setTimeout(() => {
+      if (selectMode.selectSize() === 0) selectMode.set(false);
+    }, 0);
   }
 });
 
