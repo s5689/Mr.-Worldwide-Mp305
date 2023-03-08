@@ -1,8 +1,10 @@
-import { saveSong } from './db';
+import { saveSong, updateSong } from './db';
 import { loadSongsTable } from './songsList';
+import { songsList } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
+let isUpdate = null;
 let isOpen = false;
 let inputs = [];
 let source = '';
@@ -10,10 +12,36 @@ let spTester;
 let link;
 let toDB = undefined;
 
-export function toggleAddSong() {
+export function toggleAddSong(update = false, e) {
   if (!isOpen) {
     $('#addSong-modal').css('transform', 'translateX(-50%) scale(1)');
+
+    getInputs();
     isOpen = true;
+    isUpdate = null;
+
+    if (update) {
+      const { name, artist, album, link, time, source, id } = e;
+
+      $('#addSong-modal #addSong-name').val(name);
+      $('#addSong-modal #addSong-artist').val(artist);
+      $('#addSong-modal #addSong-album').val(album);
+      $('#addSong-modal #addSong-link').val(link);
+      $('#addSong-modal #addSong-time').val(time);
+      $('#addSong-modal #addSong-source').val(source);
+
+      $('#addSong-check').attr('hidden', '');
+      $('#addSong-save').removeAttr('hidden');
+      $('#addSong-save').removeAttr('disabled');
+
+      $('#addSong-modal #addSong-link').on('input', () => {
+        $('#addSong-check').removeAttr('hidden', '');
+        $('#addSong-save').attr('hidden', '');
+      });
+
+      toDB = { name, artist, album };
+      isUpdate = id;
+    }
 
     return;
   }
@@ -41,7 +69,6 @@ export function checkAddSong() {
   $('#addSong-check').attr('disabled', '');
   $('#addSong-save').removeAttr('disabled');
 
-  getInputs();
   link = inputs[3].value;
 
   source = validate();
@@ -69,7 +96,9 @@ export async function saveAddSong() {
   toDB.artist = inputs[1].value;
   toDB.album = inputs[2].value;
 
-  await saveSong(toDB);
+  if (isUpdate === null) await saveSong(toDB);
+  else await updateSong(isUpdate, toDB);
+
   closeAddSong();
   loadSongsTable();
 }
@@ -238,24 +267,31 @@ function testSP() {
 
 // Guardar Datos en variable de Preparacion
 function handleSuccess(e) {
-  toDB = {
-    link,
-    time: getTime(e),
-    source,
-    fullTime: e,
-  };
+  if (checkRepeat()) {
+    toDB = {
+      link,
+      time: getTime(e),
+      source,
+      fullTime: e,
+    };
 
-  $('#addSong-link').addClass('readonly');
-  $('#addSong-link').attr('readonly', '');
-  $('#addSong-time').attr('value', toDB.time);
-  $('#addSong-source').attr(
-    'value',
-    source.charAt(0).toUpperCase() + source.slice(1).toLowerCase()
-  );
+    $('#addSong-link').addClass('readonly');
+    $('#addSong-link').attr('readonly', '');
+    $('#addSong-time').val(toDB.time);
+    $('#addSong-source').val(source.charAt(0).toUpperCase() + source.slice(1).toLowerCase());
 
-  $('#addSong-check').attr('hidden', '');
-  $('#addSong-check').removeAttr('disabled');
-  $('#addSong-save').removeAttr('hidden');
+    $('#addSong-check').attr('hidden', '');
+    $('#addSong-check').removeAttr('disabled');
+    $('#addSong-save').removeAttr('hidden');
+  } else handleError('El link que ha ingresado ya se encuentra registrado.');
+}
+
+function checkRepeat() {
+  const allSongs = songsList.get();
+  const foundSong = allSongs.find((value) => value.link === link);
+
+  if (typeof foundSong === 'undefined') return true;
+  return false;
 }
 
 // Mostrar error en la interfaz
@@ -284,12 +320,13 @@ function getInputs() {
 
 function wipeInputs() {
   getInputs();
+
   inputs[0].value = '';
   inputs[1].value = '';
   inputs[2].value = '';
   inputs[3].value = '';
-  $(inputs[4]).attr('value', '');
-  $(inputs[5]).attr('value', '');
+  $(inputs[4]).val('');
+  $(inputs[5]).val('');
 }
 
 /*

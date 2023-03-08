@@ -1,5 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { addDoc, getDocs, collection, deleteDoc, getFirestore, doc } from 'firebase/firestore';
+import {
+  addDoc,
+  getDocs,
+  collection,
+  deleteDoc,
+  getFirestore,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAyacVFGoIKMMtkH7znpi1ESh2G0UlSKQI',
@@ -18,3 +26,4 @@ const SONGS_TABLE = 'songs';
 export const saveSong = (data) => addDoc(collection(db, SONGS_TABLE), data);
 export const getSongs = () => getDocs(collection(db, SONGS_TABLE));
 export const deleteSong = (e) => deleteDoc(doc(db, SONGS_TABLE, e));
+export const updateSong = (id, e) => updateDoc(doc(db, SONGS_TABLE, id), e);

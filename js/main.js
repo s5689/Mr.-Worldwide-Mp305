@@ -12,6 +12,7 @@ import {
   handleShuffle,
   handleStop,
   handleTogglePlaylist,
+  handleUpdateSong,
   preloadPlayers,
 } from './controls';
 import './songsList';
@@ -37,6 +38,7 @@ window.controlShuffle = handleShuffle;
 
 window.playFromMenu = handlePlayFromMenu;
 window.selectMode = handleSelectMode;
+window.updateSong = handleUpdateSong;
 window.deleteSong = handleDeleteSong;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;

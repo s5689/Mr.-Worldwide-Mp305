@@ -29,12 +29,92 @@ export const songsTable = new Tabulator('#songsTable', {
       resizable: false,
       headerSort: false,
     },
-    { title: 'Nombre', field: 'name', hozAlign: 'center', resizable: false },
-    { title: 'Artista', field: 'artist', hozAlign: 'center', resizable: false },
-    { title: 'Album', field: 'album', hozAlign: 'center', resizable: false },
+    {
+      title: 'Nombre',
+      field: 'name',
+      hozAlign: 'center',
+      resizable: false,
+    },
+    {
+      title: 'Artista',
+      field: 'artist',
+      hozAlign: 'center',
+      resizable: false,
+      sorter: columnSorter('artist'),
+    },
+    {
+      title: 'Album',
+      field: 'album',
+      hozAlign: 'center',
+      resizable: false,
+      sorter: columnSorter('album'),
+    },
     { title: 'Duracion', field: 'time', hozAlign: 'center', widthGrow: 0.4, resizable: false },
   ],
 });
+
+// Organizacion personalizada de columnas.
+function columnSorter(e) {
+  switch (e) {
+    case 'artist':
+      return (_, __, a, b, ___, dir) => {
+        const aData = a.getData();
+        const aName = aData.name.toLowerCase();
+        const aArtist = aData.artist.toLowerCase();
+
+        const bData = b.getData();
+        const bName = bData.name.toLowerCase();
+        const bArtist = bData.artist.toLowerCase();
+
+        if (dir === 'asc') {
+          const aRes = `${aArtist} - ${aName}}`;
+          const bRes = `${bArtist} - ${bName}}`;
+
+          if (aRes > bRes) return 1;
+          return -1;
+        }
+
+        if (dir === 'desc') {
+          if (aArtist !== bArtist) {
+            if (aArtist > bArtist) return 1;
+            return -1;
+          }
+
+          if (aName > bName) return -1;
+          return 1;
+        }
+      };
+
+    case 'album':
+      return (_, __, a, b, ___, dir) => {
+        const aData = a.getData();
+        const aName = aData.name.toLowerCase();
+        const aAlbum = aData.album.toLowerCase();
+
+        const bData = b.getData();
+        const bName = bData.name.toLowerCase();
+        const bAlbum = bData.album.toLowerCase();
+
+        if (dir === 'asc') {
+          const aRes = `${aAlbum} - ${aName}}`;
+          const bRes = `${bAlbum} - ${bName}}`;
+
+          if (aRes > bRes) return 1;
+          return -1;
+        }
+
+        if (dir === 'desc') {
+          if (aAlbum !== bAlbum) {
+            if (aAlbum > bAlbum) return 1;
+            return -1;
+          }
+
+          if (aName > bName) return -1;
+          return 1;
+        }
+      };
+  }
+}
 
 export async function loadSongsTable() {
   songsList.set(await getData());
