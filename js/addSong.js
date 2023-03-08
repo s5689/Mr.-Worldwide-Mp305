@@ -28,7 +28,9 @@ export function toggleAddSong(update = false, e) {
       $('#addSong-modal #addSong-album').val(album);
       $('#addSong-modal #addSong-link').val(link);
       $('#addSong-modal #addSong-time').val(time);
-      $('#addSong-modal #addSong-source').val(source);
+      $('#addSong-modal #addSong-source').val(
+        source.charAt(0).toUpperCase() + source.slice(1).toLowerCase()
+      );
 
       $('#addSong-check').attr('hidden', '');
       $('#addSong-save').removeAttr('hidden');
