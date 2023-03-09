@@ -5,7 +5,7 @@
   transform: translateX(-50%) scale(0);
   z-index: 5;
 
-  width: 400px;
+  width: 500px;
   height: fit-content;
   padding: 2rem;
   text-align: center;
@@ -30,6 +30,19 @@
   display: inline-grid;
   width: 47%;
   margin: 0 5px 0 5px;
+}
+
+.addSong-block:nth-child(4) {
+  width: 41%;
+}
+
+.addSong-block:nth-child(5) {
+  width: 7%;
+  margin: 0 11px 0 10px;
+}
+
+.addSong-block:nth-child(6) {
+  width: 41%;
 }
 
 #addSong-modal input,

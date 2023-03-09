@@ -22,13 +22,14 @@ export function toggleAddSong(update = false, e) {
     isUpdate = null;
 
     if (update) {
-      const { name, artist, album, link, time, source, id } = e;
+      const { name, artist, album, number, link, time, source, id } = e;
 
       $('.addSong-title').html('Modificar Cancion');
 
       $('#addSong-modal #addSong-name').val(name);
       $('#addSong-modal #addSong-artist').val(artist);
       $('#addSong-modal #addSong-album').val(album);
+      $('#addSong-modal #addSong-number').val(number);
       $('#addSong-modal #addSong-link').val(link);
       $('#addSong-modal #addSong-time').val(time);
       $('#addSong-modal #addSong-source').val(
@@ -44,7 +45,7 @@ export function toggleAddSong(update = false, e) {
         $('#addSong-save').attr('hidden', '');
       });
 
-      toDB = { name, artist, album };
+      toDB = { name, artist, album, number };
       isUpdate = id;
     }
 
@@ -74,7 +75,7 @@ export function checkAddSong() {
   $('#addSong-check').attr('disabled', '');
   $('#addSong-save').removeAttr('disabled');
 
-  link = inputs[3].value;
+  link = inputs[4].value;
 
   source = validate();
   toDB = undefined;
@@ -100,6 +101,7 @@ export async function saveAddSong() {
   toDB.name = inputs[0].value;
   toDB.artist = inputs[1].value;
   toDB.album = inputs[2].value;
+  toDB.number = inputs[3].value;
 
   if (isUpdate === null) await saveSong(toDB);
   else await updateSong(isUpdate, toDB);
@@ -330,8 +332,9 @@ function wipeInputs() {
   inputs[1].value = '';
   inputs[2].value = '';
   inputs[3].value = '';
-  $(inputs[4]).val('');
+  inputs[4].value = '';
   $(inputs[5]).val('');
+  $(inputs[6]).val('');
 }
 
 /*

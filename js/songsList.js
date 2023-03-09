@@ -88,16 +88,16 @@ function columnSorter(e) {
     case 'album':
       return (_, __, a, b, ___, dir) => {
         const aData = a.getData();
-        const aName = aData.name.toLowerCase();
         const aAlbum = aData.album.toLowerCase();
+        const aNumber = aData.number < 10 ? `0${aData.number}` : aData.number;
 
         const bData = b.getData();
-        const bName = bData.name.toLowerCase();
         const bAlbum = bData.album.toLowerCase();
+        const bNumber = bData.number < 10 ? `0${bData.number}` : bData.number;
 
         if (dir === 'asc') {
-          const aRes = `${aAlbum} - ${aName}}`;
-          const bRes = `${bAlbum} - ${bName}}`;
+          const aRes = `${aAlbum} - ${aNumber}}`;
+          const bRes = `${bAlbum} - ${bNumber}}`;
 
           if (aRes > bRes) return 1;
           return -1;
@@ -109,7 +109,7 @@ function columnSorter(e) {
             return -1;
           }
 
-          if (aName > bName) return -1;
+          if (aNumber > bNumber) return -1;
           return 1;
         }
       };
@@ -364,10 +364,19 @@ export function toggleFindSong(isClick = true, arg) {
 // Filtrar canciones desde la busqueda.
 function filterSongs(e, singles = false) {
   songsTable.setFilter((value) => {
-    const { name, artist, album } = value;
+    const { name, artist, album, source } = value;
 
     // Si el album esta vacio y fue seleccionado desde la tabla, mostrar albumes vacios.
     if (singles && e === '') if (album !== '') return false;
+
+    // Si se busca por medio del codigo especial <SP / <SC, filtrar por fuente.
+    if (e.toLowerCase() === '<sp') {
+      if (source === 'SPOTIFY') return true;
+    }
+
+    if (e.toLowerCase() === '<sc') {
+      if (source === 'SOUNDCLOUD') return true;
+    }
 
     // Filtros normales
     if (name.toLowerCase().includes(e.toLowerCase())) return true;
