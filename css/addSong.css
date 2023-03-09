@@ -32,16 +32,16 @@
   margin: 0 5px 0 5px;
 }
 
-.addSong-block:nth-child(4) {
+.addSong-block:nth-child(2) {
   width: 41%;
 }
 
-.addSong-block:nth-child(5) {
+.addSong-block:nth-child(3) {
   width: 7%;
   margin: 0 11px 0 10px;
 }
 
-.addSong-block:nth-child(6) {
+.addSong-block:nth-child(4) {
   width: 41%;
 }
 
