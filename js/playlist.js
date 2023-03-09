@@ -125,8 +125,25 @@ playlistTable.on('rowMoved', (row) => {
   currentPlaylist.track = tempTrack;
 });
 
-// Cerrar playlist al hacer click derecho e izquierdo
-document.addEventListener('contextmenu', (e) => closePlaylist());
+// Cerrar playlist al hacer click derecho e izquierdo & Limpiar playlist al hacer click derecho en mostrar playlist
+document.addEventListener('contextmenu', (e) => {
+  if (e.target.id === 'control-playlist') {
+    const trackId = currentPlaylist.getTrackData().id;
+
+    e.preventDefault();
+    const tempList = currentPlaylist.list.filter((value) => value.id === trackId);
+
+    currentPlaylist.list = tempList;
+    currentPlaylist.track = 0;
+
+    $('#control-playlist').attr('clean', '');
+
+    setTimeout(() => {
+      $('#control-playlist').removeAttr('clean');
+    }, 400);
+  } else closePlaylist();
+});
+
 document.addEventListener('click', (e) => {
   const html = e.target;
   const { id } = html;

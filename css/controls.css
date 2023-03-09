@@ -71,6 +71,12 @@
   background: url('../list-alt-rounded.svg') no-repeat center center / contain;
 }
 
+#control-playlist[clean] {
+  background: url('../eraser-duotone.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+  cursor: not-allowed;
+}
+
 #control-shuffle {
   background: url('../shuffle-outline-rounded.svg') no-repeat center center / contain;
 }

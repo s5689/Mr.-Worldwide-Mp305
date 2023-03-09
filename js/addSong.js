@@ -14,6 +14,7 @@ let toDB = undefined;
 
 export function toggleAddSong(update = false, e) {
   if (!isOpen) {
+    $('.addSong-title').html('Agregar a la Lista');
     $('#addSong-modal').css('transform', 'translateX(-50%) scale(1)');
 
     getInputs();
@@ -22,6 +23,8 @@ export function toggleAddSong(update = false, e) {
 
     if (update) {
       const { name, artist, album, link, time, source, id } = e;
+
+      $('.addSong-title').html('Modificar Cancion');
 
       $('#addSong-modal #addSong-name').val(name);
       $('#addSong-modal #addSong-artist').val(artist);

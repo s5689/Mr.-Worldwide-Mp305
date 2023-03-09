@@ -134,9 +134,7 @@ export function handleShuffle() {
     currentPlaylist.list.forEach((value) => tempList.push(value));
 
     // Mezclar lista completa
-    const shuffleList = tempList.sort(() => {
-      return Math.random() - 0.5;
-    });
+    const shuffleList = shuffleMaker();
 
     // Eliminar la cancion actual de la lista mezclada
     const filterList = shuffleList.filter((value) => value.id !== currentSong.id);
@@ -158,9 +156,7 @@ export function handleShuffle() {
     });
 
     // Mezclar
-    const shuffleList = tempList.sort(() => {
-      return Math.random() - 0.5;
-    });
+    const shuffleList = shuffleMaker();
 
     currentPlaylist.list = shuffleList;
     currentPlaylist.track = 0;
@@ -169,6 +165,18 @@ export function handleShuffle() {
   }
 
   openPlaylist();
+
+  function shuffleMaker() {
+    let a = tempList;
+
+    for (let k = 0; k < 20; k++) {
+      a = a.sort(() => {
+        return Math.random() - 0.5;
+      });
+    }
+
+    return a;
+  }
 }
 
 export function handlePlayFromMenu(isClick = true) {
