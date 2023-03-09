@@ -28,12 +28,13 @@
 /* Inputs */
 .addSong-block {
   display: inline-grid;
-  width: 47%;
-  margin: 0 5px 0 5px;
+  width: 45%;
 }
 
-.addSong-block:nth-child(2) {
+.addSong-block:nth-child(2),
+.addSong-block:nth-child(4) {
   width: 41%;
+  margin: 0 5px 0 5px;
 }
 
 .addSong-block:nth-child(3) {
@@ -41,8 +42,14 @@
   margin: 0 11px 0 10px;
 }
 
-.addSong-block:nth-child(4) {
-  width: 41%;
+.addSong-block:nth-child(5),
+.addSong-block:nth-child(7) {
+  margin: 0 15px 0 5px;
+}
+
+.addSong-block:nth-child(6),
+.addSong-block:nth-child(8) {
+  margin: 0 5px 0 15px;
 }
 
 #addSong-modal input,

@@ -364,18 +364,29 @@ export function toggleFindSong(isClick = true, arg) {
 // Filtrar canciones desde la busqueda.
 function filterSongs(e, singles = false) {
   songsTable.setFilter((value) => {
-    const { name, artist, album, source } = value;
+    const { name, number, artist, album, source } = value;
 
     // Si el album esta vacio y fue seleccionado desde la tabla, mostrar albumes vacios.
     if (singles && e === '') if (album !== '') return false;
 
-    // Si se busca por medio del codigo especial <SP / <SC, filtrar por fuente.
+    // Codigos Especiales
+    // <SP / <SC: filtrar por fuente.
     if (e.toLowerCase() === '<sp') {
       if (source === 'SPOTIFY') return true;
     }
 
     if (e.toLowerCase() === '<sc') {
       if (source === 'SOUNDCLOUD') return true;
+    }
+
+    // <NN: filtrar canciones sin numero de pista
+    if (e.toLowerCase() === '<nn') {
+      if (typeof number === 'undefined') return true;
+    }
+
+    // <WN: filtrar canciones con numero de pista
+    if (e.toLowerCase() === '<wn') {
+      if (typeof number !== 'undefined') return true;
     }
 
     // Filtros normales
