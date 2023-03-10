@@ -4,6 +4,7 @@ import {
   handleAddPlaylist,
   handleDeleteSong,
   handleDeselectAll,
+  handleEscape,
   handleNext,
   handlePlayFromMenu,
   handlePrev,
@@ -22,6 +23,7 @@ import './VME-MKR';
 
 setTimeout(() => {
   preloadPlayers();
+  handleEscape();
 }, 100);
 
 window.toggleAddSong = toggleAddSong;

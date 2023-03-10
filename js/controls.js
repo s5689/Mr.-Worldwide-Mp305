@@ -1,4 +1,4 @@
-import { loadSongsTable, playSelected, songsTable } from './songsList';
+import { loadSongsTable, playSelected, songsTable, toggleFindSong } from './songsList';
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
@@ -252,5 +252,51 @@ export function handleDeselectAll() {
     const foundRow = songsTable.searchRows('id', '=', value.id)[0];
 
     $(foundRow.getElement()).trigger('click');
+  });
+}
+
+export function handleEscape() {
+  let inFocus = null;
+
+  // Detectar donde fue realizado el click
+  document.addEventListener('click', (e) => {
+    switch (document.activeElement.id) {
+      case 'addSong-findButton':
+        inFocus = 'findInput';
+        break;
+
+      case 'addSong-findInput':
+        inFocus = 'findInput';
+        break;
+
+      case 'addSong-button':
+        inFocus = 'addSong';
+        break;
+
+      case 'updateSong-button':
+        inFocus = 'addSong';
+        break;
+
+      default:
+        inFocus = null;
+        break;
+    }
+
+    if (e.target.id === 'addSong-modal' || $('#addSong-modal').find(e.target).length !== 0)
+      inFocus = 'addSong';
+  });
+
+  // Cerrar el modal de agregar canciones o la barra de busqueda al presionar escape.
+  document.addEventListener('keydown', (e) => {
+    if (document.activeElement.id === 'addSong-findInput') inFocus = 'findInput';
+
+    if (e.key === 'Escape') {
+      if (inFocus === 'findInput') toggleFindSong();
+      if (inFocus === 'addSong') closeAddSong();
+
+      setTimeout(() => {
+        inFocus = null;
+      }, 50);
+    }
   });
 }

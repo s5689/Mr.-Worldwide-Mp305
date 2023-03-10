@@ -161,6 +161,10 @@ songsTable.on('cellClick', (e, cell) => {
 
     if (cell.getField() === 'artist') toggleFindSong(false, artist);
     if (cell.getField() === 'album') toggleFindSong(false, album);
+
+    setTimeout(() => {
+      document.getElementById('addSong-findInput').focus();
+    }, 250);
   }
 });
 
@@ -413,6 +417,17 @@ async function getData() {
 
     addAutoComplete(currentValue.artist, currentValue.album);
     temp.push(currentValue);
+  });
+
+  // Organizar Arrays
+  autoComplete.artist = autoComplete.artist.sort((a, b) => {
+    if (a > b) return 1;
+    else return -1;
+  });
+
+  autoComplete.album = autoComplete.album.sort((a, b) => {
+    if (a > b) return 1;
+    else return -1;
   });
 
   createAutoComplete(document.getElementById('addSong-artist'), autoComplete.artist);
