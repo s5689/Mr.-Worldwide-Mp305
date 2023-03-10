@@ -291,12 +291,16 @@ export function handleEscape() {
     if (document.activeElement.id === 'addSong-findInput') inFocus = 'findInput';
 
     if (e.key === 'Escape') {
-      if (inFocus === 'findInput') toggleFindSong();
       if (inFocus === 'addSong') closeAddSong();
+
+      if (inFocus === 'findInput') {
+        if (document.getElementById('addSong-findInput').getAttribute('show') !== null)
+          toggleFindSong();
+      }
 
       setTimeout(() => {
         inFocus = null;
-      }, 50);
+      }, 5);
     }
   });
 }
