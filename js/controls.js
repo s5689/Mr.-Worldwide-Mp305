@@ -187,6 +187,23 @@ export function handlePlayFromMenu(isClick = true) {
   else playSelected();
 }
 
+export function handleSingleAddPlaylist() {
+  const { row } = rowOnMenu;
+  const tempList = currentPlaylist.list;
+
+  tempList.push(row.getData());
+  currentPlaylist.list = tempList;
+  currentPlaylist.track = currentPlaylist.track;
+
+  if (currentPlaylist.list.length === 1) {
+    currentPlaylist.track = 0;
+    handlePlay(row.getData());
+  }
+
+  preventClosePlaylist.trigger();
+  openPlaylist();
+}
+
 export function handleSelectMode() {
   selectMode.set(true);
 }

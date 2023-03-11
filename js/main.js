@@ -11,6 +11,7 @@ import {
   handleSelectAll,
   handleSelectMode,
   handleShuffle,
+  handleSingleAddPlaylist,
   handleStop,
   handleTogglePlaylist,
   handleUpdateSong,
@@ -39,6 +40,7 @@ window.togglePlaylist = handleTogglePlaylist;
 window.controlShuffle = handleShuffle;
 
 window.playFromMenu = handlePlayFromMenu;
+window.singleAddPlaylist = handleSingleAddPlaylist;
 window.selectMode = handleSelectMode;
 window.updateSong = handleUpdateSong;
 window.deleteSong = handleDeleteSong;

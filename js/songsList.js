@@ -154,17 +154,18 @@ songsTable.on('cellClick', (e, cell) => {
       openPlaylist();
     } else playSelected();
   }
-
   // Filtro Rapido
-  if (!selectMode.get()) {
-    const { artist, album } = row.getData();
+  else {
+    if (!selectMode.get()) {
+      const { artist, album } = row.getData();
 
-    if (cell.getField() === 'artist') toggleFindSong(false, artist);
-    if (cell.getField() === 'album') toggleFindSong(false, album);
+      if (cell.getField() === 'artist') toggleFindSong(false, artist);
+      if (cell.getField() === 'album') toggleFindSong(false, album);
 
-    setTimeout(() => {
-      document.getElementById('addSong-findInput').focus();
-    }, 250);
+      setTimeout(() => {
+        document.getElementById('addSong-findInput').focus();
+      }, 250);
+    }
   }
 });
 
