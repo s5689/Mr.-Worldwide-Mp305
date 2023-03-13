@@ -154,17 +154,20 @@ songsTable.on('cellClick', (e, cell) => {
       openPlaylist();
     } else playSelected();
   }
+
   // Filtro Rapido
   else {
     if (!selectMode.get()) {
       const { artist, album } = row.getData();
 
-      if (cell.getField() === 'artist') toggleFindSong(false, artist);
-      if (cell.getField() === 'album') toggleFindSong(false, album);
+      if (cell.getField() === 'artist' || cell.getField() === 'album') {
+        if (cell.getField() === 'artist') toggleFindSong(false, artist);
+        if (cell.getField() === 'album') toggleFindSong(false, album);
 
-      setTimeout(() => {
-        document.getElementById('addSong-findInput').focus();
-      }, 250);
+        setTimeout(() => {
+          document.getElementById('addSong-findInput').focus();
+        }, 250);
+      }
     }
   }
 });
@@ -248,9 +251,6 @@ selectMode.onChange((e) => {
     // Seleccionar el row que inicio el modo seleccion
     $(rowOnMenu.row.getElement()).trigger('click');
 
-    // Eliminar los numeros en la columna #
-    songsTable.columnManager.columns[0].updateDefinition({ formatter: null });
-
     // Mostrar menu contextual del modo seleccion
     $('#songsList-modal if').attr('hidden', '');
     $('#songsList-modal else').removeAttr('hidden');
@@ -260,9 +260,6 @@ selectMode.onChange((e) => {
       const html = value.getElement();
       $(html).removeAttr('selecting');
     });
-
-    // Agregar de vuelta los numeros en la columna #
-    songsTable.columnManager.columns[0].updateDefinition({ formatter: 'rownum' });
 
     // Mostrar menu contextual normal
     $('#songsList-modal if').removeAttr('hidden');
@@ -287,17 +284,7 @@ songsTable.on('rowClick', (e, rawRow) => {
       selectMode.selected = filterSelect;
 
       $(rowHtml).removeAttr('selected');
-      $(rowHtml.children[0]).text('');
     }
-
-    // Enumerar & organizar el orden de los row segun su posicion en el array.
-    setTimeout(() => {
-      selectMode.selected.map((value, k) => {
-        const foundRow = songsTable.searchRows((valua) => value.id === valua.id)[0];
-        const foundHtml = $(foundRow.getElement())[0];
-        $(foundHtml.children[0]).text(k + 1);
-      });
-    }, 5);
 
     // Salir del modo seleccion si se deseleccionaron todos los row.
     setTimeout(() => {
