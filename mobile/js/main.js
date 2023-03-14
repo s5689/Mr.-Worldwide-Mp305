@@ -1,3 +1,4 @@
+import { loadSongsTable, toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
   handleDeleteSong,
@@ -15,11 +16,17 @@ import {
 } from './controls';
 import './songsList';
 import './playlist';
-import { toggleFindSong } from './songsList';
 
-setTimeout(() => {
+loaded.onChange((e) => {
+  if (e === 3) apiReady();
+});
+
+if (loaded.get() === 3) apiReady();
+
+function apiReady() {
   preloadPlayers();
-}, 100);
+  loadSongsTable();
+}
 
 window.toggleFindSong = toggleFindSong;
 

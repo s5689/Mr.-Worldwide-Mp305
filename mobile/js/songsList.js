@@ -11,8 +11,6 @@ import { handleDeselectAll, handlePlay } from './controls';
 import { openPlaylist, playlistTable } from './playlist';
 import { getSongs } from './db';
 
-loadSongsTable();
-
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
   placeholder: 'Cargando...',
