@@ -66,5 +66,5 @@
   font-size: 0px !important;
   filter: invert(1);
 
-  background: url('../remove-rounded.svg') no-repeat center center / contain;
+  background: url('../../remove-rounded.svg') no-repeat center center / contain;
 }

@@ -1,0 +1,70 @@
+#playlist-modal {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: fixed;
+  bottom: -70vh;
+  left: 0;
+
+  width: 40vw;
+  height: 70vh;
+
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 10px 10px 0 0;
+
+  z-index: 2;
+  transition: bottom 400ms;
+}
+
+#playlist-modal[show] {
+  bottom: 159px;
+}
+
+#playlist-table {
+  background-color: rgba(0, 0, 0, 0);
+  user-select: none;
+}
+
+#playlist-table .tabulator-tableholder {
+  background-color: black;
+  border-radius: 10px 10px 0 0;
+}
+
+#playlist-table .tabulator-tableholder::-webkit-scrollbar {
+  display: none;
+}
+
+#playlist-table .tabulator-placeholder {
+  background-color: black;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Grab & Move */
+#playlist-table[class='tabulator'] .tabulator-cell:nth-child(2) {
+  cursor: grab !important;
+}
+
+#playlist-table[class='tabulator'] .tabulator-cell:nth-child(3) {
+  cursor: grab !important;
+}
+
+#playlist-table.tabulator-block-select .tabulator-row {
+  cursor: grabbing !important;
+}
+
+#playlist-table.tabulator-block-select .tabulator-row-placeholder {
+  background-color: rgba(0, 35, 42, 1) !important;
+}
+
+#playlist-table.tabulator-block-select .tabulator-moving {
+  background-color: rgba(0, 35, 42, 1) !important;
+}
+
+/* Remove Track */
+#playlist-table .tabulator-cell:last-child:hover {
+  cursor: pointer !important;
+
+  font-size: 0px !important;
+  filter: invert(1);
+
+  background: url('../../remove-rounded.svg') no-repeat center center / contain;
+}

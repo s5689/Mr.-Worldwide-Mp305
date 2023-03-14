@@ -5,126 +5,13 @@
     <link rel="icon" type="image/x-icon" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="https://w.soundcloud.com/player/api.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script>
+    <title>MWW Mp305 Loading...</title>
 
-    <script> var _debug = false; </script>
-
-    <link rel="stylesheet" href="./css/main.css" />
-    <script type="module" src="./js/main.js"></script>
-
-    <title>Mr. Worldwide Mp305</title>
+    <script>
+      if (window.innerWidth > 1000) window.location.href = './desktop/index.html';
+      else window.location.href = './mobile/index.html';
+    </script>
   </head>
 
-  <body>
-    <p class="title">Mr. Worldwide <b>Mp3</b>05</p>
-
-    <div id="songsList">
-      <button id="addSong-button" onclick="toggleAddSong()"></button>
-      <div id="find-container">
-        <button id="addSong-findButton" onclick="toggleFindSong()"></button>
-        <input id="addSong-findInput" autocomplete="off"></input>
-      </div>
-      <div id="songsTable"></div>
-    </div>
-
-    <modal id="addSong-modal">
-      <p class="addSong-title">Agregar a la Lista</p>
-
-      <div class="addSong-block">
-        <label>Nombre</label>
-        <input id="addSong-name" type="text" autocomplete="off" />
-      </div>
-
-      <div class="addSong-block">
-        <label>N°</label>
-        <input id="addSong-number" type="text" autocomplete="off"  />
-      </div>
-
-      <div class="addSong-block">
-        <label>Artista</label>
-        <div class="autocomplete">
-          <input id="addSong-artist" type="text" autocomplete="off" />
-        </div>
-      </div>
-
-      <div class="addSong-block">
-        <label>Album</label>
-        <div class="autocomplete">
-          <input id="addSong-album" type="text" autocomplete="off" />
-        </div>
-      </div>
-
-      <div class="addSong-block">
-        <label>Link</label>
-        <input id="addSong-link" type="text" autocomplete="off" />
-      </div>
-
-      <div class="addSong-block">
-        <label>Duracion</label>
-        <input id="addSong-time" type="text" autocomplete="off" readonly />
-      </div>
-
-      <div class="addSong-block">
-        <label>Fuente</label>
-        <input id="addSong-source" type="text" autocomplete="off" readonly />
-      </div>
-
-      <div id="addSong-error"></div>
-
-      <button id="addSong-return" onclick="closeAddSong()">Cancelar</button>
-      <button id="addSong-check" onclick="checkAddSong()">Comprobar</button>
-      <button id="addSong-save" onclick="saveAddSong()" hidden>Guardar</button>
-    </modal>
-
-    <modal id="songsList-modal">
-      <if>
-        <button onclick="playFromMenu()" playbutton>Reproducir</button>
-        <button onclick="singleAddPlaylist()" playbutton>Agregar a la Lista</button>
-        <button onclick="selectMode()">Seleccionar</button>
-        <button onclick="updateSong()" id="updateSong-button">Modificar</button>
-        <button onclick="deleteSong()">Eliminar</button>
-      </if>
-
-      <else hidden>
-        <button onclick="playFromMenu(false)" playbutton>Reproducir Seleccion</button>
-        <button onclick="addPlaylist()" playbutton>Agregar a la Lista</button>
-        <button onclick="selectAll()">Seleccionar Todo</button>
-        <button onclick="deselectAll()">Deseleccionar Todo</button>
-      </else>
-    </modal>
-
-    <modal id="playlist-modal"> <div id="playlist-table"></div> </modal>
-
-    <div id="player-container">
-      <div id="controls">
-        <div class="up">
-          <button id="control-prev" onclick="controlPrev()"></button>
-          <button id="control-stop" onclick="controlStop()"></button>
-          <button id="control-next" onclick="controlNext()"></button>
-        </div>
-        <div class="down">
-          <button id="control-playlist" onclick="togglePlaylist()"></button>
-          <button id="control-shuffle" onclick="controlShuffle()"></button>
-        </div>
-      </div>
-
-      <iframe
-        id="soundcloud"
-        class="players"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url="
-      ></iframe>
-
-      <div id="spotify-container"></div>
-      <div id="mww" class="players"></div>
-      <div id="sp-pause-button"></div>
-    </div>
-  </body>
-
-  <div id="tester-cover"></div>
-  <iframe id="sc-tester" class="tester" src="https://w.soundcloud.com/player/?url="></iframe>
-  <audio id="dummy-audio"></audio>
+  <body style="background-color: black"></body>
 </html>

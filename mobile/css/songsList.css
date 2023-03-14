@@ -1,0 +1,218 @@
+#songsList {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+}
+
+/* Botones Sobre la tabla */
+#find-container {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  text-align: right;
+
+  width: 200px;
+  height: 35px;
+
+  overflow: hidden;
+}
+
+#addSong-findButton {
+  position: relative;
+  left: 158px;
+  width: 35px;
+  height: 35px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  background: url('../../search-alt-2.svg') no-repeat center center / contain;
+  transition: background-image 250ms, left 250ms;
+}
+
+#addSong-findButton:hover {
+  background: url('../../search-alt-3.svg') no-repeat center center / contain;
+}
+
+#addSong-findButton[show] {
+  left: 0;
+}
+
+#addSong-findInput {
+  font-family: Arial;
+  position: relative;
+  top: -10px;
+  left: 158px;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
+  width: 150px;
+  text-align: center;
+  font-size: large;
+
+  margin-bottom: 30px !important;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid white;
+
+  transition: left 250ms;
+}
+
+#addSong-findInput[show] {
+  left: 0;
+}
+
+/* Menu Contextual */
+#songsList-modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+
+  width: 200px;
+  height: fit-content;
+  background-color: black;
+
+  border: 1px solid;
+}
+
+#songsList-modal[to-right] {
+  border-radius: 0 10px 10px 10px;
+}
+
+#songsList-modal[to-left] {
+  border-radius: 10px 0 10px 10px;
+}
+
+#songsList-modal button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: medium;
+
+  width: 100%;
+  height: 40px;
+  color: white;
+  background-color: black;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#songsList-modal button:hover {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  cursor: pointer;
+}
+
+#songsList-modal[to-right] button:first-child {
+  border-radius: 0 10px 0 0;
+}
+
+#songsList-modal[to-left] button:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+#songsList-modal button:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+/* Tabla */
+#songsTable {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  margin-bottom: 20%;
+}
+
+.tabulator-tableholder {
+  background-color: black;
+}
+
+.tabulator-placeholder-contents {
+  background-color: black;
+}
+
+/* Header */
+.tabulator-header {
+  border-top: none !important;
+  border-bottom: 2px solid !important;
+}
+
+.tabulator-col-title {
+  font-size: larger;
+  text-align: center;
+  padding-right: 0 !important;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort='ascending'],
+[aria-sort='descending'] .tabulator-col-content .tabulator-col-title {
+  color: #666 !important;
+  font-weight: 400;
+}
+
+.tabulator-col-sorter {
+  display: none !important;
+}
+
+/* Rows */
+.tabulator-col,
+.tabulator-row {
+  background-color: black !important;
+  height: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.tabulator-row {
+  cursor: default !important;
+}
+
+.tabulator-row:hover {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.tabulator-row[selecting] {
+  cursor: pointer !important;
+}
+
+.tabulator-row[playing='true'] {
+  background-color: rgba(0, 98, 105, 1) !important;
+}
+
+.tabulator-row[selected] {
+  background-color: rgba(0, 35, 42, 1) !important;
+}
+
+.tabulator-row:last-child {
+  border-bottom: none !important;
+}
+
+/* Cells */
+.tabulator-cell:first-child:hover {
+  cursor: pointer !important;
+
+  font-size: 0px !important;
+  filter: invert(1);
+
+  background: url('../../play-arrow-rounded.svg') no-repeat center center / contain;
+}
+
+.tabulator-row[playing='true'] .tabulator-cell:first-child {
+  cursor: default !important;
+
+  font-size: 0px !important;
+  filter: invert(1);
+
+  background: url('../../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
+}
+
+#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='artist']:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='album']:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

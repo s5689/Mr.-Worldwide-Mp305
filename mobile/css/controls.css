@@ -1,0 +1,92 @@
+#controls {
+  position: relative;
+  left: 0;
+  width: 15%;
+  height: 100%;
+
+  text-align: center;
+}
+
+#controls .up {
+  height: 80px;
+}
+
+#controls .down {
+  height: 80px;
+}
+
+#controls button {
+  position: relative;
+  width: 35px;
+  height: 35px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  transition: background-image 250ms;
+}
+
+#controls .up button {
+  top: 60%;
+  transform: translateY(-40%);
+}
+
+#controls .down button {
+  top: 40%;
+  transform: translateY(-60%);
+  margin: 0 5% 0 5%;
+}
+
+#control-prev {
+  background: url('../../player-skip-back.svg') no-repeat center center / contain;
+}
+
+#control-prev:hover {
+  background: url('../../player-skip-back-filled.svg') no-repeat center center / contain;
+}
+
+#control-stop {
+  margin: 0 10% 0 10%;
+  background: url('../../player-stop.svg') no-repeat center center / contain;
+}
+
+#control-stop:hover {
+  background: url('../../player-stop-filled.svg') no-repeat center center / contain;
+}
+
+#control-next {
+  background: url('../../player-skip-forward.svg') no-repeat center center / contain;
+}
+
+#control-next:hover {
+  background: url('../../player-skip-forward-filled.svg') no-repeat center center / contain;
+}
+
+#control-playlist {
+  background: url('../../list-alt-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#control-playlist:hover {
+  background: url('../../list-alt-rounded.svg') no-repeat center center / contain;
+}
+
+#control-playlist[clean] {
+  background: url('../../eraser-duotone.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+  cursor: not-allowed;
+}
+
+#control-shuffle {
+  background: url('../../shuffle-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#control-shuffle:hover {
+  background: url('../../shuffle-on-rounded.svg') no-repeat center center / contain;
+}
+
+#control-shuffle:active {
+  background: url('../../shuffle-fill.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+  cursor: grabbing;
+}

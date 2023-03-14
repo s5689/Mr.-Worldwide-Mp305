@@ -18,12 +18,12 @@
   border: 0;
   cursor: pointer;
 
-  background: url('../outline-add-circle-outline.svg') no-repeat center center / contain;
+  background: url('../../outline-add-circle-outline.svg') no-repeat center center / contain;
   transition: background-image 250ms;
 }
 
 #addSong-button:hover {
-  background: url('../outline-add-circle.svg') no-repeat center center / contain;
+  background: url('../../outline-add-circle.svg') no-repeat center center / contain;
 }
 
 #find-container {
@@ -48,12 +48,12 @@
   border: 0;
   cursor: pointer;
 
-  background: url('../search-alt-2.svg') no-repeat center center / contain;
+  background: url('../../search-alt-2.svg') no-repeat center center / contain;
   transition: background-image 250ms, left 250ms;
 }
 
 #addSong-findButton:hover {
-  background: url('../search-alt-3.svg') no-repeat center center / contain;
+  background: url('../../search-alt-3.svg') no-repeat center center / contain;
 }
 
 #addSong-findButton[show] {
@@ -213,7 +213,7 @@
   font-size: 0px !important;
   filter: invert(1);
 
-  background: url('../play-arrow-rounded.svg') no-repeat center center / contain;
+  background: url('../../play-arrow-rounded.svg') no-repeat center center / contain;
 }
 
 .tabulator-row[playing='true'] .tabulator-cell:first-child {
@@ -222,7 +222,7 @@
   font-size: 0px !important;
   filter: invert(1);
 
-  background: url('../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
+  background: url('../../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
 }
 
 #songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='artist']:hover {
