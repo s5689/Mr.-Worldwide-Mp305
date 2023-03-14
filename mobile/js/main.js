@@ -1,4 +1,4 @@
-import { toggleFindSong } from './songsList';
+import { toggleFindSong, toggleOrderAlbum, toggleOrderArtist, toggleOrderSong } from './songsList';
 import {
   handleAddPlaylist,
   handleDeleteSong,
@@ -24,6 +24,9 @@ mobileLoaded.onChange((e) => {
 if (mobileLoaded.get() === 3) preloadPlayers();
 
 window.toggleFindSong = toggleFindSong;
+window.toggleOrderSong = toggleOrderSong;
+window.toggleOrderArtist = toggleOrderArtist;
+window.toggleOrderAlbum = toggleOrderAlbum;
 
 window.controlPrev = handlePrev;
 window.controlStop = handleStop;

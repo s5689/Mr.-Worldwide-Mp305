@@ -17,36 +17,34 @@ export const songsTable = new Tabulator('#songsTable', {
   height: '100%',
   layout: 'fitColumns',
   autoResize: true,
+  headerVisible: false,
   columns: [
     {
-      title: '#',
+      field: 'play',
       hozAlign: 'center',
       formatter: 'rownum',
-      widthGrow: 0.15,
       resizable: false,
-      headerSort: false,
+      widthGrow: 0.1,
     },
     {
-      title: 'Nombre',
       field: 'name',
-      hozAlign: 'center',
+      hozAlign: 'left',
       resizable: false,
+      width: '45%',
     },
     {
-      title: 'Artista',
       field: 'artist',
-      hozAlign: 'center',
+      hozAlign: 'left',
       resizable: false,
+      width: '44%',
       sorter: columnSorter('artist'),
     },
     {
-      title: 'Album',
       field: 'album',
-      hozAlign: 'center',
       resizable: false,
+      visible: false,
       sorter: columnSorter('album'),
     },
-    { title: 'Duracion', field: 'time', hozAlign: 'center', widthGrow: 0.4, resizable: false },
   ],
 });
 
@@ -116,6 +114,9 @@ function columnSorter(e) {
 export async function loadSongsTable() {
   songsList.set(await getData());
   songsTable.replaceData(songsList.get());
+  toggleOrderSong();
+
+  // console.log(songsList);
 
   if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
@@ -125,17 +126,20 @@ export async function loadSongsTable() {
     Eventos
   ///////////
 */
-// Click en Play & Aplicar filtro rapido
-songsTable.on('cellClick', (e, cell) => {
-  const row = cell.getRow();
-  const rowHtml = row.getElement();
-  const rowIndex = row.getPosition();
-  const rowsOrder = songsTable.rowManager.activeRows;
-  const tempList = [];
+// Reproducir al seleccionar & gestionar selecciones.
+songsTable.on('rowClick', (e, rawRow) => {
+  console.log();
+  const rowHtml = rawRow.getElement();
+  const rowData = rawRow.getData();
 
-  // Aplicar solo si el click ocurrio en Play & la cancion seleccionada no esta en reproduccion
-  if (typeof cell.getField() === 'undefined' && !$(rowHtml).attr('playing')) {
-    if (!selectMode.get()) {
+  // Reproducir al seleccionar algun row si no esta en modo seleccion.
+  if (!selectMode.get()) {
+    // Aplicar solo si la cancion seleccionada no esta en reproduccion
+    if (!$(rowHtml).attr('playing')) {
+      const rowIndex = rawRow.getPosition();
+      const rowsOrder = songsTable.rowManager.activeRows;
+      const tempList = [];
+
       currentPlaylist.wipe();
 
       rowsOrder.forEach((value) => {
@@ -145,27 +149,59 @@ songsTable.on('cellClick', (e, cell) => {
       currentPlaylist.list = tempList;
       currentPlaylist.track = rowIndex - 1;
 
-      handlePlay(row.getData());
+      handlePlay(rawRow.getData());
 
       preventClosePlaylist.trigger();
       openPlaylist();
-    } else playSelected();
-  }
-
-  // Filtro Rapido
-  else {
-    if (!selectMode.get()) {
-      const { artist, album } = row.getData();
-
-      if (cell.getField() === 'artist' || cell.getField() === 'album') {
-        if (cell.getField() === 'artist') toggleFindSong(false, artist);
-        if (cell.getField() === 'album') toggleFindSong(false, album);
-
-        setTimeout(() => {
-          document.getElementById('addSong-findInput').focus();
-        }, 250);
-      }
     }
+  }
+  // Seleccionar o deseleccionar el Row en el que se hizo click.
+  else {
+    // Seleccionar el row, o deseleccionar el row si ya estaba seleccionado.
+    if (!$(rowHtml).attr('selected') || selectMode.selectSize() === 0) {
+      $(rowHtml).attr('selected', '');
+      selectMode.selected.push(rowData);
+    } else {
+      const filterSelect = selectMode.selected.filter((value) => value.id !== rowData.id);
+      selectMode.selected = filterSelect;
+
+      $(rowHtml).removeAttr('selected');
+    }
+
+    // Salir del modo seleccion si se deseleccionaron todos los row.
+    setTimeout(() => {
+      if (selectMode.selectSize() === 0) selectMode.set(false);
+    }, 0);
+  }
+});
+
+// Preparar o Remover modo seleccion
+selectMode.onChange((e) => {
+  const rows = songsTable.getRows();
+
+  if (e) {
+    // Preparar puntero de la lista
+    rows.forEach((value) => {
+      const html = value.getElement();
+      $(html).attr('selecting', '');
+    });
+
+    // Seleccionar el row que inicio el modo seleccion
+    $(rowOnMenu.row.getElement()).trigger('click');
+
+    // Mostrar menu contextual del modo seleccion
+    $('#songsList-modal if').attr('hidden', '');
+    $('#songsList-modal else').removeAttr('hidden');
+  } else {
+    // Remover puntero de la lista
+    rows.forEach((value) => {
+      const html = value.getElement();
+      $(html).removeAttr('selecting');
+    });
+
+    // Mostrar menu contextual normal
+    $('#songsList-modal if').removeAttr('hidden');
+    $('#songsList-modal else').attr('hidden', '');
   }
 });
 
@@ -231,67 +267,6 @@ $(document).on('scroll', () => $(document).trigger('click'));
 
 /*
 
-  Modo Seleccion
-
-*/
-// Preparar o Remover modo seleccion
-selectMode.onChange((e) => {
-  const rows = songsTable.getRows();
-
-  if (e) {
-    // Preparar puntero de la lista
-    rows.forEach((value) => {
-      const html = value.getElement();
-      $(html).attr('selecting', '');
-    });
-
-    // Seleccionar el row que inicio el modo seleccion
-    $(rowOnMenu.row.getElement()).trigger('click');
-
-    // Mostrar menu contextual del modo seleccion
-    $('#songsList-modal if').attr('hidden', '');
-    $('#songsList-modal else').removeAttr('hidden');
-  } else {
-    // Remover puntero de la lista
-    rows.forEach((value) => {
-      const html = value.getElement();
-      $(html).removeAttr('selecting');
-    });
-
-    // Mostrar menu contextual normal
-    $('#songsList-modal if').removeAttr('hidden');
-    $('#songsList-modal else').attr('hidden', '');
-  }
-});
-
-// Seleccionar o deseleccionar el Row en el que se hizo click.
-// Aplicar cambios tanto de forma visible en el CSS como en el array de seleccion.
-songsTable.on('rowClick', (e, rawRow) => {
-  const rowHtml = rawRow.getElement();
-  const rowData = rawRow.getData();
-
-  // Aplicar solo si esta en modo seleccion & el click no es sobre play.
-  if (selectMode.get() && rowHtml.children[0] !== e.target) {
-    // Seleccionar el row, o deseleccionar el row si ya estaba seleccionado.
-    if (!$(rowHtml).attr('selected') || selectMode.selectSize() === 0) {
-      $(rowHtml).attr('selected', '');
-      selectMode.selected.push(rowData);
-    } else {
-      const filterSelect = selectMode.selected.filter((value) => value.id !== rowData.id);
-      selectMode.selected = filterSelect;
-
-      $(rowHtml).removeAttr('selected');
-    }
-
-    // Salir del modo seleccion si se deseleccionaron todos los row.
-    setTimeout(() => {
-      if (selectMode.selectSize() === 0) selectMode.set(false);
-    }, 0);
-  }
-});
-
-/*
-
   Otros
 
 */
@@ -311,15 +286,15 @@ currentPlaylist.onWipe((e) => {
 
 // Mostrar busqueda de canciones.
 export function toggleFindSong(isClick = true, arg) {
-  const btnHtml = document.getElementById('addSong-findButton');
-  const inputHtml = document.getElementById('addSong-findInput');
+  const btnHtml = document.getElementById('songsList-findButton');
+  const inputHtml = document.getElementById('songsList-findInput');
 
   // Preparar filtros de forma normal si es desde la opcion de busqueda
   if (isClick) {
     if (btnHtml.getAttribute('show') === null) {
       setShow(true);
       inputHtml.value = '';
-      $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
+      $('#songsList-findInput').on('input', (e) => filterSongs(e.target.value));
 
       setTimeout(() => {
         inputHtml.focus();
@@ -327,7 +302,7 @@ export function toggleFindSong(isClick = true, arg) {
     } else {
       setShow(false);
       filterSongs('');
-      $('#addSong-findInput').unbind('input');
+      $('#songsList-findInput').unbind('input');
     }
   }
   // De lo contrario, filtrar por el campo seleccionado
@@ -336,7 +311,7 @@ export function toggleFindSong(isClick = true, arg) {
     inputHtml.value = arg;
     filterSongs(arg, true);
 
-    $('#addSong-findInput').on('input', (e) => filterSongs(e.target.value));
+    $('#songsList-findInput').on('input', (e) => filterSongs(e.target.value));
   }
 
   function setShow(e) {
@@ -348,6 +323,61 @@ export function toggleFindSong(isClick = true, arg) {
       inputHtml.removeAttribute('show', '');
     }
   }
+}
+
+// Orden de las canciones.
+let songDir = 'asc';
+export function toggleOrderSong() {
+  // Asignar Direccion y CSS al boton
+  songsTable.setSort('name', songDir);
+  document.getElementById('songsList-orderSong').setAttribute('using', '');
+
+  // Cambiar direccion si se presiona nuevamente
+  if (songDir === 'asc') songDir = 'desc';
+  else songDir = 'asc';
+
+  // Reiniciar estados de los otros botones
+  artistDir = 'asc';
+  albumDir = 'asc';
+
+  document.getElementById('songsList-orderArtist').removeAttribute('using');
+  document.getElementById('songsList-orderAlbum').removeAttribute('using');
+}
+
+let artistDir = 'asc';
+export function toggleOrderArtist() {
+  // Asignar Direccion y CSS al boton
+  songsTable.setSort('artist', artistDir);
+  document.getElementById('songsList-orderArtist').setAttribute('using', '');
+
+  // Cambiar direccion si se presiona nuevamente
+  if (artistDir === 'asc') artistDir = 'desc';
+  else artistDir = 'asc';
+
+  // Reiniciar estados de los otros botones
+  songDir = 'asc';
+  albumDir = 'asc';
+
+  document.getElementById('songsList-orderSong').removeAttribute('using');
+  document.getElementById('songsList-orderAlbum').removeAttribute('using');
+}
+
+let albumDir = 'asc';
+export function toggleOrderAlbum() {
+  // Asignar Direccion y CSS al boton
+  songsTable.setSort('album', albumDir);
+  document.getElementById('songsList-orderAlbum').setAttribute('using', '');
+
+  // Cambiar direccion si se presiona nuevamente
+  if (albumDir === 'asc') albumDir = 'desc';
+  else albumDir = 'asc';
+
+  // Reiniciar estados de los otros botones
+  songDir = 'asc';
+  artistDir = 'asc';
+
+  document.getElementById('songsList-orderSong').removeAttribute('using');
+  document.getElementById('songsList-orderArtist').removeAttribute('using');
 }
 
 // Filtrar canciones desde la busqueda.
@@ -391,6 +421,7 @@ function filterSongs(e, singles = false) {
 
 /* Funciones internas */
 async function getData() {
+  /*
   const resp = await getSongs();
   const temp = [];
 
@@ -415,6 +446,81 @@ async function getData() {
   });
 
   return temp;
+  */
+  return [
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'weqwewq',
+      artist: 'aaaaaaaaaa',
+      album: 'aaaaaaa',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'ewewewe',
+      artist: 'bbbbbbbbb',
+      album: 'aaaaaaa',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'dsdasdas',
+      artist: 'bbbbbbbbb',
+      album: 'aaaaaaa',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'xcxcxczz',
+      artist: 'dddddddddddddd',
+      album: 'bbbbbbbbbbbbbbbb',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'hhhhhh',
+      artist: 'eeeeeeeeeeeeee',
+      album: 'llllllllllllll',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'yiiytutyu',
+      artist: 'ffffffffffffffff',
+      album: 'nnnnnnnnnnn',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'oouiouio',
+      artist: 'aaaaaaaaaa',
+      album: 'nnnnnnnnnnn',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'vxcvbbbb',
+      artist: 'hhhhhhhhhhhhhhh',
+      album: 'nnnnnnnnnnn',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+    {
+      id: Math.round(Math.random() * 999999999),
+      name: 'aaasdsadsad',
+      artist: 'iiiiiiiiiiiiii',
+      album: 'kkkkkkkkkkk',
+      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
+      source: 'SOUNDCLOUD',
+    },
+  ];
 }
 
 function getRowHtml(id) {

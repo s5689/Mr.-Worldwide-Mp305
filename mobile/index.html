@@ -39,11 +39,17 @@
 
     <div id="songsList">
       <div id="find-container">
-        <button id="addSong-findButton" onclick="toggleFindSong()"></button>
-        <input id="addSong-findInput" autocomplete="off"></input>
+        <button id="songsList-findButton" onclick="toggleFindSong()"></button>
+        <input id="songsList-findInput" autocomplete="off"></input>
       </div>
+      
+      <button id="songsList-orderSong" onclick="toggleOrderSong()"></button>
+      <button id="songsList-orderArtist" onclick="toggleOrderArtist()"></button>
+      <button id="songsList-orderAlbum" onclick="toggleOrderAlbum()"></button>
+
       <div id="songsTable"></div>
     </div>
+
 
     <modal id="songsList-modal">
       <if>

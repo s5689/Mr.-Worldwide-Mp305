@@ -1,56 +1,62 @@
 #songsList {
   position: absolute;
   top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
 
-  width: 90%;
+  width: 100%;
 }
 
 /* Botones Sobre la tabla */
-#find-container {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  text-align: right;
-
-  width: 200px;
-  height: 35px;
-
-  overflow: hidden;
-}
-
-#addSong-findButton {
-  position: relative;
-  left: 158px;
+#songsList button {
+  position: absolute;
+  top: 0;
   width: 35px;
   height: 35px;
 
   filter: invert(1);
   border: 0;
-  cursor: pointer;
+
+  transition: background-image 700ms, left 250ms;
+}
+
+#find-container {
+  position: absolute;
+  top: 0px;
+  right: 170px;
+  text-align: right;
+
+  width: 150px;
+  height: 35px;
+
+  overflow: hidden;
+}
+
+#songsList-findButton {
+  position: relative;
+  left: 114px;
 
   background: url('../../search-alt-2.svg') no-repeat center center / contain;
-  transition: background-image 250ms, left 250ms;
 }
 
-#addSong-findButton:hover {
+#songsList-findButton:active {
   background: url('../../search-alt-3.svg') no-repeat center center / contain;
+  transition: background-image 0ms, left 250ms;
 }
 
-#addSong-findButton[show] {
-  left: 0;
+#songsList-findButton[show] {
+  left: 10px;
 }
 
-#addSong-findInput {
+#songsList-findInput {
   font-family: Arial;
   position: relative;
-  top: -10px;
-  left: 158px;
+  top: 5px;
+  left: 108px;
 
   color: white;
   background-color: rgba(0, 0, 0, 0);
-  width: 150px;
+  width: 100px;
   text-align: center;
   font-size: large;
 
@@ -62,8 +68,56 @@
   transition: left 250ms;
 }
 
-#addSong-findInput[show] {
+#songsList-findInput[show] {
   left: 0;
+}
+
+#songsList-orderSong {
+  right: 120px;
+  top: 0;
+
+  background: url('../../music-notes-light.svg') no-repeat center center / contain;
+}
+
+#songsList-orderSong[using] {
+  background: url('../../music-notes-fill.svg') no-repeat center center / contain;
+}
+
+#songsList-orderSong[using]:active {
+  background: url('../../music-notes-light.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
+#songsList-orderArtist {
+  right: 70px;
+  top: 0;
+
+  background: url('../../artist-outline.svg') no-repeat center center / contain;
+}
+
+#songsList-orderArtist[using] {
+  background: url('../../artist.svg') no-repeat center center / contain;
+}
+
+#songsList-orderArtist[using]:active {
+  background: url('../../artist-outline.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
+#songsList-orderAlbum {
+  right: 20px;
+  top: 0;
+
+  background: url('../../cd-dvd-line.svg') no-repeat center center / contain;
+}
+
+#songsList-orderAlbum[using] {
+  background: url('../../cd-dvd-solid.svg') no-repeat center center / contain;
+}
+
+#songsList-orderAlbum[using]:active {
+  background: url('../../cd-dvd-line.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
 }
 
 /* Menu Contextual */
@@ -121,59 +175,72 @@
 /* Tabla */
 #songsTable {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
   color: white;
+  margin-top: 50px;
   margin-bottom: 20%;
+
+  user-select: none;
 }
 
 .tabulator-tableholder {
   background-color: black;
+
+  max-width: 100%;
+  overflow-x: hidden !important;
 }
 
 .tabulator-placeholder-contents {
   background-color: black;
 }
 
-/* Header */
-.tabulator-header {
-  border-top: none !important;
-  border-bottom: 2px solid !important;
-}
-
-.tabulator-col-title {
-  font-size: larger;
-  text-align: center;
-  padding-right: 0 !important;
-}
-
-.tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort='ascending'],
-[aria-sort='descending'] .tabulator-col-content .tabulator-col-title {
-  color: #666 !important;
-  font-weight: 400;
-}
-
-.tabulator-col-sorter {
-  display: none !important;
+.tabulator-table {
+  width: 100%;
 }
 
 /* Rows */
 .tabulator-col,
 .tabulator-row {
   background-color: black !important;
-  height: 50px;
+  width: 100%;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .tabulator-row {
-  cursor: default !important;
+  min-height: 60px;
 }
 
-.tabulator-row:hover {
+.tabulator-row:active {
   background-color: rgba(0, 0, 0, 0.88) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
 
-.tabulator-row[selecting] {
-  cursor: pointer !important;
+.tabulator-cell[tabulator-field='play'] {
+  position: absolute;
+  height: 60px !important;
+
+  padding: 18px 5px 10px 5px;
+  align-content: center;
+}
+
+.tabulator-cell[tabulator-field='name'] {
+  font-weight: 400;
+  margin-left: 10%;
+  width: 85% !important;
+}
+
+.tabulator-cell[tabulator-field='artist'] {
+  font-size: x-small;
+  font-style: italic;
+
+  position: relative;
+  left: -85%;
+  top: 11px;
+
+  width: 85% !important;
+  height: 100% !important;
+  padding-bottom: 5px;
 }
 
 .tabulator-row[playing='true'] {
@@ -189,15 +256,6 @@
 }
 
 /* Cells */
-.tabulator-cell:first-child:hover {
-  cursor: pointer !important;
-
-  font-size: 0px !important;
-  filter: invert(1);
-
-  background: url('../../play-arrow-rounded.svg') no-repeat center center / contain;
-}
-
 .tabulator-row[playing='true'] .tabulator-cell:first-child {
   cursor: default !important;
 
@@ -205,14 +263,4 @@
   filter: invert(1);
 
   background: url('../../arrow-forward-ios-rounded.svg') no-repeat center center / contain;
-}
-
-#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='artist']:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-#songsTable .tabulator-row:not([selecting]) .tabulator-cell[tabulator-field='album']:hover {
-  text-decoration: underline;
-  cursor: pointer;
 }
