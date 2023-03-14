@@ -12,8 +12,6 @@ import { openPlaylist, playlistTable } from './playlist';
 import { createAutoComplete } from './addSong';
 import { getSongs } from './db';
 
-loadSongsTable();
-
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
   placeholder: 'Cargando...',

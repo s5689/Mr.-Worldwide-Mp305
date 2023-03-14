@@ -1,10 +1,11 @@
 import { loadingPlayer, stopped } from './stateStore';
+import { loadSongsTable } from './songsList';
 import { handleNext } from './controls';
 let controller;
 let pause = false;
 let currentPosition;
 
-export function loadSP() {
+export async function loadSP() {
   const callback = (e) => {
     e.iframeElement.id = 'spotify';
     e.iframeElement.className = 'players';
@@ -36,7 +37,10 @@ export function loadSP() {
     controller = e;
   };
 
-  SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
+  setTimeout(() => {
+    SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
+    loadSongsTable();
+  }, 500);
 }
 
 export function playSP(e) {

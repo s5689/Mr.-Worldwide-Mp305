@@ -1,4 +1,4 @@
-import { loadSongsTable, toggleFindSong } from './songsList';
+import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
   handleDeleteSong,
@@ -17,16 +17,11 @@ import {
 import './songsList';
 import './playlist';
 
-loaded.onChange((e) => {
-  if (e === 3) apiReady();
+mobileLoaded.onChange((e) => {
+  if (e === 3) preloadPlayers();
 });
 
-if (loaded.get() === 3) apiReady();
-
-function apiReady() {
-  preloadPlayers();
-  loadSongsTable();
-}
+if (mobileLoaded.get() === 3) preloadPlayers();
 
 window.toggleFindSong = toggleFindSong;
 
