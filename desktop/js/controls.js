@@ -4,10 +4,11 @@ import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } f
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
 import { dummyStart } from './dummyAudio';
-import { deleteSong } from './db';
+import { deleteSong, setConfig } from './db';
 import { toMKR } from './VME-MKR';
 import {
   currentPlaylist,
+  dataVersion,
   loadingPlayer,
   preventClosePlaylist,
   rowOnMenu,
@@ -219,7 +220,9 @@ export async function handleDeleteSong() {
 
   if (confirm('¿Realmente desea eliminar este elemento?')) {
     deleteSong(data.id);
-    loadSongsTable();
+    loadSongsTable(data, data.id, true);
+
+    setConfig(dataVersion.value + 1);
   }
 }
 

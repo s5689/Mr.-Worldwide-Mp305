@@ -6,11 +6,12 @@ import {
   selectMode,
   preventClosePlaylist,
   autoComplete,
+  dataVersion,
 } from './stateStore';
 import { handleDeselectAll, handlePlay } from './controls';
 import { openPlaylist, playlistTable } from './playlist';
 import { createAutoComplete } from './addSong';
-import { getSongs } from './db';
+import { getConfig, getSongs } from './db';
 
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
@@ -114,10 +115,16 @@ function columnSorter(e) {
   }
 }
 
-export async function loadSongsTable() {
-  songsList.set(await getData());
-  songsTable.replaceData(songsList.get());
+export async function loadSongsTable(e, updating, del = false) {
+  if (!e) songsList.set(await getData());
+  else {
+    if (typeof updating !== 'undefined')
+      songsList.set(songsList.value.filter((value) => value.id !== updating));
 
+    if (!del) songsList.value.push(e);
+  }
+
+  songsTable.replaceData(songsList.get());
   if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
 
@@ -392,18 +399,37 @@ function filterSongs(e, singles = false) {
 
 /* Funciones internas */
 async function getData() {
-  const resp = await getSongs();
+  const version = await getConfig().then((resp) => resp.data());
+  const currentVersion = Number(localStorage.getItem('version'));
   const temp = [];
 
   autoComplete.wipe();
 
-  resp.forEach((value) => {
-    const currentValue = value.data();
-    currentValue.id = value.id;
+  console.log(version.value, currentVersion);
+  // Comprobar si la version de los datos es la misma que la del usuario.
+  if (version.value === currentVersion) {
+    // De ser el caso, usar los datos locales.
+    const resp = JSON.parse(localStorage.getItem('songsList'));
 
-    addAutoComplete(currentValue.artist, currentValue.album);
-    temp.push(currentValue);
-  });
+    resp.forEach((value) => {
+      addAutoComplete(value.artist, value.album);
+      temp.push(value);
+    });
+  } else {
+    // De lo contrario, llamar a la base de datos nuevamente y actualizarles.
+    const resp = await getSongs();
+
+    resp.forEach((value) => {
+      const currentValue = value.data();
+      currentValue.id = value.id;
+
+      addAutoComplete(currentValue.artist, currentValue.album);
+      temp.push(currentValue);
+    });
+
+    localStorage.setItem('songsList', JSON.stringify(temp));
+    localStorage.setItem('version', version.value);
+  }
 
   // Organizar Arrays
   autoComplete.artist = autoComplete.artist.sort((a, b) => {
@@ -418,6 +444,9 @@ async function getData() {
 
   createAutoComplete(document.getElementById('addSong-artist'), autoComplete.artist);
   createAutoComplete(document.getElementById('addSong-album'), autoComplete.album);
+
+  // Almacenar version actual para usarle en otras areas de la aplicacion.
+  dataVersion.value = JSON.parse(localStorage.getItem('version'));
 
   return temp;
 }

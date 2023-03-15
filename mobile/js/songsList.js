@@ -5,11 +5,10 @@ import {
   rowOnMenu,
   selectMode,
   preventClosePlaylist,
-  autoComplete,
 } from './stateStore';
 import { handleDeselectAll, handlePlay } from './controls';
 import { openPlaylist, playlistTable } from './playlist';
-import { getSongs } from './db';
+import { getConfig, getSongs } from './db';
 
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
@@ -44,6 +43,12 @@ export const songsTable = new Tabulator('#songsTable', {
       resizable: false,
       visible: false,
       sorter: columnSorter('album'),
+    },
+    {
+      field: 'options',
+      hozAlign: 'center',
+      resizable: false,
+      widthGrow: 0.1,
     },
   ],
 });
@@ -115,8 +120,6 @@ export async function loadSongsTable() {
   songsList.set(await getData());
   songsTable.replaceData(songsList.get());
   toggleOrderSong();
-
-  // console.log(songsList);
 
   if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
@@ -421,106 +424,33 @@ function filterSongs(e, singles = false) {
 
 /* Funciones internas */
 async function getData() {
-  /*
-  const resp = await getSongs();
+  const version = await getConfig().then((resp) => resp.data());
+  const currentVersion = Number(localStorage.getItem('version'));
   const temp = [];
 
-  autoComplete.wipe();
+  console.log(version.value, currentVersion);
+  // Comprobar si la version de los datos es la misma que la del usuario.
+  if (version.value === currentVersion) {
+    // De ser el caso, usar los datos locales.
+    const resp = JSON.parse(localStorage.getItem('songsList'));
 
-  resp.forEach((value) => {
-    const currentValue = value.data();
-    currentValue.id = value.id;
+    resp.forEach((value) => temp.push(value));
+  } else {
+    // De lo contrario, llamar a la base de datos nuevamente y actualizarles.
+    const resp = await getSongs();
 
-    temp.push(currentValue);
-  });
+    resp.forEach((value) => {
+      const currentValue = value.data();
+      currentValue.id = value.id;
 
-  // Organizar Arrays
-  autoComplete.artist = autoComplete.artist.sort((a, b) => {
-    if (a > b) return 1;
-    else return -1;
-  });
+      temp.push(currentValue);
+    });
 
-  autoComplete.album = autoComplete.album.sort((a, b) => {
-    if (a > b) return 1;
-    else return -1;
-  });
+    localStorage.setItem('songsList', JSON.stringify(temp));
+    localStorage.setItem('version', version.value);
+  }
 
   return temp;
-  */
-  return [
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'weqwewq',
-      artist: 'aaaaaaaaaa',
-      album: 'aaaaaaa',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'ewewewe',
-      artist: 'bbbbbbbbb',
-      album: 'aaaaaaa',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'dsdasdas',
-      artist: 'bbbbbbbbb',
-      album: 'aaaaaaa',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'xcxcxczz',
-      artist: 'dddddddddddddd',
-      album: 'bbbbbbbbbbbbbbbb',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'hhhhhh',
-      artist: 'eeeeeeeeeeeeee',
-      album: 'llllllllllllll',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'yiiytutyu',
-      artist: 'ffffffffffffffff',
-      album: 'nnnnnnnnnnn',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'oouiouio',
-      artist: 'aaaaaaaaaa',
-      album: 'nnnnnnnnnnn',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'vxcvbbbb',
-      artist: 'hhhhhhhhhhhhhhh',
-      album: 'nnnnnnnnnnn',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-    {
-      id: Math.round(Math.random() * 999999999),
-      name: 'aaasdsadsad',
-      artist: 'iiiiiiiiiiiiii',
-      album: 'kkkkkkkkkkk',
-      link: 'https://soundcloud.com/upscale-recordings/refraq-semantics',
-      source: 'SOUNDCLOUD',
-    },
-  ];
 }
 
 function getRowHtml(id) {

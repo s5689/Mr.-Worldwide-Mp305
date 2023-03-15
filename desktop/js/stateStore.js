@@ -161,8 +161,8 @@ export const autoComplete = {
 };
 
 export const rowOnMenu = { row: null };
-
 export const stopped = { state: true };
+export const dataVersion = { value: null };
 
 // Funciones Externas porque ajajajavascript.
 function forceSetTrack(e) {

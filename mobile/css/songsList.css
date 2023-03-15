@@ -226,7 +226,7 @@
 
 .tabulator-cell[tabulator-field='name'] {
   font-weight: 400;
-  margin-left: 10%;
+  margin-left: 40px;
   width: 85% !important;
 }
 
@@ -237,6 +237,16 @@
   position: relative;
   left: -85%;
   top: 11px;
+
+  width: 85% !important;
+  height: 100% !important;
+  padding-bottom: 5px;
+}
+
+.tabulator-cell[tabulator-field='options'] {
+  position: absolute;
+  right: 0;
+  top: 0;
 
   width: 85% !important;
   height: 100% !important;

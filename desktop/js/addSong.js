@@ -1,6 +1,6 @@
-import { saveSong, updateSong } from './db';
+import { saveSong, setConfig, updateSong } from './db';
+import { dataVersion, songsList } from './stateStore';
 import { loadSongsTable } from './songsList';
-import { songsList } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -45,7 +45,7 @@ export function toggleAddSong(update = false, e) {
         $('#addSong-save').attr('hidden', '');
       });
 
-      toDB = { name, number, artist, album };
+      toDB = { name, number, artist, album, link, time, source, id };
       isUpdate = id;
     }
 
@@ -106,8 +106,10 @@ export async function saveAddSong() {
   if (isUpdate === null) await saveSong(toDB);
   else await updateSong(isUpdate, toDB);
 
+  setConfig(dataVersion.value + 1);
+
   closeAddSong();
-  loadSongsTable();
+  loadSongsTable(toDB, isUpdate);
 }
 
 // Autocomplete cosas.
