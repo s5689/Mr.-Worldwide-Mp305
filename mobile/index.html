@@ -52,11 +52,12 @@
 
 
     <modal id="songsList-modal">
+      <div id="songsList-modal-wrapper"></div>
+
       <if>
         <button onclick="playFromMenu()" playbutton>Reproducir</button>
         <button onclick="singleAddPlaylist()" playbutton>Agregar a la Lista</button>
         <button onclick="selectMode()">Seleccionar</button>
-        <button onclick="deleteSong()">Eliminar</button>
       </if>
 
       <else hidden>
@@ -69,7 +70,33 @@
 
     <modal id="playlist-modal"> <div id="playlist-table"></div> </modal>
 
-    <div id="player-container">
+    <div id="preview-player">
+      <div id="preview-track" onclick="showPlayer()">
+        <p id="preview-name">Mr. Worldwide Mp305</p>
+        <p id="preview-artist-album">Mobile - Player</p>
+      </div>
+
+      <div id="preview-button-container">
+        <button id="preview-playlist"></button>
+      </div>
+    </div>
+
+    <div id="player-modal">
+      <button id="close-player-modal" onclick="closePlayer()"></button>
+
+      <div id="player-container">
+        <iframe
+        id="soundcloud"
+        class="players"
+        frameborder="no"
+        allow="autoplay"
+        src="https://w.soundcloud.com/player/?url="
+        ></iframe>
+
+        <div id="spotify-container"></div>
+        <div id="mww" class="players"></div>
+      </div>
+
       <div id="controls">
         <div class="up">
           <button id="control-prev" onclick="controlPrev()"></button>
@@ -81,18 +108,6 @@
           <button id="control-shuffle" onclick="controlShuffle()"></button>
         </div>
       </div>
-
-      <iframe
-        id="soundcloud"
-        class="players"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url="
-      ></iframe>
-
-      <div id="spotify-container"></div>
-      <div id="mww" class="players"></div>
-      <div id="sp-pause-button"></div>
     </div>
   </body>
 </html>

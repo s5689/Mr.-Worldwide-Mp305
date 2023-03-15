@@ -14,6 +14,7 @@ export function playSC(e) {
     download: false,
     show_playcount: false,
     show_comments: false,
+    visual: true,
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();

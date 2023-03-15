@@ -1,13 +1,14 @@
 import { toggleFindSong, toggleOrderAlbum, toggleOrderArtist, toggleOrderSong } from './songsList';
 import {
   handleAddPlaylist,
-  handleDeleteSong,
+  handleClosePlayer,
   handleDeselectAll,
   handleNext,
   handlePlayFromMenu,
   handlePrev,
   handleSelectAll,
   handleSelectMode,
+  handleShowPlayer,
   handleShuffle,
   handleSingleAddPlaylist,
   handleStop,
@@ -28,6 +29,9 @@ window.toggleOrderSong = toggleOrderSong;
 window.toggleOrderArtist = toggleOrderArtist;
 window.toggleOrderAlbum = toggleOrderAlbum;
 
+window.showPlayer = handleShowPlayer;
+window.closePlayer = handleClosePlayer;
+
 window.controlPrev = handlePrev;
 window.controlStop = handleStop;
 window.controlNext = handleNext;
@@ -37,7 +41,6 @@ window.controlShuffle = handleShuffle;
 window.playFromMenu = handlePlayFromMenu;
 window.singleAddPlaylist = handleSingleAddPlaylist;
 window.selectMode = handleSelectMode;
-window.deleteSong = handleDeleteSong;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;

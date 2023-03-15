@@ -161,7 +161,6 @@ export const autoComplete = {
 };
 
 export const rowOnMenu = { row: null };
-
 export const stopped = { state: true };
 
 // Funciones Externas porque ajajajavascript.

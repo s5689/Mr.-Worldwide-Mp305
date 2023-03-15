@@ -54,7 +54,6 @@ export function togglePauseSP() {
 }
 
 export function stopSP() {
-  $('#sp-pause-button').remove();
   $('#spotify').css('display', 'none');
 
   if (!pause) {

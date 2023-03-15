@@ -22,6 +22,14 @@ export function preloadPlayers() {
   loadSC();
 }
 
+export function handleShowPlayer() {
+  document.getElementById('player-modal').setAttribute('show', '');
+}
+
+export function handleClosePlayer() {
+  document.getElementById('player-modal').removeAttribute('show');
+}
+
 export function handlePlay(e) {
   handleStop(false);
   currentSource = e.source;
@@ -193,22 +201,11 @@ export function handleSingleAddPlaylist() {
     handlePlay(row.getData());
   }
 
-  preventClosePlaylist.trigger();
-  openPlaylist();
+  handleShowPlayer();
 }
 
 export function handleSelectMode() {
   selectMode.set(true);
-}
-
-export async function handleDeleteSong() {
-  const { row } = rowOnMenu;
-  const data = row.getData();
-
-  if (confirm('¿Realmente desea eliminar este elemento?')) {
-    deleteSong(data.id);
-    loadSongsTable();
-  }
 }
 
 export function handleAddPlaylist() {

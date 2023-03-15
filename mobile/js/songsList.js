@@ -1,4 +1,7 @@
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import { handleDeselectAll, handlePlay, handleShowPlayer } from './controls';
+import { openPlaylist, playlistTable } from './playlist';
+import { getConfig, getSongs } from './db';
 import {
   currentPlaylist,
   songsList,
@@ -6,9 +9,6 @@ import {
   selectMode,
   preventClosePlaylist,
 } from './stateStore';
-import { handleDeselectAll, handlePlay } from './controls';
-import { openPlaylist, playlistTable } from './playlist';
-import { getConfig, getSongs } from './db';
 
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
@@ -29,13 +29,13 @@ export const songsTable = new Tabulator('#songsTable', {
       field: 'name',
       hozAlign: 'left',
       resizable: false,
-      width: '45%',
+      width: '40%',
     },
     {
       field: 'artist',
       hozAlign: 'left',
       resizable: false,
-      width: '44%',
+      width: '40%',
       sorter: columnSorter('artist'),
     },
     {
@@ -124,58 +124,67 @@ export async function loadSongsTable() {
   if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
 
-/* 
+/*
   ///////////
     Eventos
   ///////////
 */
 // Reproducir al seleccionar & gestionar selecciones.
 songsTable.on('rowClick', (e, rawRow) => {
-  console.log();
   const rowHtml = rawRow.getElement();
   const rowData = rawRow.getData();
+  let cell = '';
 
-  // Reproducir al seleccionar algun row si no esta en modo seleccion.
-  if (!selectMode.get()) {
-    // Aplicar solo si la cancion seleccionada no esta en reproduccion
-    if (!$(rowHtml).attr('playing')) {
-      const rowIndex = rawRow.getPosition();
-      const rowsOrder = songsTable.rowManager.activeRows;
-      const tempList = [];
+  try {
+    cell = e.target.attributes.getNamedItem('tabulator-field').value;
+  } catch (e) {}
 
-      currentPlaylist.wipe();
+  if (cell !== 'options') {
+    // Reproducir al seleccionar algun row si no esta en modo seleccion.
+    if (!selectMode.get()) {
+      // Aplicar solo si la cancion seleccionada no esta en reproduccion
+      if (!$(rowHtml).attr('playing')) {
+        const rowIndex = rawRow.getPosition();
+        const rowsOrder = songsTable.rowManager.activeRows;
+        const tempList = [];
 
-      rowsOrder.forEach((value) => {
-        tempList.push(value.getData());
-      });
+        currentPlaylist.wipe();
 
-      currentPlaylist.list = tempList;
-      currentPlaylist.track = rowIndex - 1;
+        rowsOrder.forEach((value) => {
+          tempList.push(value.getData());
+        });
 
-      handlePlay(rawRow.getData());
+        currentPlaylist.list = tempList;
+        currentPlaylist.track = rowIndex - 1;
 
-      preventClosePlaylist.trigger();
-      openPlaylist();
+        handlePlay(rawRow.getData());
+
+        preventClosePlaylist.trigger();
+        handleShowPlayer();
+      }
     }
-  }
-  // Seleccionar o deseleccionar el Row en el que se hizo click.
-  else {
-    // Seleccionar el row, o deseleccionar el row si ya estaba seleccionado.
-    if (!$(rowHtml).attr('selected') || selectMode.selectSize() === 0) {
-      $(rowHtml).attr('selected', '');
-      selectMode.selected.push(rowData);
-    } else {
-      const filterSelect = selectMode.selected.filter((value) => value.id !== rowData.id);
-      selectMode.selected = filterSelect;
+    // Seleccionar o deseleccionar el Row en el que se hizo click.
+    else {
+      // Seleccionar el row, o deseleccionar el row si ya estaba seleccionado.
+      if (!$(rowHtml).attr('selected') || selectMode.selectSize() === 0) {
+        $(rowHtml).attr('selected', '');
+        selectMode.selected.push(rowData);
+      } else {
+        const filterSelect = selectMode.selected.filter((value) => value.id !== rowData.id);
+        selectMode.selected = filterSelect;
 
-      $(rowHtml).removeAttr('selected');
+        $(rowHtml).removeAttr('selected');
+      }
+
+      // Salir del modo seleccion si se deseleccionaron todos los row.
+      setTimeout(() => {
+        if (selectMode.selectSize() === 0) selectMode.set(false);
+      }, 0);
     }
-
-    // Salir del modo seleccion si se deseleccionaron todos los row.
+  } else
     setTimeout(() => {
-      if (selectMode.selectSize() === 0) selectMode.set(false);
-    }, 0);
-  }
+      handleOptions(e, rawRow);
+    }, 1);
 });
 
 // Preparar o Remover modo seleccion
@@ -216,8 +225,7 @@ export function playSelected() {
   handleDeselectAll();
   handlePlay(currentPlaylist.list[0]);
 
-  preventClosePlaylist.trigger();
-  openPlaylist();
+  handleShowPlayer();
 }
 
 /*
@@ -225,33 +233,27 @@ export function playSelected() {
   Menu Contextual
 
 */
-// Click derecho = Mostrar menu contextual
-songsTable.on('rowContext', (e, row) => {
-  const limit = window.innerWidth - e.clientX - 220;
-  let x = e.pageX;
-  let y = e.pageY;
+// Click en opciones = Mostrar menu contextual
+function handleOptions(e, row) {
+  const { x } = e.target.getBoundingClientRect();
+  const y = e.target.offsetParent.offsetTop;
 
   // Limpiar menu
   $(document).trigger('click');
 
   // Aplicar CCSs
-  if (limit > 0) $('#songsList-modal').attr('to-right', '');
-  else {
-    $('#songsList-modal').attr('to-left', '');
-    x = e.clientX - 200;
-  }
+  $('#songsList-modal').attr('to-left', '');
 
   $('#songsList-modal').css({
     display: 'block',
-    left: `${x}px`,
-    top: `${y}px`,
+    left: `${x - 185}px`,
+    top: `${y + 185}px`,
   });
 
   if (!selectMode.get()) $(row.getElement()).attr('selected', '');
 
-  e.preventDefault();
   rowOnMenu.row = row; // Variable que contiene el Row que abrio el menu.
-});
+}
 
 // Limpiar efectos del menu contextual al hacer click
 $(document).on('click', () => {
