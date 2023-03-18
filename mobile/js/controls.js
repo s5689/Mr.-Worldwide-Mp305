@@ -1,8 +1,7 @@
-import { loadSongsTable, playSelected, songsTable } from './songsList';
+import { playSelected, songsTable } from './songsList';
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
-import { deleteSong } from './db';
 import {
   currentPlaylist,
   loadingPlayer,
