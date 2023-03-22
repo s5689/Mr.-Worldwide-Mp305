@@ -172,21 +172,45 @@ window.test = async () => {
     });
     */
 
-  const audio = document.getElementById('test');
-  const mediaSource = new MediaSource();
-  audio.src = URL.createObjectURL(mediaSource);
+  const audio = new AudioContext();
+  const parts = [];
+  const toFetch = ['0-160000', '160001-320000'];
+  let k = 0;
+  let packet;
 
-  mediaSource.addEventListener('sourceopen', () => {
-    const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+  play(await fetching(toFetch[k]));
 
-    fetch(
-      'https://audio-ak-spotify-com.akamaized.net/audio/56f6491aede21688356646eaf18a08ae67dac501?__token__=exp=1679069094~hmac=bad44c141cc76fc3435dd0a9f8e3f7fdd8fe64446fc351d6fe9c8a6b5a9159e8',
+  setInterval(async () => {
+    console.log(audio.currentTime);
+    console.log(packet);
+
+    try {
+      if (audio.currentTime > packet.duration - 0.1 && k === 0) {
+        k++;
+        play(await fetching(toFetch[1]));
+      }
+    } catch (e) {}
+  }, 100);
+
+  function play(data) {
+    packet = data;
+
+    const source = audio.createBufferSource();
+    source.buffer = data;
+    source.connect(audio.destination);
+    source.start(0);
+  }
+
+  async function fetching(e) {
+    return await fetch(
+      'https://audio-ak-spotify-com.akamaized.net/audio/56f6491aede21688356646eaf18a08ae67dac501?__token__=exp=1679490813~hmac=1db5c8b38e928fb522278c1902f38e7c680ba11173d4f94da6a798b2d6414022',
       {
         headers: {
+          Accept: '*/*',
           Connection: 'keep-alive',
           Host: 'audio-ak-spotify-com.akamaized.net',
           Origin: 'https://open.spotify.com',
-          Range: 'bytes=0-160000',
+          Range: `bytes=${e}`,
           Referer: 'https://open.spotify.com/',
           'Sec-Fetch-Dest': 'empty',
           'Sec-Fetch-Mode': 'cors',
@@ -197,17 +221,7 @@ window.test = async () => {
       }
     )
       .then((resp) => resp.arrayBuffer())
-      .then((data) => {
-        sourceBuffer.addEventListener('updateend', (e) => {
-          mediaSource.endOfStream();
-          console.log(audio);
-          console.log(mediaSource);
-          console.log(sourceBuffer);
-
-          // audio.play();
-        });
-
-        sourceBuffer.appendBuffer(data);
-      });
-  });
+      .then((buffer) => new AudioContext().decodeAudioData(buffer))
+      .catch((e) => console.log(e));
+  }
 };
