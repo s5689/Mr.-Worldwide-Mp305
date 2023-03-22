@@ -22,10 +22,12 @@ export function preloadPlayers() {
 }
 
 export function handleShowPlayer() {
+  document.querySelector('body').setAttribute('modal-opened', '');
   document.getElementById('player-modal').setAttribute('show', '');
 }
 
 export function handleClosePlayer() {
+  document.querySelector('body').removeAttribute('modal-opened');
   document.getElementById('player-modal').removeAttribute('show');
 }
 

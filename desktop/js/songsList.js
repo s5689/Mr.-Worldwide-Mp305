@@ -124,6 +124,7 @@ export async function loadSongsTable(e, updating, del = false) {
     if (!del) songsList.value.push(e);
   }
 
+  buildAutoComplete();
   songsTable.replaceData(songsList.get());
   if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
@@ -403,18 +404,14 @@ async function getData() {
   const currentVersion = Number(localStorage.getItem('version'));
   const temp = [];
 
-  autoComplete.wipe();
-
   console.log(version.value, currentVersion);
+
   // Comprobar si la version de los datos es la misma que la del usuario.
   if (version.value === currentVersion) {
     // De ser el caso, usar los datos locales.
     const resp = JSON.parse(localStorage.getItem('songsList'));
 
-    resp.forEach((value) => {
-      addAutoComplete(value.artist, value.album);
-      temp.push(value);
-    });
+    resp.forEach((value) => temp.push(value));
   } else {
     // De lo contrario, llamar a la base de datos nuevamente y actualizarles.
     const resp = await getSongs();
@@ -423,13 +420,27 @@ async function getData() {
       const currentValue = value.data();
       currentValue.id = value.id;
 
-      addAutoComplete(currentValue.artist, currentValue.album);
       temp.push(currentValue);
     });
 
     localStorage.setItem('songsList', JSON.stringify(temp));
     localStorage.setItem('version', version.value);
   }
+
+  // Almacenar version actual para usarle en otras areas de la aplicacion.
+  dataVersion.value = JSON.parse(localStorage.getItem('version'));
+
+  return temp;
+}
+
+function buildAutoComplete() {
+  const tempList = songsList.get();
+
+  autoComplete.wipe();
+
+  tempList.forEach((value) => {
+    addAutoComplete(value.artist, value.album);
+  });
 
   // Organizar Arrays
   autoComplete.artist = autoComplete.artist.sort((a, b) => {
@@ -444,11 +455,6 @@ async function getData() {
 
   createAutoComplete(document.getElementById('addSong-artist'), autoComplete.artist);
   createAutoComplete(document.getElementById('addSong-album'), autoComplete.album);
-
-  // Almacenar version actual para usarle en otras areas de la aplicacion.
-  dataVersion.value = JSON.parse(localStorage.getItem('version'));
-
-  return temp;
 }
 
 function addAutoComplete(art, alb) {
