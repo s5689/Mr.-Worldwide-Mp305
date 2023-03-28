@@ -23,10 +23,10 @@ import './dummyAudio';
 import './VME-MKR';
 
 desktopLoaded.onChange((e) => {
-  if (e === 3) apiReady();
+  if (e === 4) apiReady();
 });
 
-if (desktopLoaded.get() === 3) apiReady();
+if (desktopLoaded.get() === 4) apiReady();
 
 function apiReady() {
   preloadPlayers();
