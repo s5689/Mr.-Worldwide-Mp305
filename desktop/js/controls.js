@@ -1,6 +1,7 @@
 import { loadSongsTable, playSelected, songsTable, toggleFindSong } from './songsList';
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
+import { getPositionYT, loadYT, playYT, restartSongYT, stopYT, togglePauseYT } from './youtube';
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
 import { dummyStart } from './dummyAudio';
@@ -18,12 +19,14 @@ import {
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
+const YOUTUBE = 'YOUTUBE';
 let currentSource;
 
 // Funciones Principales
 export function preloadPlayers() {
   loadSP();
   loadSC();
+  loadYT();
 }
 
 export function handlePlay(e) {
@@ -42,6 +45,10 @@ export function handlePlay(e) {
         stopped.state = false;
         playSP(e.link);
         break;
+
+      case YOUTUBE:
+        playYT(e.link);
+        break;
     }
   }, 30);
 
@@ -59,6 +66,10 @@ export function handleTogglePause() {
       case SPOTIFY:
         togglePauseSP();
         break;
+
+      case YOUTUBE:
+        togglePauseYT();
+        break;
     }
   }
 }
@@ -75,6 +86,10 @@ export async function handlePrev() {
       case SPOTIFY:
         currentPosition = getPositionSP();
         break;
+
+      case YOUTUBE:
+        currentPosition = getPositionYT();
+        break;
     }
 
     if (currentPosition > 5) {
@@ -85,6 +100,10 @@ export async function handlePrev() {
 
         case SPOTIFY:
           restartSongSP();
+          break;
+
+        case YOUTUBE:
+          restartSongYT();
           break;
       }
     } else {
@@ -107,6 +126,7 @@ export function handleStop(hard = true) {
 
   stopSP();
   stopSC();
+  stopYT();
   loadingPlayer.set(false);
 }
 

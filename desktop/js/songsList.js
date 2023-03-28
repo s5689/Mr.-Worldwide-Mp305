@@ -367,13 +367,17 @@ function filterSongs(e, singles = false) {
     if (singles && e === '') if (album !== '') return false;
 
     // Codigos Especiales
-    // <SP / <SC: filtrar por fuente.
+    // <SP / <SC / <YT: filtrar por fuente.
     if (e.toLowerCase() === '<sp') {
       if (source === 'SPOTIFY') return true;
     }
 
     if (e.toLowerCase() === '<sc') {
       if (source === 'SOUNDCLOUD') return true;
+    }
+
+    if (e.toLowerCase() === '<yt') {
+      if (source === 'YOUTUBE') return true;
     }
 
     // <NN: filtrar canciones sin numero de pista

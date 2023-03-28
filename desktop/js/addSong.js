@@ -4,6 +4,7 @@ import { loadSongsTable } from './songsList';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
+const YOUTUBE = 'YOUTUBE';
 let isUpdate = null;
 let isOpen = false;
 let inputs = [];
@@ -89,6 +90,10 @@ export function checkAddSong() {
       testSP();
       break;
 
+    case YOUTUBE:
+      testYT();
+      break;
+
     default:
       handleError('Link Invalido');
       break;
@@ -103,8 +108,9 @@ export async function saveAddSong() {
   toDB.artist = inputs[2].value;
   toDB.album = inputs[3].value;
 
-  if (isUpdate === null) await saveSong(toDB);
-  else await updateSong(isUpdate, toDB);
+  if (isUpdate === null) {
+    toDB.id = await saveSong(toDB);
+  } else await updateSong(isUpdate, toDB);
 
   setConfig(dataVersion.value + 1);
 
@@ -228,9 +234,11 @@ export function createAutoComplete(inp, arr) {
 function validate() {
   const foundSC = link.search('soundcloud');
   const foundSP = link.search('spotify');
+  const foundYT = link.search('youtube');
 
   if (foundSC !== -1) return SOUNDCLOUD;
   if (foundSP !== -1) return SPOTIFY;
+  if (foundYT !== -1) return YOUTUBE;
 
   return '';
 }
@@ -272,6 +280,31 @@ function testSP() {
       spTester.destroy();
     }
   }, 100);
+}
+
+// Comprobar link de Youtube
+function testYT() {
+  const apiKey = 'AIzaSyAyacVFGoIKMMtkH7znpi1ESh2G0UlSKQI';
+
+  link = link.replace('https://music.youtube.com/watch?v=', '');
+  link = link.replace('https://www.youtube.com/watch?v=', '');
+  link = link.slice(0, 11);
+
+  fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${link}&key=${apiKey}`
+  )
+    .then((resp) => resp.json())
+    .then((data) => {
+      if (data.items.length !== 0) {
+        const time = data.items[0].contentDetails.duration;
+        const min = Number(time.slice(2, time.indexOf('M'))) * 60;
+        const sec = Number(time.slice(time.indexOf('M') + 1, time.length - 1));
+
+        handleSuccess((min + sec) * 1000);
+      } else {
+        handleError('El ID de la cancion es invalido.');
+      }
+    });
 }
 
 // Guardar Datos en variable de Preparacion
