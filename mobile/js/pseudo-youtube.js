@@ -1,4 +1,5 @@
 import { currentPlaylist, loadingPlayer } from './stateStore';
+import { handleNext } from './controls';
 let controller;
 let interval;
 
@@ -7,6 +8,10 @@ export function loadPYT() {
 
   controller.addEventListener('canplay', () => {
     controller.play();
+  });
+
+  controller.addEventListener('ended', () => {
+    handleNext();
   });
 }
 
