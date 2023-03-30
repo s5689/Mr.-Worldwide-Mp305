@@ -1,9 +1,11 @@
+import { loadSongsTable } from './songsList';
 import { loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 
 export function loadSC() {
   controller = SC.Widget('soundcloud');
+  loadSongsTable();
 }
 
 export function playSC(e) {

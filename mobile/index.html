@@ -24,9 +24,10 @@
       };
     </script>
 
+    <!-- <script onload="mobileLoaded.set()" src="https://www.youtube.com/iframe_api"></script> -->
     <script onload="mobileLoaded.set()" src="https://w.soundcloud.com/player/api.js"></script>
     <script onload="mobileLoaded.set()" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script onload="mobileLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script>
+    <!-- <script onload="mobileLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script> -->
 
     <link rel="stylesheet" href="./css/main.css" />
     <script type="module" src="./js/main.js"></script>
@@ -49,7 +50,6 @@
 
       <div id="songsTable"></div>
     </div>
-
 
     <modal id="songsList-modal">
       <div id="songsList-modal-wrapper"></div>
@@ -93,6 +93,34 @@
         src="https://w.soundcloud.com/player/?url="
         ></iframe>
 
+        <audio id="youtube"></audio>
+        <div id="youtube-pseudoplayer" class="players">
+          <div id="ytp-thumb" onclick="togglePauseYT()">
+            <div id="ytp-pause">
+              <div id="ytp-pauseicon"></div>
+            </div>
+
+            <img id="ytp-thumbicon" src=""/>
+          </div>
+            
+          <div id="ytp-seeker">
+            <p id="ytp-time-current" class="ytp-time">0:00</p>
+            <input 
+              id="ytp-seekbar"
+              type="range"
+              value="0"
+              min="0"
+              max="100"
+              step="1"
+              disabled
+            />
+            <p id="ytp-time-total" class="ytp-time">99:99</p>
+          </div>
+
+          <p id="ytp-name"></p>
+          <p id="ytp-artist-album"></p>
+        </div>
+
         <div id="spotify-container"></div>
         <div id="mww" class="players"></div>
       </div>
@@ -103,6 +131,7 @@
           <button id="control-stop" onclick="controlStop()"></button>
           <button id="control-next" onclick="controlNext()"></button>
         </div>
+
         <div class="down">
           <button id="control-playlist" onclick="togglePlaylist()"></button>
           <button id="control-shuffle" onclick="controlShuffle()"></button>

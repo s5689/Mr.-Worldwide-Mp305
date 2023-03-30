@@ -25,9 +25,5 @@ const db = getFirestore();
 const SONGS_TABLE = 'songs';
 const CONFIG = 'config';
 
-export const saveSong = (data) => addDoc(collection(db, SONGS_TABLE), data);
 export const getSongs = () => getDocs(collection(db, SONGS_TABLE));
-export const deleteSong = (e) => deleteDoc(doc(db, SONGS_TABLE, e));
-export const updateSong = (id, e) => updateDoc(doc(db, SONGS_TABLE, id), e);
-
 export const getConfig = () => getDoc(doc(db, CONFIG, 'version'));

@@ -130,6 +130,10 @@
   transform: translateY(-50%);
 }
 
+#youtube {
+  display: none;
+}
+
 #mww {
   top: 0;
   background-image: url('../../mww.png');
@@ -137,4 +141,141 @@
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
+}
+
+/*
+  Youtube Pseudo-Player
+
+*/
+#youtube-pseudoplayer {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: black;
+
+  display: none;
+}
+
+#youtube-pseudoplayer #ytp-thumb {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 80vw;
+
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+#youtube-pseudoplayer #ytp-thumbicon {
+  position: relative;
+  width: 142.3vw;
+  height: 80vw;
+  margin-left: -31.2vw;
+}
+
+#youtube-pseudoplayer #ytp-pause {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 500ms;
+}
+
+#youtube-pseudoplayer #ytp-pauseicon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 40vw;
+  height: 40vw;
+
+  filter: invert(1);
+  border: 0;
+
+  background: url('../../pause-circle-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#youtube-pseudoplayer #ytp-seeker {
+  position: relative;
+  width: 100%;
+  height: 25px;
+}
+
+#youtube-pseudoplayer .ytp-time {
+  position: absolute;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+#youtube-pseudoplayer #ytp-time-current {
+  right: 87vw;
+}
+
+#youtube-pseudoplayer #ytp-time-total {
+  left: 87vw;
+}
+
+#youtube-pseudoplayer input[type='range'] {
+  position: absolute;
+  top: 6px;
+  left: 49.5%;
+  width: 70vw;
+  transform: translateX(-50%);
+
+  -webkit-appearance: none;
+}
+
+#youtube-pseudoplayer input[type='range']:focus {
+  outline: none;
+}
+
+#youtube-pseudoplayer input[type='range']::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000, 0px 0px 1px #000;
+  height: 16px;
+  width: 16px;
+  border: 1px solid #000;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin: -5px 0 0 0;
+  cursor: none;
+}
+
+#youtube-pseudoplayer input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px 3px #000;
+  background-color: rgb(0, 98, 105);
+  border-radius: 50px;
+  border: 1px solid #000;
+  cursor: none;
+}
+
+#youtube-pseudoplayer input[type='range']:hover::-webkit-slider-runnable-track {
+  background-color: rgb(0, 148, 155);
+}
+
+#youtube-pseudoplayer #ytp-name {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+
+  margin-top: 0;
+  overflow-wrap: break-word;
+}
+
+#youtube-pseudoplayer #ytp-artist-album {
+  margin-top: -16px;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+
+  overflow-wrap: break-word;
 }

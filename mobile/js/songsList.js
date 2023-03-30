@@ -1,6 +1,6 @@
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import { handleDeselectAll, handlePlay, handleShowPlayer } from './controls';
-import { openPlaylist, playlistTable } from './playlist';
+import { playlistTable } from './playlist';
 import { getConfig, getSongs } from './db';
 import {
   currentPlaylist,
@@ -120,8 +120,6 @@ export async function loadSongsTable() {
   songsList.set(await getData());
   songsTable.replaceData(songsList.get());
   toggleOrderSong();
-
-  if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
 
 /*
@@ -282,11 +280,18 @@ currentPlaylist.onTrackChange(({ track, prevTrack }) => {
 
   $(getPlaylistRowHtml(prevTrack.id)).removeAttr('playing');
   $(getPlaylistRowHtml(track.id)).attr('playing', 'true');
+
+  // Cambios sobre el Mini Reproductor
+  $('#preview-name').text(track.name);
+  $('#preview-artist-album').text(`${track.artist} - ${track.album}`);
 });
 
 currentPlaylist.onWipe((e) => {
   const { id } = e;
   if (id) $(getRowHtml(id)).removeAttr('playing');
+
+  $('#preview-name').text('Mr. Worldwide Mp305');
+  $('#preview-artist-album').text('Mobile - Player');
 });
 
 // Mostrar busqueda de canciones.
@@ -394,13 +399,17 @@ function filterSongs(e, singles = false) {
     if (singles && e === '') if (album !== '') return false;
 
     // Codigos Especiales
-    // <SP / <SC: filtrar por fuente.
+    // <SP / <SC / <YT: filtrar por fuente.
     if (e.toLowerCase() === '<sp') {
       if (source === 'SPOTIFY') return true;
     }
 
     if (e.toLowerCase() === '<sc') {
       if (source === 'SOUNDCLOUD') return true;
+    }
+
+    if (e.toLowerCase() === '<yt') {
+      if (source === 'YOUTUBE') return true;
     }
 
     // <NN: filtrar canciones sin numero de pista
@@ -452,7 +461,8 @@ async function getData() {
     localStorage.setItem('version', version.value);
   }
 
-  return temp;
+  // Filtrar canciones que provengan de Spotify.
+  return temp.filter((value) => value.source !== 'SPOTIFY');
 }
 
 function getRowHtml(id) {

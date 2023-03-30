@@ -1,6 +1,8 @@
 import { playSelected, songsTable } from './songsList';
-import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
-import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
+import { getPositionPYT, loadPYT, playPYT, restartSongPYT, stopPYT } from './pseudo-youtube';
+// import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube';
+import { getPositionSC, loadSC, playSC, restartSongSC, stopSC } from './soundcloud';
+import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
 import {
   currentPlaylist,
@@ -13,11 +15,14 @@ import {
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
+const YOUTUBE = 'YOUTUBE';
 let currentSource;
 
 // Funciones Principales
 export function preloadPlayers() {
-  loadSP();
+  // loadSP();
+  // loadYT();
+  loadPYT();
   loadSC();
 }
 
@@ -47,22 +52,12 @@ export function handlePlay(e) {
         stopped.state = false;
         playSP(e.link);
         break;
+
+      case YOUTUBE:
+        playPYT(e.link);
+        break;
     }
   }, 30);
-}
-
-export function handleTogglePause() {
-  if (currentPlaylist.list.length !== 0) {
-    switch (currentSource) {
-      case SOUNDCLOUD:
-        togglePauseSC();
-        break;
-
-      case SPOTIFY:
-        togglePauseSP();
-        break;
-    }
-  }
 }
 
 export async function handlePrev() {
@@ -77,6 +72,10 @@ export async function handlePrev() {
       case SPOTIFY:
         currentPosition = getPositionSP();
         break;
+
+      case YOUTUBE:
+        currentPosition = getPositionPYT();
+        break;
     }
 
     if (currentPosition > 5) {
@@ -87,6 +86,10 @@ export async function handlePrev() {
 
         case SPOTIFY:
           restartSongSP();
+          break;
+
+        case YOUTUBE:
+          restartSongPYT();
           break;
       }
     } else {
@@ -106,8 +109,9 @@ export function handleStop(hard = true) {
     currentPlaylist.wipe();
   }
 
-  stopSP();
+  // stopSP();
   stopSC();
+  stopPYT();
   loadingPlayer.set(false);
 }
 
