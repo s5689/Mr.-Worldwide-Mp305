@@ -10,6 +10,14 @@ export function loadPYT() {
     controller.play();
   });
 
+  controller.addEventListener('play', () => {
+    $('#ytp-pause').css('opacity', 0);
+  });
+
+  controller.addEventListener('pause', () => {
+    $('#ytp-pause').css('opacity', 1);
+  });
+
   controller.addEventListener('ended', () => {
     handleNext();
   });
@@ -70,13 +78,8 @@ export function playPYT(e) {
 }
 
 export function togglePausePYT() {
-  if (!controller.paused) {
-    controller.pause();
-    $('#ytp-pause').css('opacity', 1);
-  } else {
-    controller.play();
-    $('#ytp-pause').css('opacity', 0);
-  }
+  if (!controller.paused) controller.pause();
+  else controller.play();
 }
 
 export function stopPYT() {
