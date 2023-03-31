@@ -20,6 +20,7 @@ export function playSC(e) {
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();
+      controller.setVolume(80);
       loadingPlayer.set(false);
     },
   });
