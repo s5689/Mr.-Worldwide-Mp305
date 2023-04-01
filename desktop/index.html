@@ -22,9 +22,13 @@
           this.callback = e;
         },
       };
+      
+      function onYouTubeIframeAPIReady() {
+        desktopLoaded.set();
+      }
     </script>
 
-    <script onload="desktopLoaded.set()" src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script onload="desktopLoaded.set()" src="https://w.soundcloud.com/player/api.js"></script>
     <script onload="desktopLoaded.set()" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script onload="desktopLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script>
