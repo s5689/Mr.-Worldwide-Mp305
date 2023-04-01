@@ -1,6 +1,6 @@
 import { playSelected, songsTable } from './songsList';
-import { getPositionPYT, loadPYT, playPYT, restartSongPYT, stopPYT } from './pseudo-youtube';
-// import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube';
+// import { getPositionPYT, loadPYT, playPYT, restartSongPYT, stopPYT } from './pseudo-youtube';
+import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube';
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
@@ -21,14 +21,55 @@ let currentSource;
 // Funciones Principales
 export function preloadPlayers() {
   // loadSP();
-  // loadYT();
-  loadPYT();
+  // loadPYT();
+  loadYT();
   loadSC();
+
+  playerModalGestures();
 }
 
 export function handleShowPlayer() {
   document.querySelector('body').setAttribute('modal-opened', '');
   document.getElementById('player-modal').setAttribute('show', '');
+}
+
+export function handleLockPlayer() {
+  document.documentElement.requestFullscreen();
+  $('#lock-screen').css('display', 'block');
+
+  setTimeout(() => {
+    $('#lock-screen').css('opacity', 1);
+  }, 0);
+}
+
+export function handleUnlockPlayer() {
+  const input = document.querySelector('#lock-screen input');
+
+  if (Number(input.value) === 100) {
+    $('#lock-screen').attr('unlock', '');
+
+    setTimeout(() => {
+      $('#lock-screen').css('opacity', 0);
+
+      setTimeout(() => {
+        $('#lock-screen').css('display', 'none');
+        $('#lock-screen').removeAttr('unlock');
+
+        document.exitFullscreen();
+        input.value = 0;
+      }, 500);
+    }, 500);
+  } else {
+    input.value = 0;
+  }
+  /*
+  document.documentElement.requestFullscreen();
+  $('#lock-screen').css('display', 'block');
+
+  setTimeout(() => {
+    $('#lock-screen').css('opacity', 1);
+  }, 0);
+  */
 }
 
 export function handleClosePlayer() {
@@ -54,7 +95,7 @@ export function handlePlay(e) {
         break;
 
       case YOUTUBE:
-        playPYT(e.link);
+        playYT(e.link);
         break;
     }
   }, 30);
@@ -74,7 +115,7 @@ export async function handlePrev() {
         break;
 
       case YOUTUBE:
-        currentPosition = getPositionPYT();
+        currentPosition = getPositionYT();
         break;
     }
 
@@ -89,7 +130,7 @@ export async function handlePrev() {
           break;
 
         case YOUTUBE:
-          restartSongPYT();
+          restartSongYT();
           break;
       }
     } else {
@@ -111,7 +152,7 @@ export function handleStop(hard = true) {
 
   // stopSP();
   stopSC();
-  stopPYT();
+  stopYT();
   loadingPlayer.set(false);
 }
 
@@ -259,5 +300,27 @@ export function handleDeselectAll() {
     const foundRow = songsTable.searchRows('id', '=', value.id)[0];
 
     $(foundRow.getElement()).trigger('click');
+  });
+}
+
+// Gestos del Player Modal
+function playerModalGestures() {
+  const html = document.getElementById('player-modal');
+  let start;
+
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientY;
+  });
+
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerHeight;
+    const end = e.changedTouches[0].clientY;
+
+    // Reconocer gesto solo si no esta bloqueada la pantalla
+    if ($('#lock-screen').css('display') === 'none') {
+      if (end - start > screenSize * 0.2) {
+        handleClosePlayer();
+      }
+    }
   });
 }

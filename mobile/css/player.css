@@ -143,6 +143,99 @@
   z-index: -1;
 }
 
+/* 
+  Pantalla de bloqueo
+  
+*/
+#lock-player-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35px;
+  height: 35px;
+  margin: 10px 0 0 15px;
+
+  filter: invert(1);
+  border: 0;
+
+  background: url('../../lock.svg') no-repeat center center / contain;
+}
+
+#lock-screen {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  transition: opacity 500ms;
+}
+
+#lock-screen button {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 70px;
+  height: 70px;
+
+  filter: invert(1);
+  border: 0;
+
+  background: url('../../lock.svg') no-repeat center center / contain;
+  transition: background-image 500ms;
+}
+
+#lock-screen[unlock] button {
+  background: url('../../lock-open-outline-rounded.svg') no-repeat center center / contain;
+}
+
+#lock-screen input[type='range'] {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 50vw;
+  transform: translate(-50%, -45%);
+  background-color: rgba(0, 0, 0, 0);
+
+  -webkit-appearance: none;
+}
+
+#lock-screen input[type='range']:focus {
+  outline: none;
+}
+
+#lock-screen input[type='range']::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000, 0px 0px 1px #000;
+  height: 26px;
+  width: 26px;
+  border: 1px solid #000;
+  border-radius: 50px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin: -6px 0 0 0;
+  cursor: none;
+}
+
+#lock-screen input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 18px;
+  cursor: pointer;
+  background-color: rgb(0, 98, 105);
+  border-radius: 50px;
+  border: 1px solid #000;
+  cursor: none;
+}
+
+#lock-screen input[type='range']:hover::-webkit-slider-runnable-track {
+  background-color: rgb(0, 148, 155);
+}
+
 /*
   Youtube Pseudo-Player
 
@@ -222,10 +315,12 @@
 
 #youtube-pseudoplayer input[type='range'] {
   position: absolute;
-  top: 6px;
   left: 49.5%;
   width: 70vw;
   transform: translateX(-50%);
+
+  margin-top: 5px;
+  background-color: rgba(0, 0, 0, 0);
 
   -webkit-appearance: none;
 }
@@ -251,7 +346,6 @@
   width: 100%;
   height: 8.4px;
   cursor: pointer;
-  box-shadow: 1px 1px 1px 3px #000;
   background-color: rgb(0, 98, 105);
   border-radius: 50px;
   border: 1px solid #000;
