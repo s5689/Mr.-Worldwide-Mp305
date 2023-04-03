@@ -1,24 +1,50 @@
 #playlist-modal {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: fixed;
-  bottom: -70vh;
-  left: 0;
+  top: -1px;
+  right: -100%;
 
-  width: 40vw;
-  height: 70vh;
+  width: 90vw;
+  height: 100%;
 
   background-color: black;
-  border: 2px solid white;
-  border-radius: 10px 10px 0 0;
+  border: 1px solid white;
+  border-radius: 10px 0 0 10px;
 
-  z-index: 2;
-  transition: bottom 400ms;
-
-  display: none;
+  z-index: 5;
+  transition: right 400ms;
 }
 
 #playlist-modal[show] {
-  bottom: 159px;
+  right: -1px;
+}
+
+#playlist-modal-close-container {
+  position: absolute;
+  top: 50%;
+  left: -6vw;
+  transform: translateY(-50%);
+  width: 6vw;
+  height: 13vh;
+
+  background-color: rgb(30, 30, 30);
+  border: 1px solid white;
+  border-radius: 20px 0 0 20px;
+}
+
+#playlist-modal-close-container button {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80%;
+  width: 80%;
+  margin-left: -10%;
+
+  color: grey;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 10px;
 }
 
 #playlist-table {
@@ -28,7 +54,7 @@
 
 #playlist-table .tabulator-tableholder {
   background-color: black;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 0 0 10px;
 }
 
 #playlist-table .tabulator-tableholder::-webkit-scrollbar {
@@ -37,7 +63,52 @@
 
 #playlist-table .tabulator-placeholder {
   background-color: black;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 0 0 10px;
+}
+
+/* Rows */
+
+/* Cells */
+#playlist-table .tabulator-cell {
+  position: relative;
+  font-size: 4vw;
+  top: 0;
+  left: 0;
+  margin-left: 0px;
+}
+
+#playlist-table .tabulator-cell[tabulator-field='move'] {
+  filter: invert(1);
+  border: 0;
+
+  background: url('../../list-bold.svg') no-repeat center center / contain;
+  background-size: 25px;
+  background-position-y: 18px;
+}
+
+#playlist-table .tabulator-cell[tabulator-field='name'] {
+  width: 75% !important;
+}
+
+#playlist-table .tabulator-cell[tabulator-field='artist'] {
+  font-size: small;
+  font-style: italic;
+
+  position: relative;
+  left: -75%;
+  top: 13px;
+
+  width: 75% !important;
+  height: 100% !important;
+  padding-bottom: 0px;
+}
+
+#playlist-table .tabulator-cell[tabulator-field='delete'] {
+  left: -75%;
+  filter: invert(1);
+
+  background: url('../../remove-rounded.svg') no-repeat center center / contain;
+  background-position-y: 10px;
 }
 
 /* Grab & Move */
@@ -59,14 +130,4 @@
 
 #playlist-table.tabulator-block-select .tabulator-moving {
   background-color: rgba(0, 35, 42, 1) !important;
-}
-
-/* Remove Track */
-#playlist-table .tabulator-cell:last-child:hover {
-  cursor: pointer !important;
-
-  font-size: 0px !important;
-  filter: invert(1);
-
-  background: url('../../remove-rounded.svg') no-repeat center center / contain;
 }

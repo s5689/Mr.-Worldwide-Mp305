@@ -24,7 +24,7 @@
       };
       
       function onYouTubeIframeAPIReady() {
-        mobileLoaded.set()
+        mobileLoaded.set();
       }
     </script>
 
@@ -72,7 +72,13 @@
       </else>
     </modal>
 
-    <modal id="playlist-modal"> <div id="playlist-table"></div> </modal>
+    <modal id="playlist-modal"> 
+      <div id="playlist-modal-close-container" onclick="togglePlaylist()">
+        <button>►</button>
+      </div>
+      
+      <div id="playlist-table"></div> 
+    </modal>
 
     <div id="preview-player">
       <div id="preview-track" onclick="showPlayer()">
@@ -81,7 +87,7 @@
       </div>
 
       <div id="preview-button-container">
-        <button id="preview-playlist"></button>
+        <button id="preview-playlist" onclick="togglePlaylist()"></button>
       </div>
     </div>
 

@@ -282,8 +282,10 @@ currentPlaylist.onTrackChange(({ track, prevTrack }) => {
   $(getPlaylistRowHtml(track.id)).attr('playing', 'true');
 
   // Cambios sobre el Mini Reproductor
-  $('#preview-name').text(track.name);
-  $('#preview-artist-album').text(`${track.artist} - ${track.album}`);
+  if ('name' in track) {
+    $('#preview-name').text(track.name);
+    $('#preview-artist-album').text(`${track.artist} - ${track.album}`);
+  }
 });
 
 currentPlaylist.onWipe((e) => {

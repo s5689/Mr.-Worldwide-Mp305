@@ -26,6 +26,7 @@ export function preloadPlayers() {
   loadSC();
 
   playerModalGestures();
+  playlistModalGestures();
 }
 
 export function handleShowPlayer() {
@@ -211,8 +212,6 @@ export function handleShuffle() {
     handlePlay(currentPlaylist.getTrackData());
   }
 
-  openPlaylist();
-
   function shuffleMaker() {
     let a = tempList;
 
@@ -320,6 +319,27 @@ function playerModalGestures() {
     if ($('#lock-screen').css('display') === 'none') {
       if (end - start > screenSize * 0.2) {
         handleClosePlayer();
+      }
+    }
+  });
+}
+
+function playlistModalGestures() {
+  const html = document.getElementById('playlist-modal');
+  let start;
+
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientX;
+  });
+
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerWidth;
+    const end = e.changedTouches[0].clientX;
+
+    // Reconocer gesto solo si no esta bloqueada la pantalla
+    if ($('#lock-screen').css('display') === 'none') {
+      if (end - start > screenSize * 0.4) {
+        closePlaylist();
       }
     }
   });

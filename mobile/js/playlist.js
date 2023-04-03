@@ -4,7 +4,7 @@ import { currentPlaylist, preventClosePlaylist } from './stateStore';
 
 export const playlistTable = new Tabulator('#playlist-table', {
   data: null,
-  placeholder: 'Las canciones en cola apareceran aqui.',
+  placeholder: 'Lista de reproduccion vacia.',
   height: '100%',
   layout: 'fitColumns',
   headerVisible: false,
@@ -12,21 +12,23 @@ export const playlistTable = new Tabulator('#playlist-table', {
   movableRows: true,
   columns: [
     {
-      title: '#',
+      field: 'move',
       hozAlign: 'center',
-      formatter: 'rownum',
-      widthGrow: 0.25,
+      widthGrow: 0.1,
       resizable: false,
       headerSort: false,
+      rowHandle: true,
     },
-    { title: 'Nombre', field: 'name', hozAlign: 'center', resizable: false, rowHandle: true },
-    { title: 'Artista', field: 'artist', hozAlign: 'center', resizable: false, rowHandle: true },
-    { title: 'Duracion', field: 'time', hozAlign: 'center', widthGrow: 0.35, resizable: false },
+    { title: 'Nombre', field: 'name', hozAlign: 'center', resizable: false },
+    { title: 'Artista', field: 'artist', hozAlign: 'center', resizable: false },
+    { field: 'delete', hozAlign: 'center', widthGrow: 0.1, resizable: false },
   ],
 });
 
 export function openPlaylist() {
-  $('#playlist-modal').attr('show', '');
+  setTimeout(() => {
+    document.getElementById('playlist-modal').setAttribute('show', '');
+  }, 0);
 
   if (currentPlaylist.list.length !== 0) {
     const row = playlistTable.getRowFromPosition(currentPlaylist.track + 1);
@@ -46,21 +48,13 @@ export function closePlaylist() {
 // Actualizar tabla al cambiar la playlist
 currentPlaylist.onListChange((e) => playlistTable.replaceData(e));
 
-// Click en Play o en Remover
+// Click en Remover
 playlistTable.on('cellClick', (e, cell) => {
   const row = cell.getRow();
   const rowData = row.getData();
-  const rowHtml = row.getElement();
-  const rowIndex = row.getPosition();
-
-  // Reproducir solo si el click ocurrio en Play & la cancion seleccionada no esta en reproduccion
-  if (typeof cell.getField() === 'undefined' && !$(rowHtml).attr('playing')) {
-    currentPlaylist.track = rowIndex - 1;
-    handlePlay(rowData);
-  }
 
   // Remover solo si el click ocurrio en --
-  if (cell.getField() === 'time') {
+  if (cell.getField() === 'delete') {
     const filterList = currentPlaylist.list.filter((value) => value.id !== rowData.id);
 
     // Si la cancion a eliminar no esta en reproduccion, eliminar de forma normal
@@ -127,7 +121,7 @@ playlistTable.on('rowMoved', (row) => {
 
 // Cerrar playlist al hacer click derecho e izquierdo & Limpiar playlist al hacer click derecho en mostrar playlist
 document.addEventListener('contextmenu', (e) => {
-  if (e.target.id === 'control-playlist') {
+  if (e.target.id === 'control-playlist' || e.target.id === 'preview-playlist') {
     const trackId = currentPlaylist.getTrackData().id;
 
     e.preventDefault();
@@ -137,11 +131,13 @@ document.addEventListener('contextmenu', (e) => {
     currentPlaylist.track = 0;
 
     $('#control-playlist').attr('clean', '');
+    $('#preview-playlist').attr('clean', '');
 
     setTimeout(() => {
       $('#control-playlist').removeAttr('clean');
+      $('#preview-playlist').removeAttr('clean');
     }, 400);
-  } else closePlaylist();
+  }
 });
 
 document.addEventListener('click', (e) => {

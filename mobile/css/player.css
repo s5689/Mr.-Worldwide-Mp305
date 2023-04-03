@@ -63,6 +63,11 @@
   transition: background-image 0ms;
 }
 
+#preview-button-container #preview-playlist[clean] {
+  background: url('../../eraser-duotone.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
 /* 
   Player
 

@@ -78,6 +78,11 @@
   transition: background-image 0ms;
 }
 
+#control-playlist[clean] {
+  background: url('../../eraser-duotone.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
 #control-shuffle {
   background: url('../../shuffle-outline-rounded.svg') no-repeat center center / contain;
 }
