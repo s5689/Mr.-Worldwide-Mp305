@@ -1,11 +1,9 @@
-import { loadSongsTable, playSelected, songsTable, toggleFindSong } from './songsList';
-import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
-import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
+import { playSelected, songsTable } from './songsList';
+// import { getPositionPYT, loadPYT, playPYT, restartSongPYT, stopPYT } from './pseudo-youtube';
+import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube';
+import { getPositionSC, loadSC, playSC, restartSongSC, stopSC } from './soundcloud';
+import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
-import { toggleAddSong } from './addSong';
-import { dummyStart } from './dummyAudio';
-import { deleteSong } from './db';
-import { toMKR } from './VME-MKR';
 import {
   currentPlaylist,
   loadingPlayer,
@@ -17,12 +15,67 @@ import {
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
+const YOUTUBE = 'YOUTUBE';
 let currentSource;
 
 // Funciones Principales
 export function preloadPlayers() {
-  loadSP();
+  // loadSP();
+  // loadPYT();
+  loadYT();
   loadSC();
+
+  playerModalGestures();
+  playlistModalGestures();
+}
+
+export function handleShowPlayer() {
+  document.querySelector('body').setAttribute('modal-opened', '');
+  document.getElementById('player-modal').setAttribute('show', '');
+}
+
+export function handleLockPlayer() {
+  document.documentElement.requestFullscreen();
+  $('#lock-screen').css('display', 'block');
+
+  setTimeout(() => {
+    $('#lock-screen').css('opacity', 1);
+  }, 0);
+}
+
+export function handleUnlockPlayer() {
+  const input = document.querySelector('#lock-screen input');
+
+  if (Number(input.value) === 100) {
+    $('#lock-screen').attr('unlock', '');
+
+    setTimeout(() => {
+      $('#lock-screen').css('opacity', 0);
+
+      setTimeout(() => {
+        $('#lock-screen').css('display', 'none');
+        $('#lock-screen').removeAttr('unlock');
+
+        document.exitFullscreen();
+        input.value = 0;
+      }, 500);
+    }, 500);
+  } else {
+    input.value = 0;
+  }
+  /*
+  document.documentElement.requestFullscreen();
+  $('#lock-screen').css('display', 'block');
+
+  setTimeout(() => {
+    $('#lock-screen').css('opacity', 1);
+  }, 0);
+  */
+}
+
+export function handleClosePlayer() {
+  document.querySelector('body').removeAttribute('modal-opened');
+  document.getElementById('player-modal').removeAttribute('show');
 }
 
 export function handlePlay(e) {
@@ -41,25 +94,12 @@ export function handlePlay(e) {
         stopped.state = false;
         playSP(e.link);
         break;
+
+      case YOUTUBE:
+        playYT(e.link);
+        break;
     }
   }, 30);
-
-  dummyStart();
-  toMKR(currentPlaylist.getTrackData());
-}
-
-export function handleTogglePause() {
-  if (currentPlaylist.list.length !== 0) {
-    switch (currentSource) {
-      case SOUNDCLOUD:
-        togglePauseSC();
-        break;
-
-      case SPOTIFY:
-        togglePauseSP();
-        break;
-    }
-  }
 }
 
 export async function handlePrev() {
@@ -74,6 +114,10 @@ export async function handlePrev() {
       case SPOTIFY:
         currentPosition = getPositionSP();
         break;
+
+      case YOUTUBE:
+        currentPosition = getPositionYT();
+        break;
     }
 
     if (currentPosition > 5) {
@@ -84,6 +128,10 @@ export async function handlePrev() {
 
         case SPOTIFY:
           restartSongSP();
+          break;
+
+        case YOUTUBE:
+          restartSongYT();
           break;
       }
     } else {
@@ -101,11 +149,11 @@ export function handleStop(hard = true) {
     closePlaylist();
     stopped.state = true;
     currentPlaylist.wipe();
-    toMKR({ name: '', artist: '', album: '' });
   }
 
-  stopSP();
+  // stopSP();
   stopSC();
+  stopYT();
   loadingPlayer.set(false);
 }
 
@@ -164,8 +212,6 @@ export function handleShuffle() {
     handlePlay(currentPlaylist.getTrackData());
   }
 
-  openPlaylist();
-
   function shuffleMaker() {
     let a = tempList;
 
@@ -200,27 +246,11 @@ export function handleSingleAddPlaylist() {
     handlePlay(row.getData());
   }
 
-  preventClosePlaylist.trigger();
-  openPlaylist();
+  handleShowPlayer();
 }
 
 export function handleSelectMode() {
   selectMode.set(true);
-}
-
-export function handleUpdateSong() {
-  const { row } = rowOnMenu;
-  toggleAddSong(true, row.getData());
-}
-
-export async function handleDeleteSong() {
-  const { row } = rowOnMenu;
-  const data = row.getData();
-
-  if (confirm('¿Realmente desea eliminar este elemento?')) {
-    deleteSong(data.id);
-    loadSongsTable();
-  }
 }
 
 export function handleAddPlaylist() {
@@ -272,52 +302,45 @@ export function handleDeselectAll() {
   });
 }
 
-export function handleEscape() {
-  let inFocus = null;
+// Gestos del Player Modal
+function playerModalGestures() {
+  const html = document.getElementById('player-modal');
+  let start;
 
-  // Detectar donde fue realizado el click
-  document.addEventListener('click', (e) => {
-    switch (document.activeElement.id) {
-      case 'addSong-findButton':
-        inFocus = 'findInput';
-        break;
-
-      case 'addSong-findInput':
-        inFocus = 'findInput';
-        break;
-
-      case 'addSong-button':
-        inFocus = 'addSong';
-        break;
-
-      case 'updateSong-button':
-        inFocus = 'addSong';
-        break;
-
-      default:
-        inFocus = null;
-        break;
-    }
-
-    if (e.target.id === 'addSong-modal' || $('#addSong-modal').find(e.target).length !== 0)
-      inFocus = 'addSong';
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientY;
   });
 
-  // Cerrar el modal de agregar canciones o la barra de busqueda al presionar escape.
-  document.addEventListener('keydown', (e) => {
-    if (document.activeElement.id === 'addSong-findInput') inFocus = 'findInput';
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerHeight;
+    const end = e.changedTouches[0].clientY;
 
-    if (e.key === 'Escape') {
-      if (inFocus === 'addSong') closeAddSong();
-
-      if (inFocus === 'findInput') {
-        if (document.getElementById('addSong-findInput').getAttribute('show') !== null)
-          toggleFindSong();
+    // Reconocer gesto solo si no esta bloqueada la pantalla
+    if ($('#lock-screen').css('display') === 'none') {
+      if (end - start > screenSize * 0.2) {
+        handleClosePlayer();
       }
+    }
+  });
+}
 
-      setTimeout(() => {
-        inFocus = null;
-      }, 5);
+function playlistModalGestures() {
+  const html = document.getElementById('playlist-modal');
+  let start;
+
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientX;
+  });
+
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerWidth;
+    const end = e.changedTouches[0].clientX;
+
+    // Reconocer gesto solo si no esta bloqueada la pantalla
+    if ($('#lock-screen').css('display') === 'none') {
+      if (end - start > screenSize * 0.4) {
+        closePlaylist();
+      }
     }
   });
 }

@@ -31,6 +31,11 @@
   margin-top: 5px;
 }
 
+#youtube {
+  display: none;
+  top: 0;
+}
+
 #sp-pause-button {
   position: fixed;
   bottom: 14px;
@@ -45,7 +50,7 @@
 
 #mww {
   top: 0;
-  background-image: url('../mww.png');
+  background-image: url('../../mww.png');
   background-size: 280px;
   background-position: center;
   background-repeat: no-repeat;

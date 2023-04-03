@@ -1,10 +1,11 @@
 import { loadingPlayer, stopped } from './stateStore';
+import { loadSongsTable } from './songsList';
 import { handleNext } from './controls';
 let controller;
 let pause = false;
 let currentPosition;
 
-export function loadSP() {
+export async function loadSP() {
   const callback = (e) => {
     e.iframeElement.id = 'spotify';
     e.iframeElement.className = 'players';
@@ -17,7 +18,6 @@ export function loadSP() {
 
       $('#spotify').css('opacity', '1');
       loadingPlayer.set(false);
-      fakePlay();
     });
 
     e.addListener('playback_update', (e) => {
@@ -36,7 +36,10 @@ export function loadSP() {
     controller = e;
   };
 
-  SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
+  setTimeout(() => {
+    SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
+    loadSongsTable();
+  }, 500);
 }
 
 export function playSP(e) {
@@ -51,7 +54,6 @@ export function togglePauseSP() {
 }
 
 export function stopSP() {
-  $('#sp-pause-button').remove();
   $('#spotify').css('display', 'none');
 
   if (!pause) {
@@ -68,14 +70,4 @@ export function getPositionSP() {
 
 export function restartSongSP() {
   controller.seek(-1);
-}
-
-function fakePlay() {
-  const tempHtml = '<div id="sp-pause-button"></div>';
-  $('#player-container').append(tempHtml);
-
-  document.getElementById('sp-pause-button').addEventListener('click', () => {
-    controller.togglePlay();
-    pause = !pause;
-  });
 }

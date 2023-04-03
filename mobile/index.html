@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <script>
+      var _debug = false;
+      var mobileLoaded = {
+        value: 0,
+        selected: [],
+        callback: function (e) {},
+        set() {
+          this.value = this.value + 1;
+          this.callback(this.value);
+        },
+        get() {
+          return this.value;
+        },
+        onChange: function (e) {
+          this.callback = e;
+        },
+      };
+      
+      function onYouTubeIframeAPIReady() {
+        mobileLoaded.set();
+      }
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script> 
+    <script onload="mobileLoaded.set()" src="https://w.soundcloud.com/player/api.js"></script>
+    <script onload="mobileLoaded.set()" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <!-- <script onload="mobileLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script> -->
+
+    <link rel="stylesheet" href="./css/main.css" />
+    <script type="module" src="./js/main.js"></script>
+
+    <title>Mr. Worldwide Mp305</title>
+  </head>
+
+  <body>
+    <p class="title">Mr. Worldwide <b>Mp3</b>05</p>
+    
+    <div id="songsList">
+      <div id="find-container">
+        <button id="songsList-findButton" onclick="toggleFindSong()"></button>
+        <input id="songsList-findInput" autocomplete="off"></input>
+      </div>
+      
+      <button id="songsList-orderSong" onclick="toggleOrderSong()"></button>
+      <button id="songsList-orderArtist" onclick="toggleOrderArtist()"></button>
+      <button id="songsList-orderAlbum" onclick="toggleOrderAlbum()"></button>
+
+      <div id="songsTable"></div>
+    </div>
+
+    <modal id="songsList-modal">
+      <div id="songsList-modal-wrapper"></div>
+
+      <if>
+        <button onclick="playFromMenu()" playbutton>Reproducir</button>
+        <button onclick="singleAddPlaylist()" playbutton>Agregar a la Lista</button>
+        <button onclick="selectMode()">Seleccionar</button>
+      </if>
+
+      <else hidden>
+        <button onclick="playFromMenu(false)" playbutton>Reproducir Seleccion</button>
+        <button onclick="addPlaylist()" playbutton>Agregar a la Lista</button>
+        <button onclick="selectAll()">Seleccionar Todo</button>
+        <button onclick="deselectAll()">Deseleccionar Todo</button>
+      </else>
+    </modal>
+
+    <modal id="playlist-modal"> 
+      <div id="playlist-modal-close-container" onclick="togglePlaylist()">
+        <button>►</button>
+      </div>
+      
+      <div id="playlist-table"></div> 
+    </modal>
+
+    <div id="preview-player">
+      <div id="preview-track" onclick="showPlayer()">
+        <p id="preview-name">Mr. Worldwide Mp305</p>
+        <p id="preview-artist-album">Mobile - Player</p>
+      </div>
+
+      <div id="preview-button-container">
+        <button id="preview-playlist" onclick="togglePlaylist()"></button>
+      </div>
+    </div>
+
+    <div id="player-modal">
+      <button id="lock-player-modal" onclick="lockPlayer()"></button>
+      <button id="close-player-modal" onclick="closePlayer()"></button>
+
+      <div id="player-container">
+        <iframe
+        id="soundcloud"
+        class="players"
+        frameborder="no"
+        allow="autoplay"
+        src="https://w.soundcloud.com/player/?url="
+        ></iframe>
+
+        <!-- <audio id="youtube"></audio> -->
+        <div id="youtube"></div>
+        <div id="youtube-pseudoplayer" class="players">
+          <div id="ytp-thumb" onclick="togglePauseYT()">
+            <div id="ytp-pause">
+              <div id="ytp-pauseicon"></div>
+            </div>
+
+            <img id="ytp-thumbicon" src=""/>
+          </div>
+            
+          <div id="ytp-seeker">
+            <p id="ytp-time-current" class="ytp-time">0:00</p>
+            <input 
+              id="ytp-seekbar"
+              type="range"
+              value="0"
+              min="0"
+              max="100"
+              step="1"
+            />
+            <p id="ytp-time-total" class="ytp-time">99:99</p>
+          </div>
+
+          <p id="ytp-name"></p>
+          <p id="ytp-artist-album"></p>
+        </div>
+
+        <div id="spotify-container"></div>
+        <div id="mww" class="players"></div>
+      </div>
+
+      <div id="controls">
+        <div class="up">
+          <button id="control-prev" onclick="controlPrev()"></button>
+          <button id="control-stop" onclick="controlStop()"></button>
+          <button id="control-next" onclick="controlNext()"></button>
+        </div>
+
+        <div class="down">
+          <button id="control-playlist" onclick="togglePlaylist()"></button>
+          <button id="control-shuffle" onclick="controlShuffle()"></button>
+        </div>
+      </div>
+
+      <div id="lock-screen">
+        <button></button>
+        <input type="range" value="0" step="1" min="0" max="100" onchange="unlockPlayer()"></input>
+      </div>
+    </div>
+  </body>
+</html>

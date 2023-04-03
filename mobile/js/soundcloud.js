@@ -1,9 +1,11 @@
+import { loadSongsTable } from './songsList';
 import { loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 
 export function loadSC() {
   controller = SC.Widget('soundcloud');
+  loadSongsTable();
 }
 
 export function playSC(e) {
@@ -14,9 +16,11 @@ export function playSC(e) {
     download: false,
     show_playcount: false,
     show_comments: false,
+    visual: true,
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();
+      controller.setVolume(80);
       loadingPlayer.set(false);
     },
   });

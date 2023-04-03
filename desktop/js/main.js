@@ -22,10 +22,16 @@ import './playlist';
 import './dummyAudio';
 import './VME-MKR';
 
-setTimeout(() => {
+desktopLoaded.onChange((e) => {
+  if (e === 4) apiReady();
+});
+
+if (desktopLoaded.get() === 4) apiReady();
+
+function apiReady() {
   preloadPlayers();
   handleEscape();
-}, 100);
+}
 
 window.toggleAddSong = toggleAddSong;
 window.toggleFindSong = toggleFindSong;

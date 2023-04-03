@@ -1,0 +1,52 @@
+@import 'tabulator-tables/dist/css/tabulator_bootstrap4.min.css';
+@import 'player.css';
+@import 'controls.css';
+@import 'songsList.css';
+@import 'playlist.css';
+
+a {
+  display: none;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: lighter;
+}
+
+body[modal-opened] {
+  overflow: hidden;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.title b {
+  font-size: 2.5rem;
+  font-style: italic;
+}
+
+#tester-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 50vw;
+  height: 50vh;
+  z-index: -9998;
+}
+
+.tester {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 150px;
+  height: 150px;
+  z-index: -9999;
+  opacity: 0;
+}
