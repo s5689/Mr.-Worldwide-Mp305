@@ -11,6 +11,7 @@ import {
   rowOnMenu,
   selectMode,
   stopped,
+  wakeLock,
 } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
@@ -34,8 +35,13 @@ export function handleShowPlayer() {
   document.getElementById('player-modal').setAttribute('show', '');
 }
 
-export function handleLockPlayer() {
+export async function handleLockPlayer() {
   document.documentElement.requestFullscreen();
+
+  try {
+    wakeLock.state = await navigator.wakeLock.request('screen');
+  } catch (e) {}
+
   $('#lock-screen').css('display', 'block');
 
   setTimeout(() => {
@@ -57,6 +63,12 @@ export function handleUnlockPlayer() {
         $('#lock-screen').removeAttr('unlock');
 
         document.exitFullscreen();
+        if (wakeLock.state !== null) {
+          wakeLock.state.release().then(() => {
+            wakeLock.state = null;
+          });
+        }
+
         input.value = 0;
       }, 500);
     }, 500);
