@@ -4,7 +4,6 @@ import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } f
 import { getPositionYT, loadYT, playYT, restartSongYT, stopYT, togglePauseYT } from './youtube';
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
-import { dummyStart } from './dummyAudio';
 import { deleteSong, setConfig } from './db';
 import { toMKR } from './VME-MKR';
 import {
@@ -52,7 +51,6 @@ export function handlePlay(e) {
     }
   }, 30);
 
-  dummyStart();
   toMKR(currentPlaylist.getTrackData());
 }
 

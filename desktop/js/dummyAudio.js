@@ -1,15 +1,10 @@
-let playing = false;
-
 const audio = document.getElementById('dummy-audio');
 audio.src = dummySong(60);
 audio.loop = true;
 
-export function dummyStart() {
-  if (!playing) {
-    playing = true;
-    audio.play();
-  }
-}
+audio.addEventListener('pause', () => {
+  audio.play();
+});
 
 function dummySong(time, freq = 44100) {
   const length = time * freq;
