@@ -4,18 +4,18 @@ import { currentPlaylist } from './stateStore';
 window.addEventListener('message', (e) => {
   // Conexion con VME
   if (e.data === 'VME-fetchData') {
-    let response = sessionStorage.getItem('VME');
+    let response = localStorage.getItem('VME');
 
     if (response === null) {
-      sessionStorage.setItem('VME', JSON.stringify({ vol: 50, mute: false }));
-      response = sessionStorage.getItem('VME');
+      localStorage.setItem('VME', JSON.stringify({ vol: 50, mute: false }));
+      response = localStorage.getItem('VME');
     }
 
     window.postMessage({ msg: 'VME-responseData', payload: JSON.parse(response) });
   }
 
   if (e.data.msg === 'VME-setData') {
-    sessionStorage.setItem('VME', JSON.stringify(e.data.payload));
+    localStorage.setItem('VME', JSON.stringify(e.data.payload));
   }
 
   // Conexiones con MKR
