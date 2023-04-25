@@ -1,0 +1,169 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: lighter;
+  font-size: 1.2rem;
+
+  /* ScrollBar */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.title b {
+  font-style: italic;
+  font-size: 2.5rem;
+}
+
+#soft {
+  font-size: 1.6rem;
+}
+
+#info-button {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  background: url('./assets/info-outline-rounded.svg') no-repeat center center /
+    contain;
+  transition: background-image 250ms;
+}
+
+#info-button:hover {
+  background: url('./assets/info-rounded.svg') no-repeat center center / contain;
+}
+
+#info-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 5;
+
+  width: 500px;
+  height: fit-content;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.95);
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  transition: transform 250ms;
+}
+
+#info-modal[open] {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#info-modal-ok,
+#now-playing {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#info-modal-ok {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 50px;
+  padding: 8px 15px 8px 15px;
+
+  cursor: pointer;
+  margin: 0 10px 0 10px;
+
+  color: green;
+  border: 1px solid green;
+  outline: 0px solid rgba(0, 0, 0, 0);
+  transition: outline 250ms;
+}
+
+#info-modal-ok:hover {
+  outline: 5px solid rgba(0, 255, 0, 0.4);
+}
+
+#now-playing {
+  position: relative;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+
+  width: 400px;
+  height: 200px;
+
+  border: solid;
+  border-radius: 15px;
+}
+
+#now-playing button {
+  position: relative;
+
+  width: 35px;
+  height: 45px;
+
+  filter: invert(1);
+  border: 0;
+  cursor: pointer;
+
+  transition: background-image 250ms;
+}
+
+#control-prev {
+  background: url('./assets/player-skip-back.svg') no-repeat center center /
+    contain;
+}
+
+#control-prev:hover {
+  background: url('./assets/player-skip-back-filled.svg') no-repeat center
+    center / contain;
+}
+
+#control-togglePause {
+  width: 45px !important;
+
+  margin: 0 10% 0 10%;
+  background: url('./assets/video-play-pause-20-regular.svg') no-repeat center
+    center / contain;
+}
+
+#control-togglePause:hover {
+  background: url('./assets/video-play-pause-20-filled.svg') no-repeat center
+    center / contain;
+}
+
+#control-next {
+  background: url('./assets/player-skip-forward.svg') no-repeat center center /
+    contain;
+}
+
+#control-next:hover {
+  background: url('./assets/player-skip-forward-filled.svg') no-repeat center
+    center / contain;
+}
+
+#now-playing #name {
+  font-size: 22px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
+#now-playing #artist-album {
+  margin-top: -10px;
+  font-size: 16px;
+  font-style: italic;
+  overflow-wrap: break-word;
+}

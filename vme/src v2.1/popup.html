@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>volume</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body id="body">
+    <button id="mkr" state="disabled" hidden>MKR</button>
+
+    <input type="range" min="0" max="100" step="2" id="volume-control" hidden />
+    <div id="volume-value" hidden>¿?</div>
+
+    <p id="error">
+      La extension no ha logrado establecer una conexion con
+      <i>Mr. Worldwide Mp305</i>.
+      <br />
+      Puedes intentar recargar la pestaña y volver a abrir el control de volumen.
+    </p>
+
+    <script src="popup.js"></script>
+    <script src="popup-calls.js"></script>
+  </body>
+</html>

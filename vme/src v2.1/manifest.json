@@ -1,0 +1,30 @@
+{
+	"manifest_version": 2,
+	"name": "MWW Mp305 VME & MKR (Rev. 2)",
+	"version": "305.2",
+	"description": "The Oficial Mr. Worldwide Mp305 Volume Manager Extension & MediaKey Reader.",
+
+	"permissions": [
+		"activeTab",
+		"tabCapture"
+	],
+	
+	"browser_action": {
+		"default_popup": "popup.html"
+	},
+
+	"background": {
+		"scripts": ["background.js"]
+	},
+
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["content.js"]
+		}
+	],
+	
+	"icons": {
+		"128": "mww.png"
+	}
+}
