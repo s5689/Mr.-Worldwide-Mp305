@@ -9,7 +9,7 @@ export function loadYT() {
     },
     events: {
       onReady: () => {
-        controller.h.className = 'players';
+        controller.g.className = 'players';
       },
     },
   });
