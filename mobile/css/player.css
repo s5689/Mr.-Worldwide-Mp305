@@ -141,11 +141,25 @@
 
 #mww {
   top: 0;
-  background-image: url('../../mww.png');
-  background-size: 280px;
-  background-position: center;
-  background-repeat: no-repeat;
+
   z-index: -1;
+}
+
+#mww img,
+#mww div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: calc(70vw + 10vh);
+  height: calc(39vw + 5vh);
+}
+
+#mww div {
+  outline: 2ch solid black;
+  outline-offset: -5px;
+  filter: blur(2px);
 }
 
 /* 
