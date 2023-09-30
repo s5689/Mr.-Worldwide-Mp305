@@ -1,6 +1,7 @@
 import { saveSong, setConfig, updateSong } from './db';
-import { dataVersion, songsList } from './stateStore';
+import { currentPlaylist, dataVersion, songsList } from './stateStore';
 import { loadSongsTable } from './songsList';
+import { handleNormalize } from './controls';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -16,16 +17,21 @@ let toDB = undefined;
 export function toggleAddSong(update = false, e) {
   if (!isOpen) {
     $('.addSong-title').html('Agregar a la Lista');
+    $('.addSong-block:nth-child(9), .addSong-block:nth-child(10)').css('display', 'none');
+    $("#addSong-modal input[type='range']").val(70);
+    $('#addSong-modal #addSong-vol').html('70%');
     $('#addSong-modal').css('transform', 'translateX(-50%) scale(1)');
+    $('body').css('overflow', 'hidden');
 
     getInputs();
     isOpen = true;
     isUpdate = null;
 
     if (update) {
-      const { name, number, artist, album, link, time, source, id } = e;
+      const { name, number, artist, album, link, time, source, vol, id } = e;
 
       $('.addSong-title').html('Modificar Cancion');
+      $('.addSong-block:nth-child(9), .addSong-block:nth-child(10)').css('display', 'inline-grid');
 
       $('#addSong-modal #addSong-name').val(name);
       $('#addSong-modal #addSong-number').val(number);
@@ -37,6 +43,9 @@ export function toggleAddSong(update = false, e) {
         source.charAt(0).toUpperCase() + source.slice(1).toLowerCase()
       );
 
+      $("#addSong-modal input[type='range']").val(vol);
+      $('#addSong-modal #addSong-vol').html(`${vol}%`);
+
       $('#addSong-check').attr('hidden', '');
       $('#addSong-save').removeAttr('hidden');
       $('#addSong-save').removeAttr('disabled');
@@ -46,20 +55,21 @@ export function toggleAddSong(update = false, e) {
         $('#addSong-save').attr('hidden', '');
       });
 
-      toDB = { name, number, artist, album, link, time, source, id };
+      toDB = { name, number, artist, album, link, time, source, vol, id };
       isUpdate = id;
     }
 
     return;
   }
 
-  closeAddSong();
+  closeAddSong(true);
 }
 
-export function closeAddSong() {
+export function closeAddSong(isClick = false) {
   wipeInputs();
 
   $('#addSong-modal').css('transform', 'translateX(-50%) scale(0)');
+  $('body').removeAttr('style');
   isOpen = false;
 
   setTimeout(() => {
@@ -69,6 +79,10 @@ export function closeAddSong() {
     $('#addSong-check').removeAttr('hidden');
     $('#addSong-save').attr('hidden', '');
   }, 250);
+
+  if (isClick && isUpdate !== null) {
+    handleNormalize(isUpdate, currentPlaylist.getTrackData().vol);
+  }
 }
 
 export function checkAddSong() {
@@ -107,15 +121,63 @@ export async function saveAddSong() {
   toDB.number = inputs[1].value;
   toDB.artist = inputs[2].value;
   toDB.album = inputs[3].value;
+  toDB.vol = inputs[7].value;
 
   if (isUpdate === null) {
     toDB.id = await saveSong(toDB);
-  } else await updateSong(isUpdate, toDB);
+  } else {
+    await updateSong(isUpdate, toDB);
+  }
 
   setConfig(dataVersion.value + 1);
 
   closeAddSong();
   loadSongsTable(toDB, isUpdate);
+}
+
+// Eventos del Normalizador de Volumen
+// Solo se ejecuta una vez.
+export function updateSongNormalizer() {
+  const bar = document.querySelector("#addSong-modal input[type='range']");
+  const txt = document.querySelector('#addSong-modal #addSong-vol');
+
+  // Cambios sobre el scroll
+  bar.addEventListener('pointermove', (e) => {
+    const newValue = e.target.value;
+    const oldValue = txt.innerHTML.slice(0, txt.innerHTML.length - 1);
+
+    if (newValue !== oldValue) {
+      setVolume(newValue);
+    }
+  });
+
+  // Aplicar volumen al soltar el click
+  bar.addEventListener('mouseup', (e) => {
+    setVolume(e.target.value);
+  });
+
+  // Aplicar volumen al usar la rueda del raton.
+  bar.addEventListener('wheel', (e) => {
+    let currentVol = txt.innerHTML.slice(0, txt.innerHTML.length - 1);
+    let newVol;
+
+    if (e.deltaY < 0) {
+      newVol = Number(currentVol) + 2;
+    } else {
+      newVol = Number(currentVol) - 2;
+    }
+
+    if (newVol >= 0 && newVol <= 100) {
+      setVolume(newVol);
+    }
+  });
+
+  function setVolume(e) {
+    bar.value = e;
+    txt.innerHTML = `${e}%`;
+
+    handleNormalize(isUpdate, Number(e));
+  }
 }
 
 // Autocomplete cosas.

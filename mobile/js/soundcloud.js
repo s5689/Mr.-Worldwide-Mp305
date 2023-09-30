@@ -1,5 +1,5 @@
 import { loadSongsTable } from './songsList';
-import { loadingPlayer } from './stateStore';
+import { currentPlaylist, loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 
@@ -20,7 +20,7 @@ export function playSC(e) {
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();
-      controller.setVolume(80);
+      controller.setVolume(currentPlaylist.getTrackData().vol * 0.8);
       loadingPlayer.set(false);
     },
   });

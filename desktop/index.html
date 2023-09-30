@@ -97,9 +97,18 @@
         <input id="addSong-source" type="text" autocomplete="off" readonly />
       </div>
 
+      <div class="addSong-block">
+        <label>Normalizar</label>
+        <input type="range" value="0" min="0" max="100" step="1" />
+      </div>
+
+      <div class="addSong-block">
+        <span id="addSong-vol">¿?</span>
+      </div>
+
       <div id="addSong-error"></div>
 
-      <button id="addSong-return" onclick="closeAddSong()">Cancelar</button>
+      <button id="addSong-return" onclick="closeAddSong(true)">Cancelar</button>
       <button id="addSong-check" onclick="checkAddSong()">Comprobar</button>
       <button id="addSong-save" onclick="saveAddSong()" hidden>Guardar</button>
     </modal>

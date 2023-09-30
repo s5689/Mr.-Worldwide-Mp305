@@ -40,6 +40,7 @@ export function loadYT() {
 
 export function playYT(e) {
   controller.loadVideoById(e);
+  controller.setVolume(currentPlaylist.getTrackData().vol);
 
   // Pseudo-player cosas.
   const track = currentPlaylist.getTrackData();

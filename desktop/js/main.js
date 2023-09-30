@@ -1,4 +1,10 @@
-import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong } from './addSong';
+import {
+  toggleAddSong,
+  closeAddSong,
+  checkAddSong,
+  saveAddSong,
+  updateSongNormalizer,
+} from './addSong';
 import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
@@ -53,3 +59,5 @@ window.deleteSong = handleDeleteSong;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;
+
+updateSongNormalizer();

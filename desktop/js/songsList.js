@@ -116,17 +116,38 @@ function columnSorter(e) {
 }
 
 export async function loadSongsTable(e, updating, del = false) {
-  if (!e) songsList.set(await getData());
-  else {
-    if (typeof updating !== 'undefined')
+  if (!e) {
+    songsList.set(await getData());
+  } else {
+    // Preparar SongList al realizar Updates
+    if (typeof updating !== 'undefined') {
       songsList.set(songsList.value.filter((value) => value.id !== updating));
+    }
 
-    if (!del) songsList.value.push(e);
+    if (!del) {
+      songsList.value.push(e);
+    }
+  }
+
+  // Preparar CurrentPlaylist al realizar Updates
+  if (currentPlaylist.list.length !== 0) {
+    currentPlaylist.track = currentPlaylist.track;
+
+    if (typeof updating !== 'undefined') {
+      const n = currentPlaylist._list.findIndex((value) => value.id === updating);
+
+      currentPlaylist._list[n] = e;
+    }
+
+    if (del) {
+      const html = playlistTable.searchRows('id', '=', updating)[0].getElement();
+
+      html.children[3].click();
+    }
   }
 
   buildAutoComplete();
   songsTable.replaceData(songsList.get());
-  if (currentPlaylist.list.length !== 0) currentPlaylist.track = currentPlaylist.track;
 }
 
 /* 
@@ -415,7 +436,9 @@ async function getData() {
     // De ser el caso, usar los datos locales.
     const resp = JSON.parse(localStorage.getItem('songsList'));
 
-    resp.forEach((value) => temp.push(value));
+    resp.forEach((value) => {
+      temp.push(value);
+    });
   } else {
     // De lo contrario, llamar a la base de datos nuevamente y actualizarles.
     const resp = await getSongs();

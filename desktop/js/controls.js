@@ -1,7 +1,23 @@
 import { loadSongsTable, playSelected, songsTable, toggleFindSong } from './songsList';
-import { getPositionSC, loadSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
+import {
+  getPositionSC,
+  loadSC,
+  normalizeSC,
+  playSC,
+  restartSongSC,
+  stopSC,
+  togglePauseSC,
+} from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
-import { getPositionYT, loadYT, playYT, restartSongYT, stopYT, togglePauseYT } from './youtube';
+import {
+  getPositionYT,
+  loadYT,
+  normalizeYT,
+  playYT,
+  restartSongYT,
+  stopYT,
+  togglePauseYT,
+} from './youtube';
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
 import { deleteSong, setConfig } from './db';
@@ -329,7 +345,7 @@ export function handleEscape() {
     if (document.activeElement.id === 'addSong-findInput') inFocus = 'findInput';
 
     if (e.key === 'Escape') {
-      if (inFocus === 'addSong') closeAddSong();
+      if (inFocus === 'addSong') closeAddSong(true);
 
       if (inFocus === 'findInput') {
         if (document.getElementById('addSong-findInput').getAttribute('show') !== null)
@@ -341,4 +357,21 @@ export function handleEscape() {
       }, 5);
     }
   });
+}
+
+export function handleNormalize(id, e) {
+  const currentSong = currentPlaylist.getTrackData();
+
+  // Solo aplicar Normalizacion en la cancion actual solo si el cambio se efectua sobre la reproducida actualmente.
+  if (currentSong.id === id) {
+    switch (currentSource) {
+      case SOUNDCLOUD:
+        normalizeSC(e);
+        break;
+
+      case YOUTUBE:
+        normalizeYT(e);
+        break;
+    }
+  }
 }
