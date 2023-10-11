@@ -1,10 +1,4 @@
-import {
-  toggleAddSong,
-  closeAddSong,
-  checkAddSong,
-  saveAddSong,
-  updateSongNormalizer,
-} from './addSong';
+import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong, updateSongNormalizer } from './addSong';
 import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
@@ -29,10 +23,10 @@ import './dummyAudio';
 import './VME-MKR';
 
 desktopLoaded.onChange((e) => {
-  if (e === 4) apiReady();
+  if (e === 3) apiReady();
 });
 
-if (desktopLoaded.get() === 4) apiReady();
+if (desktopLoaded.get() === 3) apiReady();
 
 function apiReady() {
   preloadPlayers();

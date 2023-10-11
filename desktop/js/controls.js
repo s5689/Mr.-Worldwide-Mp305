@@ -1,36 +1,12 @@
 import { loadSongsTable, playSelected, songsTable, toggleFindSong } from './songsList';
-import {
-  getPositionSC,
-  loadSC,
-  normalizeSC,
-  playSC,
-  restartSongSC,
-  stopSC,
-  togglePauseSC,
-} from './soundcloud';
+import { getPositionSC, loadSC, normalizeSC, playSC, restartSongSC, stopSC, togglePauseSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP, togglePauseSP } from './spotify';
-import {
-  getPositionYT,
-  loadYT,
-  normalizeYT,
-  playYT,
-  restartSongYT,
-  stopYT,
-  togglePauseYT,
-} from './youtube';
+import { getPositionYT, loadYT, normalizeYT, playYT, restartSongYT, stopYT, togglePauseYT } from './youtube';
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
 import { deleteSong, setConfig } from './db';
 import { toMKR } from './VME-MKR';
-import {
-  currentPlaylist,
-  dataVersion,
-  loadingPlayer,
-  preventClosePlaylist,
-  rowOnMenu,
-  selectMode,
-  stopped,
-} from './stateStore';
+import { currentPlaylist, dataVersion, loadingPlayer, preventClosePlaylist, rowOnMenu, selectMode, stopped } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -39,9 +15,11 @@ let currentSource;
 
 // Funciones Principales
 export function preloadPlayers() {
-  loadSP();
+  // loadSP();
   loadSC();
   loadYT();
+
+  loadSongsTable();
 }
 
 export function handlePlay(e) {
@@ -138,9 +116,10 @@ export function handleStop(hard = true) {
     toMKR({ name: '', artist: '', album: '' });
   }
 
-  stopSP();
+  // stopSP();
   stopSC();
   stopYT();
+
   loadingPlayer.set(false);
 }
 
@@ -336,8 +315,7 @@ export function handleEscape() {
         break;
     }
 
-    if (e.target.id === 'addSong-modal' || $('#addSong-modal').find(e.target).length !== 0)
-      inFocus = 'addSong';
+    if (e.target.id === 'addSong-modal' || $('#addSong-modal').find(e.target).length !== 0) inFocus = 'addSong';
   });
 
   // Cerrar el modal de agregar canciones o la barra de busqueda al presionar escape.
@@ -348,8 +326,7 @@ export function handleEscape() {
       if (inFocus === 'addSong') closeAddSong(true);
 
       if (inFocus === 'findInput') {
-        if (document.getElementById('addSong-findInput').getAttribute('show') !== null)
-          toggleFindSong();
+        if (document.getElementById('addSong-findInput').getAttribute('show') !== null) toggleFindSong();
       }
 
       setTimeout(() => {
