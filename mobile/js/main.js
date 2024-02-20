@@ -1,5 +1,5 @@
 import { toggleFindSong, toggleOrderAlbum, toggleOrderArtist, toggleOrderSong } from './songsList';
-// import { togglePausePYT } from './pseudo-youtube';
+import { handleUpdateVolume } from './volume';
 import { togglePauseYT } from './youtube';
 import {
   handleAddPlaylist,
@@ -16,11 +16,13 @@ import {
   handleSingleAddPlaylist,
   handleStop,
   handleTogglePlaylist,
+  handleToggleVolume,
   handleUnlockPlayer,
   preloadPlayers,
 } from './controls';
 import './songsList';
 import './playlist';
+import './volume';
 
 mobileLoaded.onChange((e) => {
   if (e === 3) preloadPlayers();
@@ -42,6 +44,8 @@ window.controlPrev = handlePrev;
 window.togglePauseYT = togglePauseYT;
 window.controlStop = handleStop;
 window.controlNext = handleNext;
+window.toggleVolume = handleToggleVolume;
+window.updateVolume = handleUpdateVolume;
 window.togglePlaylist = handleTogglePlaylist;
 window.controlShuffle = handleShuffle;
 

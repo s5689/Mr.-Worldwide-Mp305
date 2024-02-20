@@ -5,6 +5,7 @@ import { getPositionYT, loadYT, normalizeYT, playYT, restartSongYT, stopYT, togg
 import { closePlaylist, openPlaylist } from './playlist';
 import { toggleAddSong } from './addSong';
 import { deleteSong, setConfig } from './db';
+import { dummyAudio } from './dummyAudio';
 import { toMKR } from './VME-MKR';
 import { currentPlaylist, dataVersion, loadingPlayer, preventClosePlaylist, rowOnMenu, selectMode, stopped } from './stateStore';
 
@@ -46,6 +47,11 @@ export function handlePlay(e) {
   }, 30);
 
   toMKR(currentPlaylist.getTrackData());
+
+  // Fix al inicio del dummyAudio
+  if (typeof document.getElementById('dummy-audio').getAttribute('src') === 'object') {
+    dummyAudio();
+  }
 }
 
 export function handleTogglePause() {

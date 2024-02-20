@@ -69,6 +69,15 @@
   transition: background-image 0ms;
 }
 
+#control-volume {
+  background: url('../../volume-line.svg') no-repeat center center / contain;
+}
+
+#control-volume:active {
+  background: url('../../volume-fill.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
 #control-playlist {
   background: url('../../list-alt-outline-rounded.svg') no-repeat center center / contain;
 }

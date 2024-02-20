@@ -1,14 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import {
-  addDoc,
-  getDocs,
-  collection,
-  deleteDoc,
-  getFirestore,
-  doc,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore';
+import { addDoc, getDocs, collection, deleteDoc, getFirestore, doc, updateDoc, getDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAyacVFGoIKMMtkH7znpi1ESh2G0UlSKQI',
@@ -27,3 +18,5 @@ const CONFIG = 'config';
 
 export const getSongs = () => getDocs(collection(db, SONGS_TABLE));
 export const getConfig = () => getDoc(doc(db, CONFIG, 'version'));
+export const updateSong = (id, e) => updateDoc(doc(db, SONGS_TABLE, id), e);
+export const setConfig = (e) => updateDoc(doc(db, CONFIG, 'version'), { value: e });

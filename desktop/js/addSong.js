@@ -39,9 +39,7 @@ export function toggleAddSong(update = false, e) {
       $('#addSong-modal #addSong-album').val(album);
       $('#addSong-modal #addSong-link').val(link);
       $('#addSong-modal #addSong-time').val(time);
-      $('#addSong-modal #addSong-source').val(
-        source.charAt(0).toUpperCase() + source.slice(1).toLowerCase()
-      );
+      $('#addSong-modal #addSong-source').val(source.charAt(0).toUpperCase() + source.slice(1).toLowerCase());
 
       $("#addSong-modal input[type='range']").val(vol);
       $('#addSong-modal #addSong-vol').html(`${vol}%`);
@@ -352,9 +350,7 @@ function testYT() {
   link = link.replace('https://www.youtube.com/watch?v=', '');
   link = link.slice(0, 11);
 
-  fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${link}&key=${apiKey}`
-  )
+  fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${link}&key=${apiKey}`)
     .then((resp) => resp.json())
     .then((data) => {
       if (data.items.length !== 0) {

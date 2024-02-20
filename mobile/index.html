@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <script>
       var _debug = false;
       var mobileLoaded = {
@@ -22,13 +22,13 @@
           this.callback = e;
         },
       };
-      
+
       function onYouTubeIframeAPIReady() {
         mobileLoaded.set();
       }
     </script>
 
-    <script src="https://www.youtube.com/iframe_api"></script> 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script onload="mobileLoaded.set()" src="https://w.soundcloud.com/player/api.js"></script>
     <script onload="mobileLoaded.set()" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <!-- <script onload="mobileLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script> -->
@@ -41,13 +41,13 @@
 
   <body>
     <p class="title">Mr. Worldwide <b>Mp3</b>05</p>
-    
+
     <div id="songsList">
       <div id="find-container">
         <button id="songsList-findButton" onclick="toggleFindSong()"></button>
-        <input id="songsList-findInput" autocomplete="off"></input>
+        <input id="songsList-findInput" autocomplete="off" />
       </div>
-      
+
       <button id="songsList-orderSong" onclick="toggleOrderSong()"></button>
       <button id="songsList-orderArtist" onclick="toggleOrderArtist()"></button>
       <button id="songsList-orderAlbum" onclick="toggleOrderAlbum()"></button>
@@ -72,12 +72,12 @@
       </else>
     </modal>
 
-    <modal id="playlist-modal"> 
+    <modal id="playlist-modal">
       <div id="playlist-modal-close-container" onclick="togglePlaylist()">
         <button>►</button>
       </div>
-      
-      <div id="playlist-table"></div> 
+
+      <div id="playlist-table"></div>
     </modal>
 
     <div id="preview-player">
@@ -96,13 +96,7 @@
       <button id="close-player-modal" onclick="closePlayer()"></button>
 
       <div id="player-container">
-        <iframe
-        id="soundcloud"
-        class="players"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url="
-        ></iframe>
+        <iframe id="soundcloud" class="players" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url="></iframe>
 
         <!-- <audio id="youtube"></audio> -->
         <div id="youtube"></div>
@@ -112,19 +106,12 @@
               <div id="ytp-pauseicon"></div>
             </div>
 
-            <img id="ytp-thumbicon" src=""/>
+            <img id="ytp-thumbicon" src="" />
           </div>
-            
+
           <div id="ytp-seeker">
             <p id="ytp-time-current" class="ytp-time">0:00</p>
-            <input 
-              id="ytp-seekbar"
-              type="range"
-              value="0"
-              min="0"
-              max="100"
-              step="1"
-            />
+            <input id="ytp-seekbar" type="range" value="0" min="0" max="100" step="1" />
             <p id="ytp-time-total" class="ytp-time">99:99</p>
           </div>
 
@@ -139,6 +126,16 @@
         </div>
       </div>
 
+      <modal id="volume-modal">
+        <input id="volume-control" type="range" min="0" max="100" step="2" />
+
+        <div id="volume-modal-buttons">
+          <button id="volume-apply" onclick="updateVolume()"></button>
+          <div id="volume-value">¿?</div>
+          <button id="volume-cancel" onclick="toggleVolume()"></button>
+        </div>
+      </modal>
+
       <div id="controls">
         <div class="up">
           <button id="control-prev" onclick="controlPrev()"></button>
@@ -147,6 +144,7 @@
         </div>
 
         <div class="down">
+          <button id="control-volume" onclick="toggleVolume()"></button>
           <button id="control-playlist" onclick="togglePlaylist()"></button>
           <button id="control-shuffle" onclick="controlShuffle()"></button>
         </div>
@@ -154,7 +152,7 @@
 
       <div id="lock-screen">
         <button></button>
-        <input type="range" value="0" step="1" min="0" max="100" onchange="unlockPlayer()"></input>
+        <input type="range" value="0" step="1" min="0" max="100" onchange="unlockPlayer()" />
       </div>
     </div>
   </body>

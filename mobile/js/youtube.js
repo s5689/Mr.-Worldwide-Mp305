@@ -41,6 +41,7 @@ export function loadYT() {
 export function playYT(e) {
   controller.loadVideoById(e);
   controller.setVolume(currentPlaylist.getTrackData().vol);
+  controller.unMute();
 
   // Pseudo-player cosas.
   const track = currentPlaylist.getTrackData();
@@ -97,4 +98,8 @@ export function getPositionYT() {
 
 export function restartSongYT() {
   controller.seekTo(0, true);
+}
+
+export function normalizeYT(e) {
+  controller.setVolume(e);
 }

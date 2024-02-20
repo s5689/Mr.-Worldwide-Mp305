@@ -1,13 +1,5 @@
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-import {
-  currentPlaylist,
-  songsList,
-  rowOnMenu,
-  selectMode,
-  preventClosePlaylist,
-  autoComplete,
-  dataVersion,
-} from './stateStore';
+import { currentPlaylist, songsList, rowOnMenu, selectMode, preventClosePlaylist, autoComplete, dataVersion } from './stateStore';
 import { handleDeselectAll, handlePlay } from './controls';
 import { openPlaylist, playlistTable } from './playlist';
 import { createAutoComplete } from './addSong';

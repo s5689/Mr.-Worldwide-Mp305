@@ -4,15 +4,8 @@ import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube'
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
-import {
-  currentPlaylist,
-  loadingPlayer,
-  preventClosePlaylist,
-  rowOnMenu,
-  selectMode,
-  stopped,
-  wakeLock,
-} from './stateStore';
+import { closeVolumeModal, disableVolume, enableVolume } from './volume';
+import { currentPlaylist, loadingPlayer, preventClosePlaylist, rowOnMenu, selectMode, stopped, wakeLock } from './stateStore';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -88,6 +81,7 @@ export function handleUnlockPlayer() {
 export function handleClosePlayer() {
   document.querySelector('body').removeAttribute('modal-opened');
   document.getElementById('player-modal').removeAttribute('show');
+  closeVolumeModal();
 }
 
 export function handlePlay(e) {
@@ -97,6 +91,8 @@ export function handlePlay(e) {
   loadingPlayer.set(true);
 
   setTimeout(() => {
+    enableVolume();
+
     switch (currentSource) {
       case SOUNDCLOUD:
         playSC(e.link);
@@ -166,6 +162,7 @@ export function handleStop(hard = true) {
   // stopSP();
   stopSC();
   stopYT();
+  disableVolume();
   loadingPlayer.set(false);
 }
 
@@ -176,6 +173,14 @@ export function handleNext() {
     const current = currentPlaylist.track;
 
     if (prev !== current && !loadingPlayer.get()) handlePlay(currentPlaylist.getTrackData());
+  }
+}
+
+export function handleToggleVolume() {
+  if (typeof $('#volume-modal').attr('show') === 'undefined') {
+    document.getElementById('volume-modal').setAttribute('show', '');
+  } else {
+    closeVolumeModal();
   }
 }
 
@@ -329,8 +334,11 @@ function playerModalGestures() {
 
     // Reconocer gesto solo si no esta bloqueada la pantalla
     if ($('#lock-screen').css('display') === 'none') {
-      if (end - start > screenSize * 0.2) {
-        handleClosePlayer();
+      // Y si no esta abierto el panel de volumen.
+      if (typeof $('#volume-modal').attr('show') === 'undefined') {
+        if (end - start > screenSize * 0.2) {
+          handleClosePlayer();
+        }
       }
     }
   });

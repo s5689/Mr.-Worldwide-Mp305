@@ -1,6 +1,7 @@
 import { loadSongsTable } from './songsList';
 import { currentPlaylist, loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
+const VOL_RATIO = 0.8;
 let controller;
 
 export function loadSC() {
@@ -20,7 +21,7 @@ export function playSC(e) {
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();
-      controller.setVolume(currentPlaylist.getTrackData().vol * 0.8);
+      controller.setVolume(currentPlaylist.getTrackData().vol * VOL_RATIO);
       loadingPlayer.set(false);
     },
   });
@@ -51,4 +52,8 @@ export async function getPositionSC() {
 
 export function restartSongSC() {
   controller.seekTo(0);
+}
+
+export function normalizeSC(e) {
+  controller.setVolume(e * VOL_RATIO);
 }

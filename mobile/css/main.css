@@ -3,6 +3,7 @@
 @import 'controls.css';
 @import 'songsList.css';
 @import 'playlist.css';
+@import 'volume.css';
 
 a {
   display: none;
