@@ -21,6 +21,7 @@ import './songsList';
 import './playlist';
 import './dummyAudio';
 import './VME-MKR';
+import './console';
 
 desktopLoaded.onChange((e) => {
   if (e === 3) apiReady();

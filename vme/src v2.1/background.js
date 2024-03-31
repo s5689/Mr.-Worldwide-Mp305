@@ -100,7 +100,7 @@ function setVolume({ vol, mute }) {
 
   if (controller.set !== null) {
     controller.init = true;
-    controller.set.gainNode.gain.value = controller.val;
+    controller.set.gainNode.gain.value = controller.val * 2;
   }
 }
 

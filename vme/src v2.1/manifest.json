@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "MWW Mp305 VME & MKR (Rev. 2)",
-	"version": "305.2",
+	"name": "MWW Mp305 VME & MKR (Rev. 3)",
+	"version": "305.3",
 	"description": "The Oficial Mr. Worldwide Mp305 Volume Manager Extension & MediaKey Reader.",
 
 	"permissions": [
