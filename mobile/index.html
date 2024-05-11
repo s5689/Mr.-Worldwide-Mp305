@@ -78,6 +78,10 @@
       </div>
 
       <div id="playlist-table"></div>
+
+      <div id="playlist-modal-shuffle" onclick="controlShuffle()">
+        <button></button>
+      </div>
     </modal>
 
     <div id="preview-player">
@@ -93,6 +97,7 @@
 
     <div id="player-modal">
       <button id="lock-player-modal" onclick="lockPlayer()"></button>
+      <button id="show-devTools-modal" onclick="toggleDevTools()"></button>
       <button id="close-player-modal" onclick="closePlayer()"></button>
 
       <div id="player-container">
@@ -148,6 +153,22 @@
           <button id="control-playlist" onclick="togglePlaylist()"></button>
           <button id="control-shuffle" onclick="controlShuffle()"></button>
         </div>
+      </div>
+
+      <div id="devTools-modal">
+        <p>YouTube Name: <span id="yt-name"></span></p>
+        <p>YouTube State: <span id="yt-state"></span></p>
+        <p>YouTube Quality: <span id="yt-quality"></span></p>
+        <button id="yt-stop">Stop YouTube</button>
+        <button id="yt-restart">Restart YouTube</button>
+        <button id="yt-hide">Hide YouTube</button>
+        <button id="yt-show">Show YouTube</button>
+        <br />
+        <br />
+        <button id="sc-stop">Stop SoundCloud</button>
+        <button id="sc-restart">Restart SoundCloud</button>
+        <button id="sc-hide">Hide SoundCloud</button>
+        <button id="sc-show">Show SoundCloud</button>
       </div>
 
       <div id="lock-screen">

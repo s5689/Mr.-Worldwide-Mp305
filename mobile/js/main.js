@@ -15,6 +15,7 @@ import {
   handleShuffle,
   handleSingleAddPlaylist,
   handleStop,
+  handleToggleDevTools,
   handleTogglePlaylist,
   handleToggleVolume,
   handleUnlockPlayer,
@@ -23,6 +24,7 @@ import {
 import './songsList';
 import './playlist';
 import './volume';
+import './devTools';
 
 mobileLoaded.onChange((e) => {
   if (e === 3) preloadPlayers();
@@ -36,6 +38,7 @@ window.toggleOrderArtist = toggleOrderArtist;
 window.toggleOrderAlbum = toggleOrderAlbum;
 
 window.showPlayer = handleShowPlayer;
+window.toggleDevTools = handleToggleDevTools;
 window.lockPlayer = handleLockPlayer;
 window.unlockPlayer = handleUnlockPlayer;
 window.closePlayer = handleClosePlayer;

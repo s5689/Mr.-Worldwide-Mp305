@@ -6,6 +6,7 @@ let controller;
 
 export function loadSC() {
   controller = SC.Widget('soundcloud');
+  window.SCController = controller;
   loadSongsTable();
 }
 
@@ -27,6 +28,7 @@ export function playSC(e) {
   });
 
   controller.bind(SC.Widget.Events.FINISH, () => handleNext());
+  controller.bind(SC.Widget.Events.LOAD_PROGRESS, (e) => console.log(e));
 }
 
 export function togglePauseSC() {

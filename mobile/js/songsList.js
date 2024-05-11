@@ -298,7 +298,7 @@ currentPlaylist.onTrackChange(({ track, prevTrack }) => {
   // Cambios sobre el Mini Reproductor
   if ('name' in track) {
     $('#preview-name').text(track.name);
-    $('#preview-artist-album').text(`${track.artist} - ${track.album}`);
+    $('#preview-artist-album').text(`${track.artist} ${track.album !== '' ? `- ${track.album}` : ''}`);
   }
 });
 

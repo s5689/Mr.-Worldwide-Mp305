@@ -27,3 +27,63 @@ window.resetNormalizer = () => {
 
   return 'Ejecutando...';
 };
+
+window.validateLinks = () => {
+  // Si se ejecuta antes de cargar la lista
+  if (songsList.get().length === 0) {
+    return 'Comando Abortado.';
+  }
+
+  // Inicializar controller
+  const controller = new YT.Player('yt-tester', {
+    playerVars: {
+      autoplay: 1,
+    },
+    events: {
+      onReady: () => {
+        const tempList = [];
+        const brokenSongs = [];
+        let k = 0;
+
+        // Comprobar solo canciones de Youtube
+        songsList.get().forEach((e) => {
+          if (e.source === 'YOUTUBE') {
+            tempList.push(e);
+          }
+        });
+
+        controller.addEventListener('onStateChange', (e) => {
+          if (e.data === 1) {
+            console.log(`${k + 1}/${tempList.length} | ${tempList[k].artist} - ${tempList[k].name} | Ok`);
+
+            k++;
+            load(k);
+          }
+        });
+
+        controller.addEventListener('onError', (e) => {
+          console.log(`${k + 1}/${tempList.length} | ${tempList[k].artist} - ${tempList[k].name} | Error`);
+
+          brokenSongs.push(tempList[k]);
+
+          k++;
+          load(k);
+        });
+
+        function load(e) {
+          if (k < tempList.length) {
+            controller.loadVideoById(tempList[e].link);
+          } else {
+            console.log('----------------');
+            console.log('Finalizado.');
+            console.log(brokenSongs);
+          }
+        }
+
+        load(0);
+      },
+    },
+  });
+
+  return 'Ejecutando...';
+};

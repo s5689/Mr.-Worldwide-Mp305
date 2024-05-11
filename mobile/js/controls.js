@@ -6,6 +6,7 @@ import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify'
 import { closePlaylist, openPlaylist } from './playlist';
 import { closeVolumeModal, disableVolume, enableVolume } from './volume';
 import { currentPlaylist, loadingPlayer, preventClosePlaylist, rowOnMenu, selectMode, stopped, wakeLock } from './stateStore';
+import { SetDevState } from './devTools';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -21,6 +22,7 @@ export function preloadPlayers() {
 
   playerModalGestures();
   playlistModalGestures();
+  devToolsModalGestures();
 }
 
 export function handleShowPlayer() {
@@ -76,6 +78,16 @@ export function handleUnlockPlayer() {
     $('#lock-screen').css('opacity', 1);
   }, 0);
   */
+}
+
+export function handleToggleDevTools() {
+  const html = document.getElementById('devTools-modal');
+
+  if (html.getAttribute('show') === null) {
+    html.setAttribute('show', '');
+  } else {
+    html.removeAttribute('show');
+  }
 }
 
 export function handleClosePlayer() {
@@ -334,10 +346,13 @@ function playerModalGestures() {
 
     // Reconocer gesto solo si no esta bloqueada la pantalla
     if ($('#lock-screen').css('display') === 'none') {
-      // Y si no esta abierto el panel de volumen.
-      if (typeof $('#volume-modal').attr('show') === 'undefined') {
-        if (end - start > screenSize * 0.2) {
-          handleClosePlayer();
+      // Y si no esta abierto el devTools.
+      if (typeof $('#devTools-modal').attr('show') === 'undefined') {
+        // Y si no esta abierto el panel de volumen.
+        if (typeof $('#volume-modal').attr('show') === 'undefined') {
+          if (end - start > screenSize * 0.2) {
+            handleClosePlayer();
+          }
         }
       }
     }
@@ -361,6 +376,24 @@ function playlistModalGestures() {
       if (end - start > screenSize * 0.4) {
         closePlaylist();
       }
+    }
+  });
+}
+
+function devToolsModalGestures() {
+  const html = document.getElementById('devTools-modal');
+  let start;
+
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientY;
+  });
+
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerHeight;
+    const end = e.changedTouches[0].clientY;
+
+    if (start - end > screenSize * 0.2) {
+      handleToggleDevTools();
     }
   });
 }

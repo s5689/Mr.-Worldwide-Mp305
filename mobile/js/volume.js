@@ -7,7 +7,7 @@ const valueHtml = document.getElementById('volume-value');
 const barHtml = document.getElementById('volume-control');
 let enabled = false;
 
-export function enableVolume(e) {
+export function enableVolume() {
   const track = currentPlaylist.getTrackData();
   enabled = true;
 
