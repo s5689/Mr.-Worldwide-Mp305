@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./main.css" />
+    <title>MWW Mp305 MKR</title>
+  </head>
+
+  <body>
+    <p class="title">
+      Mr. Worldwide <b>Mp3</b>05: <b id="soft">M</b>edia<b id="soft">K</b>ey <b id="soft">R</b>eader
+    </p>
+
+    <button id="info-button"></button>
+
+    <modal id="info-modal">
+      <p>¡Bienvenido a Mr. Worldwide Mp305 MKR!</p>
+      <p>
+        La pagina actual tiene como funcion ofrecer soporte para el uso de las teclas multimedia
+        durante la reproduccion de las canciones de la aplicacion principal MWW Mp305.
+      </p>
+
+      <p>Esta debe mantenerse abierta.</p>
+
+      <p>
+        Para detectar las teclas cuando tenga la intencion de dejar en segundo plano la aplicacion,
+        seleccione la pestaña actual para priorizar el sistema sobre las otras pestañas del
+        navegador.
+      </p>
+
+      <button id="info-modal-ok">Vale</button>
+    </modal>
+
+    <div id="now-playing">
+      <br />
+      <button id="control-prev"></button>
+      <button id="control-togglePause"></button>
+      <button id="control-next"></button>
+      <br />
+      <p id="name">Mr. Worldwide Mp305</p>
+      <p id="artist-album">MediaKey Reader</p>
+    </div>
+  </body>
+
+  <audio id="dummy-audio"></audio>
+
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./dummySong.js"></script>
+</html>

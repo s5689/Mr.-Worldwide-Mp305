@@ -22,7 +22,8 @@
 
 #preview-name {
   font-weight: 400;
-  text-overflow: ellipsis;
+  height: 21px;
+  overflow: hidden;
 }
 
 #preview-artist-album {
@@ -141,11 +142,90 @@
 
 #mww {
   top: 0;
-  background-image: url('../../mww.png');
-  background-size: 280px;
-  background-position: center;
-  background-repeat: no-repeat;
+
   z-index: -1;
+}
+
+#mww img,
+#mww div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: calc(70vw + 10vh);
+  height: calc(39vw + 5vh);
+}
+
+#mww div {
+  outline: 2ch solid black;
+  outline-offset: -5px;
+  filter: blur(2px);
+}
+
+/*
+  DevTools
+
+*/
+#show-devTools-modal {
+  position: absolute;
+  background: url('../../code-simple-thin.svg') no-repeat center center / contain;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 35px;
+  height: 35px;
+
+  border: 0;
+  margin-top: 10px;
+  filter: invert(1);
+  transition: background-image 700ms;
+}
+
+#show-devTools-modal:active {
+  background: url('../../code-simple-bold.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
+#devTools-modal {
+  font-family: monospace;
+
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 90%;
+  width: 80%;
+
+  border: 1px solid white;
+  border-radius: 0 0 10px 10px;
+  background-color: black;
+
+  padding: 0 1rem 0 1rem;
+  z-index: 6;
+  transition: top 400ms;
+}
+
+#devTools-modal[show] {
+  top: -1px;
+}
+
+#devTools-modal button {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+
+  transition: filter 400ms;
+}
+
+#devTools-modal button:active {
+  filter: invert(1);
+  transition: filter 0ms;
 }
 
 /* 

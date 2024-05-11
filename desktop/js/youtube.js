@@ -1,4 +1,4 @@
-import { loadingPlayer } from './stateStore';
+import { currentPlaylist, loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
 let controller;
 
@@ -9,7 +9,7 @@ export function loadYT() {
     },
     events: {
       onReady: () => {
-        controller.h.className = 'players';
+        controller.g.className = 'players';
       },
     },
   });
@@ -28,6 +28,7 @@ export function loadYT() {
 
 export function playYT(e) {
   controller.loadVideoById(e);
+  controller.setVolume(currentPlaylist.getTrackData().vol);
 }
 
 export function togglePauseYT() {
@@ -46,4 +47,8 @@ export function getPositionYT() {
 
 export function restartSongYT() {
   controller.seekTo(0, true);
+}
+
+export function normalizeYT(e) {
+  controller.setVolume(e);
 }

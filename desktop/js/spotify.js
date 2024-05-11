@@ -39,7 +39,6 @@ export async function loadSP() {
 
   setTimeout(() => {
     SpotifyIframeApi.createController(document.getElementById('spotify-container'), {}, callback);
-    loadSongsTable();
   }, 500);
 }
 

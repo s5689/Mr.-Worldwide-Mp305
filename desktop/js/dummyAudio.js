@@ -1,82 +1,79 @@
-let playing = false;
+export function dummyAudio() {
+  const audio = document.getElementById('dummy-audio');
+  audio.src = dummySong(60);
+  audio.loop = true;
 
-const audio = document.getElementById('dummy-audio');
-audio.src = dummySong(60);
-audio.loop = true;
-
-export function dummyStart() {
-  if (!playing) {
-    playing = true;
+  audio.addEventListener('pause', () => {
     audio.play();
+  });
+
+  function dummySong(time, freq = 44100) {
+    const length = time * freq;
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+    if (!AudioContext) {
+      console.log('No Audio Context');
+    }
+
+    const context = new AudioContext();
+    const audioFile = context.createBuffer(1, length, freq);
+
+    return URL.createObjectURL(bufferToWave(audioFile, length));
   }
-}
 
-function dummySong(time, freq = 44100) {
-  const length = time * freq;
+  function bufferToWave(abuffer, len) {
+    let numOfChan = abuffer.numberOfChannels,
+      length = len * numOfChan * 2 + 44,
+      buffer = new ArrayBuffer(length),
+      view = new DataView(buffer),
+      channels = [],
+      i,
+      sample,
+      offset = 0,
+      pos = 0;
 
-  const AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
-  if (!AudioContext) {
-    console.log('No Audio Context');
-  }
+    // write WAVE header
+    setUint32(0x46464952);
+    setUint32(length - 8);
+    setUint32(0x45564157);
 
-  const context = new AudioContext();
-  const audioFile = context.createBuffer(1, length, freq);
+    setUint32(0x20746d66);
+    setUint32(16);
+    setUint16(1);
+    setUint16(numOfChan);
+    setUint32(abuffer.sampleRate);
+    setUint32(abuffer.sampleRate * 2 * numOfChan);
+    setUint16(numOfChan * 2);
+    setUint16(16);
 
-  return URL.createObjectURL(bufferToWave(audioFile, length));
-}
+    setUint32(0x61746164);
+    setUint32(length - pos - 4);
 
-function bufferToWave(abuffer, len) {
-  let numOfChan = abuffer.numberOfChannels,
-    length = len * numOfChan * 2 + 44,
-    buffer = new ArrayBuffer(length),
-    view = new DataView(buffer),
-    channels = [],
-    i,
-    sample,
-    offset = 0,
-    pos = 0;
+    // write interleaved data
+    for (i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
 
-  // write WAVE header
-  setUint32(0x46464952);
-  setUint32(length - 8);
-  setUint32(0x45564157);
+    while (pos < length) {
+      for (i = 0; i < numOfChan; i++) {
+        // interleave channels
+        sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
+        view.setInt16(pos, sample, true); // write 16-bit sample
+        pos += 2;
+      }
+      offset++; // next source sample
+    }
 
-  setUint32(0x20746d66);
-  setUint32(16);
-  setUint16(1);
-  setUint16(numOfChan);
-  setUint32(abuffer.sampleRate);
-  setUint32(abuffer.sampleRate * 2 * numOfChan);
-  setUint16(numOfChan * 2);
-  setUint16(16);
+    // create Blob
+    return new Blob([buffer], { type: 'audio/wav' });
 
-  setUint32(0x61746164);
-  setUint32(length - pos - 4);
-
-  // write interleaved data
-  for (i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
-
-  while (pos < length) {
-    for (i = 0; i < numOfChan; i++) {
-      // interleave channels
-      sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
-      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
-      view.setInt16(pos, sample, true); // write 16-bit sample
+    function setUint16(data) {
+      view.setUint16(pos, data, true);
       pos += 2;
     }
-    offset++; // next source sample
-  }
 
-  // create Blob
-  return new Blob([buffer], { type: 'audio/wav' });
-
-  function setUint16(data) {
-    view.setUint16(pos, data, true);
-    pos += 2;
-  }
-
-  function setUint32(data) {
-    view.setUint32(pos, data, true);
-    pos += 4;
+    function setUint32(data) {
+      view.setUint32(pos, data, true);
+      pos += 4;
+    }
   }
 }

@@ -1,10 +1,12 @@
 import { loadSongsTable } from './songsList';
-import { loadingPlayer } from './stateStore';
+import { currentPlaylist, loadingPlayer } from './stateStore';
 import { handleNext } from './controls';
+const VOL_RATIO = 0.8;
 let controller;
 
 export function loadSC() {
   controller = SC.Widget('soundcloud');
+  window.SCController = controller;
   loadSongsTable();
 }
 
@@ -20,12 +22,13 @@ export function playSC(e) {
     callback: () => {
       $('#soundcloud').css('display', 'block');
       controller.play();
-      controller.setVolume(80);
+      controller.setVolume(currentPlaylist.getTrackData().vol * VOL_RATIO);
       loadingPlayer.set(false);
     },
   });
 
   controller.bind(SC.Widget.Events.FINISH, () => handleNext());
+  controller.bind(SC.Widget.Events.LOAD_PROGRESS, (e) => console.log(e));
 }
 
 export function togglePauseSC() {
@@ -51,4 +54,8 @@ export async function getPositionSC() {
 
 export function restartSongSC() {
   controller.seekTo(0);
+}
+
+export function normalizeSC(e) {
+  controller.setVolume(e * VOL_RATIO);
 }

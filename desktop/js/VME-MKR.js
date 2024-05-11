@@ -3,7 +3,20 @@ import { currentPlaylist } from './stateStore';
 
 window.addEventListener('message', (e) => {
   // Conexion con VME
-  if (e.data === 'larry is that you?') window.postMessage("it's me, DIO");
+  if (e.data === 'VME-fetchData') {
+    let response = localStorage.getItem('VME');
+
+    if (response === null) {
+      localStorage.setItem('VME', JSON.stringify({ vol: 50, mute: false }));
+      response = localStorage.getItem('VME');
+    }
+
+    window.postMessage({ msg: 'VME-responseData', payload: JSON.parse(response) });
+  }
+
+  if (e.data.msg === 'VME-setData') {
+    localStorage.setItem('VME', JSON.stringify(e.data.payload));
+  }
 
   // Conexiones con MKR
   if (e.data === 'MKR-getTrackData') toMKR(currentPlaylist.getTrackData());
@@ -15,7 +28,7 @@ window.addEventListener('message', (e) => {
 
 // Enviar metadata de la cancion actual a MKR
 export function toMKR(e) {
-  window.postMessage({ msg: 'MKR-TrackData', value: e });
+  window.postMessage({ msg: 'MKR-TrackData', payload: e });
 }
 
 setTimeout(() => {

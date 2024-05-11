@@ -4,14 +4,9 @@ import { getPositionYT, loadYT, playYT, restartSongYT, stopYT } from './youtube'
 import { getPositionSC, loadSC, playSC, restartSongSC, stopSC } from './soundcloud';
 import { getPositionSP, loadSP, playSP, restartSongSP, stopSP } from './spotify';
 import { closePlaylist, openPlaylist } from './playlist';
-import {
-  currentPlaylist,
-  loadingPlayer,
-  preventClosePlaylist,
-  rowOnMenu,
-  selectMode,
-  stopped,
-} from './stateStore';
+import { closeVolumeModal, disableVolume, enableVolume } from './volume';
+import { currentPlaylist, loadingPlayer, preventClosePlaylist, rowOnMenu, selectMode, stopped, wakeLock } from './stateStore';
+import { SetDevState } from './devTools';
 
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
@@ -27,6 +22,7 @@ export function preloadPlayers() {
 
   playerModalGestures();
   playlistModalGestures();
+  devToolsModalGestures();
 }
 
 export function handleShowPlayer() {
@@ -34,8 +30,13 @@ export function handleShowPlayer() {
   document.getElementById('player-modal').setAttribute('show', '');
 }
 
-export function handleLockPlayer() {
+export async function handleLockPlayer() {
   document.documentElement.requestFullscreen();
+
+  try {
+    wakeLock.state = await navigator.wakeLock.request('screen');
+  } catch (e) {}
+
   $('#lock-screen').css('display', 'block');
 
   setTimeout(() => {
@@ -57,6 +58,12 @@ export function handleUnlockPlayer() {
         $('#lock-screen').removeAttr('unlock');
 
         document.exitFullscreen();
+        if (wakeLock.state !== null) {
+          wakeLock.state.release().then(() => {
+            wakeLock.state = null;
+          });
+        }
+
         input.value = 0;
       }, 500);
     }, 500);
@@ -73,9 +80,20 @@ export function handleUnlockPlayer() {
   */
 }
 
+export function handleToggleDevTools() {
+  const html = document.getElementById('devTools-modal');
+
+  if (html.getAttribute('show') === null) {
+    html.setAttribute('show', '');
+  } else {
+    html.removeAttribute('show');
+  }
+}
+
 export function handleClosePlayer() {
   document.querySelector('body').removeAttribute('modal-opened');
   document.getElementById('player-modal').removeAttribute('show');
+  closeVolumeModal();
 }
 
 export function handlePlay(e) {
@@ -85,6 +103,8 @@ export function handlePlay(e) {
   loadingPlayer.set(true);
 
   setTimeout(() => {
+    enableVolume();
+
     switch (currentSource) {
       case SOUNDCLOUD:
         playSC(e.link);
@@ -154,6 +174,7 @@ export function handleStop(hard = true) {
   // stopSP();
   stopSC();
   stopYT();
+  disableVolume();
   loadingPlayer.set(false);
 }
 
@@ -164,6 +185,14 @@ export function handleNext() {
     const current = currentPlaylist.track;
 
     if (prev !== current && !loadingPlayer.get()) handlePlay(currentPlaylist.getTrackData());
+  }
+}
+
+export function handleToggleVolume() {
+  if (typeof $('#volume-modal').attr('show') === 'undefined') {
+    document.getElementById('volume-modal').setAttribute('show', '');
+  } else {
+    closeVolumeModal();
   }
 }
 
@@ -317,8 +346,14 @@ function playerModalGestures() {
 
     // Reconocer gesto solo si no esta bloqueada la pantalla
     if ($('#lock-screen').css('display') === 'none') {
-      if (end - start > screenSize * 0.2) {
-        handleClosePlayer();
+      // Y si no esta abierto el devTools.
+      if (typeof $('#devTools-modal').attr('show') === 'undefined') {
+        // Y si no esta abierto el panel de volumen.
+        if (typeof $('#volume-modal').attr('show') === 'undefined') {
+          if (end - start > screenSize * 0.2) {
+            handleClosePlayer();
+          }
+        }
       }
     }
   });
@@ -341,6 +376,24 @@ function playlistModalGestures() {
       if (end - start > screenSize * 0.4) {
         closePlaylist();
       }
+    }
+  });
+}
+
+function devToolsModalGestures() {
+  const html = document.getElementById('devTools-modal');
+  let start;
+
+  html.addEventListener('touchstart', (e) => {
+    start = e.changedTouches[0].clientY;
+  });
+
+  html.addEventListener('touchend', (e) => {
+    const screenSize = window.outerHeight;
+    const end = e.changedTouches[0].clientY;
+
+    if (start - end > screenSize * 0.2) {
+      handleToggleDevTools();
     }
   });
 }

@@ -22,16 +22,20 @@
           this.callback = e;
         },
       };
-      
+
       function onYouTubeIframeAPIReady() {
+        desktopLoaded.set();
+      }
+
+      function onSpotifyIframeApiReady() {
         desktopLoaded.set();
       }
     </script>
 
     <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- <script src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script> -->
     <script onload="desktopLoaded.set()" src="https://w.soundcloud.com/player/api.js"></script>
     <script onload="desktopLoaded.set()" src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script onload="desktopLoaded.set()" src="https://open.spotify.com/embed-podcast/iframe-api/v1"></script>
 
     <link rel="stylesheet" href="./css/main.css" />
     <script type="module" src="./js/main.js"></script>
@@ -46,7 +50,7 @@
       <button id="addSong-button" onclick="toggleAddSong()"></button>
       <div id="find-container">
         <button id="addSong-findButton" onclick="toggleFindSong()"></button>
-        <input id="addSong-findInput" autocomplete="off"></input>
+        <input id="addSong-findInput" autocomplete="off" />
       </div>
       <div id="songsTable"></div>
     </div>
@@ -61,7 +65,7 @@
 
       <div class="addSong-block">
         <label>N°</label>
-        <input id="addSong-number" type="text" autocomplete="off"  />
+        <input id="addSong-number" type="text" autocomplete="off" />
       </div>
 
       <div class="addSong-block">
@@ -93,9 +97,18 @@
         <input id="addSong-source" type="text" autocomplete="off" readonly />
       </div>
 
+      <div class="addSong-block">
+        <label>Normalizar</label>
+        <input type="range" value="0" min="0" max="100" step="1" />
+      </div>
+
+      <div class="addSong-block">
+        <span id="addSong-vol">¿?</span>
+      </div>
+
       <div id="addSong-error"></div>
 
-      <button id="addSong-return" onclick="closeAddSong()">Cancelar</button>
+      <button id="addSong-return" onclick="closeAddSong(true)">Cancelar</button>
       <button id="addSong-check" onclick="checkAddSong()">Comprobar</button>
       <button id="addSong-save" onclick="saveAddSong()" hidden>Guardar</button>
     </modal>
@@ -117,7 +130,7 @@
       </else>
     </modal>
 
-    <modal id="playlist-modal"> <div id="playlist-table"></div> </modal>
+    <modal id="playlist-modal"><div id="playlist-table"></div></modal>
 
     <div id="player-container">
       <div id="controls">
@@ -132,22 +145,20 @@
         </div>
       </div>
 
-      <iframe
-        id="soundcloud"
-        class="players"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url="
-      ></iframe>
-      
+      <iframe id="soundcloud" class="players" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url="></iframe>
+
       <div id="youtube"></div>
       <div id="spotify-container"></div>
-      <div id="mww" class="players"></div>
+      <div id="mww" class="players">
+        <img src="../../mww.jpg" />
+        <div></div>
+      </div>
       <div id="sp-pause-button"></div>
     </div>
   </body>
 
   <div id="tester-cover"></div>
+  <div id="yt-tester" class="tester"></div>
   <iframe id="sc-tester" class="tester" src="https://w.soundcloud.com/player/?url="></iframe>
-  <audio id="dummy-audio"></audio>
+  <audio autoplay id="dummy-audio"></audio>
 </html>

@@ -17,6 +17,8 @@
   right: 0;
   width: 85%;
   height: 100%;
+
+  overflow: hidden;
 }
 
 #soundcloud {
@@ -50,9 +52,25 @@
 
 #mww {
   top: 0;
-  background-image: url('../../mww.png');
-  background-size: 280px;
-  background-position: center;
-  background-repeat: no-repeat;
+
+  text-align: center;
   z-index: -1;
+}
+
+#mww img {
+  width: 280px;
+}
+
+#mww div {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 280px;
+  height: 157.5px;
+
+  outline: 2ch solid black;
+  outline-offset: -5px;
+  filter: blur(2px);
 }

@@ -19,6 +19,37 @@
   right: -1px;
 }
 
+#playlist-modal-shuffle {
+  position: absolute;
+  bottom: 0;
+
+  width: 100%;
+  height: 35px;
+
+  border-top: 1px solid white;
+  border-radius: 0 0 0 10px;
+  background-color: black;
+}
+
+#playlist-modal-shuffle button {
+  position: absolute;
+  background: url('../../shuffle-outline-rounded.svg') no-repeat center center / contain;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 35px;
+  height: 35px;
+
+  border: 0;
+  filter: invert(1);
+  transition: background-image 700ms;
+}
+
+#playlist-modal-shuffle:active button {
+  background: url('../../shuffle-on-rounded.svg') no-repeat center center / contain;
+  transition: background-image 0ms;
+}
+
 #playlist-modal-close-container {
   position: absolute;
   top: 50%;

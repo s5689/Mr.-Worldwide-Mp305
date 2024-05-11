@@ -1,4 +1,4 @@
-import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong } from './addSong';
+import { toggleAddSong, closeAddSong, checkAddSong, saveAddSong, updateSongNormalizer } from './addSong';
 import { toggleFindSong } from './songsList';
 import {
   handleAddPlaylist,
@@ -21,12 +21,13 @@ import './songsList';
 import './playlist';
 import './dummyAudio';
 import './VME-MKR';
+import './console';
 
 desktopLoaded.onChange((e) => {
-  if (e === 4) apiReady();
+  if (e === 3) apiReady();
 });
 
-if (desktopLoaded.get() === 4) apiReady();
+if (desktopLoaded.get() === 3) apiReady();
 
 function apiReady() {
   preloadPlayers();
@@ -53,3 +54,5 @@ window.deleteSong = handleDeleteSong;
 window.addPlaylist = handleAddPlaylist;
 window.selectAll = handleSelectAll;
 window.deselectAll = handleDeselectAll;
+
+updateSongNormalizer();

@@ -1,14 +1,8 @@
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import { getConfig, getSongs, setConfig, updateSong } from './db';
 import { handleDeselectAll, handlePlay, handleShowPlayer } from './controls';
 import { playlistTable } from './playlist';
-import { getConfig, getSongs } from './db';
-import {
-  currentPlaylist,
-  songsList,
-  rowOnMenu,
-  selectMode,
-  preventClosePlaylist,
-} from './stateStore';
+import { currentPlaylist, songsList, rowOnMenu, selectMode, preventClosePlaylist, dataVersion } from './stateStore';
 
 export const songsTable = new Tabulator('#songsTable', {
   data: null,
@@ -116,10 +110,30 @@ function columnSorter(e) {
   }
 }
 
-export async function loadSongsTable() {
-  songsList.set(await getData());
+export async function loadSongsTable(e) {
+  if (!e) {
+    songsList.set(await getData());
+  } else {
+    // Preparar SongList al realizar Updates
+    songsList.set(songsList.value.filter((value) => value.id !== e.id));
+    songsList.value.push(e);
+
+    // Preparar CurrentPlaylist al realizar Updates
+    currentPlaylist.track = currentPlaylist.track;
+    const n = currentPlaylist._list.findIndex((value) => value.id === e.id);
+
+    currentPlaylist._list[n] = e;
+
+    // Aplicar cambios en la base de datos
+    await updateSong(e.id, { vol: e.vol });
+    setConfig(dataVersion.value + 1);
+  }
+
   songsTable.replaceData(songsList.get());
-  toggleOrderSong();
+
+  if (!e) {
+    toggleOrderSong();
+  }
 }
 
 /*
@@ -284,7 +298,7 @@ currentPlaylist.onTrackChange(({ track, prevTrack }) => {
   // Cambios sobre el Mini Reproductor
   if ('name' in track) {
     $('#preview-name').text(track.name);
-    $('#preview-artist-album').text(`${track.artist} - ${track.album}`);
+    $('#preview-artist-album').text(`${track.artist} ${track.album !== '' ? `- ${track.album}` : ''}`);
   }
 });
 
@@ -442,6 +456,7 @@ async function getData() {
   const temp = [];
 
   console.log(version.value, currentVersion);
+
   // Comprobar si la version de los datos es la misma que la del usuario.
   if (version.value === currentVersion) {
     // De ser el caso, usar los datos locales.
@@ -462,6 +477,9 @@ async function getData() {
     localStorage.setItem('songsList', JSON.stringify(temp));
     localStorage.setItem('version', version.value);
   }
+
+  // Almacenar version actual para usarle en otras areas de la aplicacion.
+  dataVersion.value = JSON.parse(localStorage.getItem('version'));
 
   // Filtrar canciones que provengan de Spotify.
   return temp.filter((value) => value.source !== 'SPOTIFY');
