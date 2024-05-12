@@ -6,6 +6,7 @@ import { handleNormalize } from './controls';
 const SOUNDCLOUD = 'SOUNDCLOUD';
 const SPOTIFY = 'SPOTIFY';
 const YOUTUBE = 'YOUTUBE';
+const DEFAULT_VOLUME = 50;
 let isUpdate = null;
 let isOpen = false;
 let inputs = [];
@@ -18,8 +19,8 @@ export function toggleAddSong(update = false, e) {
   if (!isOpen) {
     $('.addSong-title').html('Agregar a la Lista');
     $('.addSong-block:nth-child(9), .addSong-block:nth-child(10)').css('display', 'none');
-    $("#addSong-modal input[type='range']").val(70);
-    $('#addSong-modal #addSong-vol').html('70%');
+    $("#addSong-modal input[type='range']").val(DEFAULT_VOLUME);
+    $('#addSong-modal #addSong-vol').html(`${DEFAULT_VOLUME}%`);
     $('#addSong-modal').css('transform', 'translateX(-50%) scale(1)');
     $('body').css('overflow', 'hidden');
 
