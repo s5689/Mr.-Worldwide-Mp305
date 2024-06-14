@@ -125,7 +125,7 @@ playlistTable.on('rowMoved', (row) => {
   currentPlaylist.track = tempTrack;
 });
 
-// Cerrar playlist al hacer click derecho e izquierdo & Limpiar playlist al hacer click derecho en mostrar playlist
+// Cerrar playlist al hacer click derecho e izquierdo & Limpiar playlist al hacer click derecho en mostrar playlist.
 document.addEventListener('contextmenu', (e) => {
   if (e.target.id === 'control-playlist') {
     const trackId = currentPlaylist.getTrackData().id;
@@ -149,14 +149,7 @@ document.addEventListener('click', (e) => {
   const { id } = html;
   const inModal = !isUndefined($('#playlist-modal').find(html)[0]);
 
-  if (
-    !inModal &&
-    id !== 'control-prev' &&
-    id !== 'control-next' &&
-    id !== 'control-playlist' &&
-    id !== 'control-shuffle'
-  )
-    closePlaylist();
+  if (!inModal && id !== 'control-prev' && id !== 'control-next' && id !== 'control-playlist' && id !== 'control-shuffle') closePlaylist();
 });
 
 // Funciones internas
