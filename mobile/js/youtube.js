@@ -23,6 +23,8 @@ export function loadYT() {
     // Cargado
     if (e.data === -1) {
       loadingPlayer.set(false);
+      controller.setVolume(currentPlaylist.getTrackData().vol);
+
       $('#youtube-pseudoplayer').css('display', 'block');
       $('#ytp-time-current').text('0:00');
       $('#ytp-pause').css('opacity', 0);
@@ -94,7 +96,6 @@ export function loadYT() {
 
 export function playYT(e) {
   controller.loadVideoById(e);
-  controller.setVolume(currentPlaylist.getTrackData().vol);
   controller.unMute();
 
   // Pseudo-player cosas.

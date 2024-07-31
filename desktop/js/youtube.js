@@ -19,6 +19,8 @@ export function loadYT() {
     if (e.data === -1) {
       loadingPlayer.set(false);
       $('#youtube').css('display', 'block');
+
+      controller.setVolume(currentPlaylist.getTrackData().vol);
     }
 
     // Finalizada Reproduccion
@@ -28,7 +30,6 @@ export function loadYT() {
 
 export function playYT(e) {
   controller.loadVideoById(e);
-  controller.setVolume(currentPlaylist.getTrackData().vol);
 }
 
 export function togglePauseYT() {
